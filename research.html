@@ -1,0 +1,743 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>JiaRui · Research</title><style>:root{color-scheme:light dark}body{margin:0;background:light-dark(#f5f2ea,#222420)}.viz-carousel>section[hidden]{display:none}#jr-directions,#jr-research-route,#jr-research-page,#jr-teaching-route,#jr-teaching-page{max-width:1100px;margin-left:auto;margin-right:auto}</style></head><body><script>
+(() => {
+  if(window.openai?.setWidgetState)return;
+  const key='jiarui-homepage-state-v1';
+  let saved={};
+  try{saved=JSON.parse(localStorage.getItem(key)||'{}');}catch{}
+  if(!saved||typeof saved!=='object'||Array.isArray(saved))saved={};
+  window.openai={widgetState:saved,async setWidgetState(snapshot){
+    this.widgetState=snapshot;
+    try{localStorage.setItem(key,JSON.stringify(snapshot));}catch{}
+    queueMicrotask(()=>window.dispatchEvent(new CustomEvent('openai:set_globals',{detail:{globals:{widgetState:snapshot}}})));
+  }};
+})();
+</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=DM+Sans:wght@400;500&display=swap">
+<style>
+#jr-research-page {
+  --jr-r-paper:light-dark(#f5f2ea,#222420);
+  --jr-r-ink:light-dark(#343c34,#e7eadf);
+  --jr-r-soft:light-dark(#626c5f,#b6c0b0);
+  --jr-r-rule:light-dark(#d6d8c9,#4c5546);
+  --jr-r-accent:light-dark(#59674e,#b4c69c);
+  --jr-r-tint:light-dark(#e8ebdf,#30382c);
+  --jr-r-row-space:28px;
+  --jr-r-title-size:27px;
+  width:100%; box-sizing:border-box; padding:32px 44px 30px;
+  background:var(--jr-r-paper); color:var(--jr-r-ink);
+  font-family:'DM Sans',Arial,sans-serif; font-size:14px; line-height:1.6;
+}
+#jr-research-page *,#jr-research-page *::before,#jr-research-page *::after { box-sizing:border-box; }
+#jr-research-page [hidden] { display:none !important; }
+#jr-research-page h1,#jr-research-page h2,#jr-research-page h3,#jr-research-page p { margin:0; font-weight:400; }
+#jr-research-page button,#jr-research-page summary { font:inherit; color:inherit; }
+#jr-research-page a { color:inherit; text-underline-offset:4px; text-decoration-thickness:1px; }
+#jr-research-page button { -webkit-tap-highlight-color:transparent; }
+#jr-research-page .jr-r-nav { display:flex; flex-wrap:wrap; align-items:center; gap:26px; padding:0 0 24px 0; border-bottom:1px solid var(--jr-r-rule); }
+#jr-research-page .jr-background-mount { min-width:0; max-width:270px; margin-left:auto; }
+#jr-research-page .jr-r-home { background:none; border:0; padding:6px 0; font-size:12px; text-decoration:underline; text-underline-offset:5px; }
+#jr-research-page .jr-r-teaching { font-size:12px; padding:6px 0; }
+#jr-research-page .jr-r-wordmark { font-family:'Cormorant Garamond',Georgia,serif; font-size:25px; letter-spacing:.02em; }
+#jr-research-page .jr-r-page-label { margin-left:auto; color:var(--jr-r-soft); font-size:11px; letter-spacing:.13em; text-transform:uppercase; }
+#jr-research-page .jr-r-hero { display:grid; grid-template-columns:1fr 1.2fr; align-items:end; gap:44px; padding:43px 0 40px; }
+#jr-research-page .jr-r-eyebrow { color:var(--jr-r-soft); font-size:11px; letter-spacing:.13em; text-transform:uppercase; }
+#jr-research-page .jr-r-hero h1 { font-family:'Cormorant Garamond',Georgia,serif; font-size:74px; line-height:1.05; letter-spacing:-.04em; margin-top:12px; }
+#jr-research-page .jr-r-intro { font-family:'Cormorant Garamond',Georgia,serif; font-size:31px; line-height:1.2; max-width:470px; padding-bottom:3px; }
+#jr-research-page .jr-r-phrase { white-space:nowrap; }
+#jr-research-page .jr-r-special { margin-bottom:28px; border-top:1px solid var(--jr-r-rule); }
+#jr-research-page .jr-r-special>section { padding:15px 0; border-bottom:1px solid var(--jr-r-rule); }
+#jr-research-page .jr-r-special h2 { font-family:'Cormorant Garamond',Georgia,serif; font-size:26px; line-height:1.2; }
+#jr-research-page .jr-r-special p { margin-top:5px; font-size:11px; color:var(--jr-r-soft); }
+#jr-research-page .jr-r-topics { display:flex; flex-wrap:wrap; gap:4px 25px; padding-bottom:15px; border-bottom:1px solid var(--jr-r-rule); }
+#jr-research-page .jr-r-topic { display:inline-flex; align-items:baseline; gap:8px; background:none; border:0; border-bottom:1px solid transparent; padding:8px 0; font-size:12px; color:var(--jr-r-soft); white-space:nowrap; }
+#jr-research-page .jr-r-topic[aria-pressed="true"] { color:var(--jr-r-ink); border-bottom-color:var(--jr-r-ink); }
+#jr-research-page .jr-r-topic-count { font-size:11px; color:var(--jr-r-soft); }
+#jr-research-page .jr-r-intersection { margin-top:24px; }
+#jr-research-page .jr-r-intersection-title { font-family:'Cormorant Garamond',Georgia,serif; font-size:25px; line-height:1.25; overflow-wrap:anywhere; }
+#jr-research-page .jr-r-intersection-note { color:var(--jr-r-soft); font-size:12px; margin-top:7px; }
+#jr-research-page .jr-r-list-heading { display:flex; align-items:baseline; justify-content:space-between; gap:20px; margin:31px 0 6px; }
+#jr-research-page .jr-r-list-heading h2 { font-family:'Cormorant Garamond',Georgia,serif; font-size:31px; line-height:1.2; }
+#jr-research-page .jr-r-count { color:var(--jr-r-soft); font-size:11px; text-align:right; }
+#jr-research-page .jr-r-year-note { color:var(--jr-r-soft); font-size:11px; }
+#jr-research-page .jr-r-paper-list { margin-top:18px; }
+#jr-research-page .jr-r-paper { display:grid; grid-template-columns:81px minmax(0,1fr); column-gap:27px; padding:var(--jr-r-row-space) 0; border-bottom:1px solid var(--jr-r-rule); }
+#jr-research-page .jr-r-paper:first-child { border-top:1px solid var(--jr-r-rule); }
+#jr-research-page .jr-r-year { font-family:'Cormorant Garamond',Georgia,serif; font-size:33px; line-height:1.1; }
+#jr-research-page .jr-r-first-posted { display:block; color:var(--jr-r-soft); font-size:11px; margin-top:5px; }
+#jr-research-page .jr-r-paper h3 { font-family:'Cormorant Garamond',Georgia,serif; font-size:var(--jr-r-title-size); line-height:1.18; letter-spacing:-.008em; overflow-wrap:anywhere; }
+#jr-research-page .jr-r-authors { color:var(--jr-r-soft); font-size:12px; margin-top:9px; overflow-wrap:anywhere; }
+#jr-research-page .jr-r-tags { display:flex; flex-wrap:wrap; gap:5px 13px; margin-top:10px; color:var(--jr-r-soft); font-size:11px; }
+#jr-research-page .jr-r-tag { display:inline-flex; align-items:center; gap:6px; }
+#jr-research-page .jr-r-tag::before { content:''; width:4px; height:4px; border-radius:50%; background:var(--jr-r-accent); flex-shrink:0; }
+#jr-research-page .jr-r-actions { display:flex; flex-wrap:wrap; gap:12px 24px; align-items:baseline; margin-top:15px; }
+#jr-research-page .jr-r-paper-link { font-size:12px; white-space:nowrap; }
+#jr-research-page .jr-r-brief { min-width:0; }
+#jr-research-page .jr-r-brief summary { display:inline-flex; align-items:center; gap:11px; list-style:none; font-size:12px; padding:4px 0; text-decoration:underline; text-underline-offset:4px; }
+#jr-research-page .jr-r-brief summary::-webkit-details-marker { display:none; }
+#jr-research-page .jr-r-brief summary::after { content:'+'; color:var(--jr-r-soft); font-size:15px; line-height:1; }
+#jr-research-page .jr-r-brief[open] summary::after { content:'−'; }
+#jr-research-page .jr-r-brief-content { margin-top:13px; max-width:70ch; padding-left:17px; border-left:1px solid var(--jr-r-rule); }
+#jr-research-page .jr-r-summary-text { font-size:13px; line-height:1.75; overflow-wrap:anywhere; }
+#jr-research-page .jr-r-source-dates { color:var(--jr-r-soft); font-size:11px; margin-top:13px; }
+#jr-research-page .jr-r-journal { color:var(--jr-r-soft); font-size:11px; margin-top:8px; overflow-wrap:anywhere; }
+#jr-research-page .jr-r-more-row { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; padding-top:24px; }
+#jr-research-page .jr-r-more { display:inline-flex; align-items:center; gap:14px; padding:11px 17px; border:1px solid var(--jr-r-rule); background:transparent; color:var(--jr-r-ink); font-size:12px; }
+#jr-research-page .jr-r-more:hover { background:var(--jr-r-tint); }
+#jr-research-page .jr-r-more::after { content:'↓'; }
+#jr-research-page .jr-r-more[aria-expanded="true"]::after { content:'↑'; }
+#jr-research-page .jr-r-selection-note { color:var(--jr-r-soft); font-size:11px; }
+#jr-research-page .jr-r-empty { margin-top:18px; padding:36px 0; border-top:1px solid var(--jr-r-rule); border-bottom:1px solid var(--jr-r-rule); font-family:'Cormorant Garamond',Georgia,serif; font-size:25px; color:var(--jr-r-soft); }
+#jr-research-page .jr-r-footer { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:14px 24px; margin-top:41px; padding-top:20px; border-top:1px solid var(--jr-r-rule); color:var(--jr-r-soft); font-size:11px; }
+#jr-research-page .jr-r-footer-links { display:flex; flex-wrap:wrap; gap:18px; }
+#jr-research-page .jr-r-live { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+@media (max-width:760px) {
+  #jr-research-page .jr-r-nav>.jr-background-mount { flex-basis:100%; max-width:none; margin-left:0; }
+  #jr-research-page { padding:27px; }
+  #jr-research-page .jr-r-hero { grid-template-columns:1fr 1.1fr; gap:28px; padding:36px 0; }
+  #jr-research-page .jr-r-hero h1 { font-size:64px; }
+  #jr-research-page .jr-r-intro { font-size:27px; }
+  #jr-research-page .jr-r-topics { column-gap:21px; }
+  #jr-research-page .jr-r-paper { grid-template-columns:68px minmax(0,1fr); column-gap:22px; }
+}
+@media (max-width:520px) {
+  #jr-research-page { padding:24px 19px; }
+  #jr-research-page .jr-r-nav { gap:20px; padding-right:0; }
+  #jr-research-page .jr-r-wordmark { font-size:23px; }
+  #jr-research-page .jr-r-page-label { font-size:11px; letter-spacing:.08em; }
+  #jr-research-page .jr-r-hero { grid-template-columns:1fr; gap:23px; padding:31px 0 28px; }
+  #jr-research-page .jr-r-hero h1 { font-size:64px; }
+  #jr-research-page .jr-r-intro { font-size:27px; max-width:390px; }
+  #jr-research-page .jr-r-list-heading { align-items:flex-start; gap:12px; margin-top:28px; }
+  #jr-research-page .jr-r-list-heading h2 { font-size:28px; }
+  #jr-research-page .jr-r-count { max-width:105px; padding-top:5px; }
+  #jr-research-page .jr-r-paper { grid-template-columns:1fr; row-gap:12px; }
+  #jr-research-page .jr-r-year-column { display:flex; align-items:baseline; gap:9px; }
+  #jr-research-page .jr-r-year { font-size:24px; }
+  #jr-research-page .jr-r-first-posted { margin-top:0; }
+  #jr-research-page .jr-r-paper h3 { font-size:min(var(--jr-r-title-size),26px); }
+  #jr-research-page .jr-r-more-row { align-items:flex-start; }
+  #jr-research-page .jr-r-selection-note { max-width:145px; }
+}
+@media (pointer:coarse) {
+  #jr-research-page .jr-r-home,#jr-research-page .jr-r-topic,#jr-research-page .jr-r-brief summary,#jr-research-page .jr-r-more { min-height:44px; }
+  #jr-research-page .jr-r-paper-link,#jr-research-page .jr-r-footer a { display:inline-flex; align-items:center; min-height:44px; }
+}
+@media (prefers-reduced-motion:reduce) { #jr-research-page * { scroll-behavior:auto !important; } }
+</style>
+<section id="jr-research-page" aria-label="Research page">
+  <header class="jr-r-nav">
+    <button class="jr-r-home cursor-interaction" type="button" data-research-home>← Home</button>
+    <span class="jr-r-wordmark" data-research-name>JiaRui</span>
+    <span class="jr-r-page-label">Research</span>
+    <a class="jr-r-teaching" href="teaching.html" data-teaching-link>Teaching</a>
+    <div class="jr-background-mount" data-background-music></div>
+  </header>
+  <div class="jr-r-hero">
+    <div><p class="jr-r-eyebrow">Papers &amp; perspectives</p><h1>Research</h1></div>
+    <p class="jr-r-intro">Representation theory,<br>cluster algebras,<br>and <span class="jr-r-phrase">invariant theory.</span></p>
+  </div>
+  <div class="jr-r-special" aria-label="Special research sections">
+    <section id="tensor-product-multiplicity" aria-labelledby="jr-r-tensor-title">
+      <h2 id="jr-r-tensor-title">Tensor Product Multiplicity</h2>
+      <p>Details to follow.</p>
+    </section>
+    <section id="branching-problems" aria-labelledby="jr-r-branching-title">
+      <h2 id="jr-r-branching-title">Branching Problems</h2>
+    </section>
+    <section id="quivers-with-potentials" aria-labelledby="jr-r-qp-title">
+      <h2 id="jr-r-qp-title">Quivers with Potentials</h2>
+      <p>Details to follow.</p>
+    </section>
+    <section id="laurent-phenomenon-algebras" aria-labelledby="jr-r-lpa-title">
+      <h2 id="jr-r-lpa-title">Laurent Phenomenon Algebras</h2>
+      <div data-lpa-feed><p>Recent papers from arXiv and Hexagon · the past month.</p></div>
+    </section>
+  </div>
+  <nav class="jr-r-topics" aria-label="Filter selected papers by topic" data-research-topics>
+    <button class="jr-r-topic cursor-interaction" type="button" data-research-topic="all" aria-pressed="true">All</button>
+    <button class="jr-r-topic cursor-interaction" type="button" data-research-topic="representations" aria-pressed="false">Representation theory</button>
+    <button class="jr-r-topic cursor-interaction" type="button" data-research-topic="clusters" aria-pressed="false">Cluster algebras</button>
+    <button class="jr-r-topic cursor-interaction" type="button" data-research-topic="invariants" aria-pressed="false">Invariant theory</button>
+    <button class="jr-r-topic cursor-interaction" type="button" data-research-topic="other" aria-pressed="false">Others</button>
+  </nav>
+  <div class="jr-r-intersection" data-research-intersection hidden>
+    <p class="jr-r-intersection-title" data-research-intersection-title></p>
+    <p class="jr-r-intersection-note" data-research-intersection-note></p>
+  </div>
+  <section aria-labelledby="jr-research-list-title">
+    <div class="jr-r-list-heading"><h2 id="jr-research-list-title">Selected papers</h2><p class="jr-r-count" data-research-count></p></div>
+    <p class="jr-r-year-note">Years indicate the first posting on arXiv or Hexagon.</p>
+    <div class="jr-r-paper-list" id="jr-research-paper-list" data-research-list></div>
+    <p class="jr-r-empty" data-research-empty>Selected papers will appear here.</p>
+    <div class="jr-r-more-row" data-research-more-row hidden>
+      <button class="jr-r-more cursor-interaction" type="button" data-research-more aria-expanded="false" aria-controls="jr-research-paper-list">Show all works</button>
+      <p class="jr-r-selection-note">From this selected collection.</p>
+    </div>
+  </section>
+  <footer class="jr-r-footer">
+    <p data-research-asof>Selected papers · original sources linked above.</p>
+    <div class="jr-r-footer-links"><a data-research-profile href="https://sites.google.com/umich.edu/jiarui/" target="_blank" rel="noopener noreferrer" hidden>Academic profile ↗</a><button class="jr-r-home cursor-interaction" type="button" data-research-home>Back to home ↑</button></div>
+  </footer>
+  <p class="jr-r-live" role="status" aria-live="polite" aria-atomic="true" data-research-live></p>
+  <script type="application/json" id="jr-research-data">{"name":"Jiarui Fei","asOf":"2026-11-16","profileUrl":"https://sites.google.com/umich.edu/jiarui/","papers":[{"id":"hexagon-2611.00328","title":"Laurent Phenomenon Algebras on Minuscule Grassmannians and their Mirrors","authors":["Jiarui Fei"],"year":2026,"submitted":"2026-11-11","updated":"2026-11-11","posted":"2026-11-12","url":"https://hexagonmath.org/2611.00328v1","repository":"hexagon","summary":"Constructs Laurent phenomenon algebra structures on half-spin Grassmannians and the Freudenthal variety, and compares their explicit mirror algebras and theta bases with intrinsic mirrors.","tags":["clusters","representations","other"],"journal":null,"journalUrl":null},{"id":"2611.07549","title":"Arithmetic Kac Theory for Ramified Species","authors":["Jiarui Fei"],"year":2026,"submitted":"2026-11-05","updated":"2026-11-05","url":"https://arxiv.org/abs/2611.07549","summary":"Extends Kac-style classification and counting of indecomposable representations to ramified species, connecting arithmetic splitting with root systems.","tags":["representations"],"journal":null,"journalUrl":null},{"id":"2610.29051","title":"Ramified convolution and monodromy bases for symmetrizable Kac–Moody algebras","authors":["Jiarui Fei"],"year":2026,"submitted":"2026-10-21","updated":"2026-10-21","url":"https://arxiv.org/abs/2610.29051","summary":"Uses ramified representations and monodromy to construct integral bases for symmetrizable Kac–Moody algebras, recovering the semicanonical basis in the symmetric case.","tags":["representations"],"journal":null,"journalUrl":null},{"id":"2610.09868","title":"Ramified Quivers with Potentials, Monodromy Characters, and Cluster Bases I","authors":["Jiarui Fei"],"year":2026,"submitted":"2026-10-07","updated":"2026-10-10","url":"https://arxiv.org/abs/2610.09868","summary":"Develops ramified representation models and monodromy cluster characters that produce bases for skew-symmetrizable cluster algebras under explicit hypotheses.","tags":["representations","clusters"],"journal":null,"journalUrl":null},{"id":"2609.32425","title":"Symmetric Branching via Laurent Phenomenon Algebras","authors":["Jiarui Fei"],"year":2026,"submitted":"2026-09-26","updated":"2026-09-26","url":"https://arxiv.org/abs/2609.32425","summary":"Realizes several reductive branching algebras as Laurent phenomenon algebras and gives polyhedral formulas for branching multiplicities in specified cases.","tags":["representations","clusters","invariants"],"journal":null,"journalUrl":null},{"id":"2609.10090","title":"Syzygy Transformations of Cluster Characters and Geometric Twists","authors":["Jiarui Fei"],"year":2026,"submitted":"2026-09-09","updated":"2026-09-09","url":"https://arxiv.org/abs/2609.10090","summary":"Shows how syzygy and suspension act on cluster characters in 2-Calabi–Yau settings. Relates these actions to geometric twists on Grassmannians, positroid varieties, and unipotent cells without requiring mutation reachability.","tags":["representations","clusters"],"journal":null,"journalUrl":null},{"id":"2608.29125","title":"Cluster Geometry of Universal Schubert Polynomials I: Geometric Bases and Cluster Monomials","authors":["Jiarui Fei"],"year":2026,"submitted":"2026-08-29","updated":"2026-11-11","url":"https://arxiv.org/abs/2608.29125","summary":"Connects universal Schubert polynomials with geometric bases and characterizes when they become cluster monomials through a combinatorial condition.","tags":["clusters","representations"],"journal":null,"journalUrl":null},{"id":"2608.00963","title":"Cluster Algebras for Bosonic Plethysm","authors":["Yelin Fan","Jiarui Fei"],"year":2026,"submitted":"2026-08-02","updated":"2026-09-06","url":"https://arxiv.org/abs/2608.00963","summary":"Builds cluster structures on invariant rings associated with symmetric squares and expresses plethysm coefficients through alternating sums of lattice-point counts.","tags":["clusters","invariants","representations"],"journal":null,"journalUrl":null},{"id":"2607.25201","title":"A Polyhedral Formula for n×2×2 Kronecker Coefficients via Cluster Algebras","authors":["Jiarui Fei","Chenxin Xue"],"year":2026,"submitted":"2026-07-28","updated":"2026-08-07","url":"https://arxiv.org/abs/2607.25201","summary":"Constructs a cluster model whose lattice-point counts give a nonnegative polyhedral formula for n×2×2 Kronecker coefficients.","tags":["clusters","invariants","representations"],"journal":null,"journalUrl":null},{"id":"2607.12458","title":"Flag Varieties of General Quiver Representations: Characteristic Classes and Semi-Invariants","authors":["Jiarui Fei"],"year":2026,"submitted":"2026-07-14","updated":"2026-11-03","url":"https://arxiv.org/abs/2607.12458","summary":"Computes dimensions, characteristic classes, and Euler characteristics of flag schemes of general quiver representations. Expresses parabolic Schubert coefficients using semi-invariants of auxiliary quivers and gives localization formulas.","tags":["representations","invariants","other"],"journal":"International Mathematics Research Notices, to appear","journalUrl":null},{"id":"2510.01615","title":"On the Orthogonal Projections","authors":["Jiarui Fei"],"year":2025,"submitted":"2025-10-02","updated":"2026-11-03","url":"https://arxiv.org/abs/2510.01615","summary":"Constructs projections onto perpendicular representation categories that preserve generic invariants and canonical decompositions, and develops mutation formulas and reduction procedures for quivers with potentials.","tags":["representations","clusters"],"journal":null,"journalUrl":null},{"id":"2503.12700","title":"Hessian Defect, Compatibility Degree, and Canonical Decomposition","authors":["Jiarui Fei"],"year":2025,"submitted":"2025-03-16","updated":"2026-09-17","url":"https://arxiv.org/abs/2503.12700","summary":"Uses Hessian differentials to explain discrepancies between dimension and denominator vectors, distinguish cluster variables with identical denominators, and compute canonical multiplicities through compatibility pairings.","tags":["representations","clusters"],"journal":null,"journalUrl":null},{"id":"2309.08326","title":"Crystal Structure of Upper Cluster Algebras","authors":["Jiarui Fei"],"year":2023,"submitted":"2023-09-15","updated":"2026-11-11","url":"https://arxiv.org/abs/2309.08326","summary":"Constructs crystal structures on tropical points of upper cluster algebras and relates their operators to representations, derivations, and compatible bases.","tags":["clusters","representations"],"journal":null,"journalUrl":null},{"id":"2303.10591","title":"On the General Ranks of QP Representations","authors":["Jiarui Fei"],"year":2023,"submitted":"2023-03-19","updated":"2024-12-03","published":"2025-01-04","url":"https://arxiv.org/abs/2303.10591","summary":"Proposes a mutation formula for generic ranks between principal components of quiver-with-potential representations, proves it under reachability hypotheses, and identifies related mutation invariants.","tags":["representations","clusters"],"journal":"Algebras and Representation Theory 28 (2025), 47–79","journalUrl":"https://doi.org/10.1007/s10468-024-10306-5"},{"id":"2009.09701","title":"Mahler Measure of 3D Landau–Ginzburg Potentials","authors":["Jiarui Fei"],"year":2020,"submitted":"2020-09-21","updated":"2020-10-08","published":"2021-07-28","url":"https://arxiv.org/abs/2009.09701","pdfUrl":"https://arxiv.org/pdf/2009.09701","repository":"arxiv","summary":"Computes Mahler measures for 23 families of Laurent polynomials arising from Fano threefolds, connects special values with modular L-functions, and finds ten relations among these measures.","tags":["other"],"journal":"Forum Mathematicum 33 (2021), no. 5, 1369–1401","journalUrl":"https://doi.org/10.1515/forum-2020-0339"},{"id":"1911.10513","title":"Tropical F-polynomials and General Presentations","authors":["Jiarui Fei"],"year":2019,"submitted":"2019-11-24","updated":"2023-05-28","url":"https://arxiv.org/abs/1911.10513","summary":"Uses general presentations to describe tropical F-polynomials and Newton polytopes of quiver representations, with applications to cluster duality.","tags":["representations","clusters"],"journal":"Journal of the London Mathematical Society 107 (2023), no. 6, 2079–2120","journalUrl":"https://doi.org/10.1112/jlms.12734"},{"id":"1909.10151","title":"Combinatorics of F-polynomials","authors":["Jiarui Fei"],"year":2019,"submitted":"2019-09-23","updated":"2021-08-03","url":"https://arxiv.org/abs/1909.10151","summary":"Describes the Newton polytopes of F-polynomials and their restrictions to faces using stabilization functors. Determines facets for general representations of acyclic quivers and proves saturated support for rigid representations.","tags":["representations","clusters"],"journal":"International Mathematics Research Notices 2023, no. 9, 7578–7615","journalUrl":"https://doi.org/10.1093/imrn/rnab365"},{"id":"1711.00163","title":"Cluster Algebras, Invariant Theory, and Kronecker Coefficients II","authors":["Jiarui Fei"],"year":2017,"submitted":"2017-11-01","updated":"2017-11-01","url":"https://arxiv.org/abs/1711.00163","summary":"Builds cluster models of flagged Kronecker semi-invariant rings and reduces the computation of Kronecker coefficients to lattice-point counts.","tags":["clusters","invariants","representations"],"journal":"Advances in Mathematics 341 (2019), 536–582","journalUrl":"https://www.sciencedirect.com/science/article/pii/S0001870818304365"},{"id":"1707.04661","title":"Extending Upper Cluster Algebras","authors":["Jiarui Fei","Jerzy Weyman"],"year":2017,"submitted":"2017-07-14","updated":"2026-10-28","url":"https://arxiv.org/abs/1707.04661","summary":"Studies when extending a quiver preserves an upper cluster algebra and its cluster model, with applications to semi-invariant rings of complete flag configurations and their polyhedral bases.","tags":["clusters","representations","invariants"],"journal":null,"journalUrl":null},{"id":"1603.02521","title":"Tensor Product Multiplicities via Upper Cluster Algebras","authors":["Jiarui Fei"],"year":2016,"submitted":"2016-03-08","updated":"2019-09-07","url":"https://arxiv.org/abs/1603.02521","summary":"Realizes tensor-product multiplicities for simply-laced groups as graded dimensions of explicitly constructed upper cluster algebras.","tags":["representations","clusters"],"journal":"Annales scientifiques de l’École normale supérieure 54 (2021), no. 6, 1415–1464","journalUrl":"https://doi.org/10.24033/asens.2486"},{"id":"1508.05563","title":"Cluster Algebras and Semi-invariant Rings II. Projections","authors":["Jiarui Fei"],"year":2015,"submitted":"2015-08-23","updated":"2015-08-30","published":"2016-09-02","url":"https://arxiv.org/abs/1508.05563","summary":"Shows how projection through an exceptional representation transfers upper cluster algebra structures between quiver semi-invariant rings by explicit operations on ice quivers. Quivers with potentials also describe the relationship between their bases.","tags":["clusters","invariants","representations"],"journal":"Mathematische Zeitschrift 285 (2017), no. 3–4, 939–966","journalUrl":"https://doi.org/10.1007/s00209-016-1733-7"},{"id":"1504.02970","title":"Cluster Algebras, Invariant Theory, and Kronecker Coefficients I","authors":["Jiarui Fei"],"year":2015,"submitted":"2015-04-12","updated":"2015-08-25","published":"2017-04-13","url":"https://arxiv.org/abs/1504.02970","summary":"Connects truncated Kronecker products to semi-invariant rings of quiver representations and constructs cluster structures in the two-part case. Explicit g-vector cones express the relevant Kronecker coefficients as differences of lattice-point counts in rational polytopes.","tags":["clusters","invariants","representations"],"journal":"Advances in Mathematics 310 (2017), 1064–1112","journalUrl":"https://doi.org/10.1016/j.aim.2017.02.016"},{"id":"1411.4693","title":"Cluster Algebras and Semi-invariant Rings I. Triple Flags","authors":["Jiarui Fei"],"year":2014,"submitted":"2014-11-17","updated":"2015-03-03","url":"https://arxiv.org/abs/1411.4693","summary":"Realizes semi-invariant rings of complete triple flags as upper cluster algebras of ice hive quivers. Constructs bases from lattice points in a rational polyhedral cone and determines minimal generators in small cases.","tags":["representations","clusters","invariants"],"journal":"Proceedings of the London Mathematical Society 115 (2017), no. 1, 1–32","journalUrl":"https://doi.org/10.1112/plms.12033"},{"id":"1307.2667","title":"Counting using Hall Algebras III. Quivers with Potentials","authors":["Jiarui Fei"],"year":2013,"submitted":"2013-07-10","updated":"2018-09-15","url":"https://arxiv.org/abs/1307.2667","summary":"Studies vanishing cycles for quivers with potentials through truncated Jacobian algebras. Wall-crossing yields a categorification of quantum cluster algebras under suitable assumptions, together with counting formulas for representation Grassmannians under sink-source reflections.","tags":["representations","clusters"],"journal":"Pacific Journal of Mathematics 300 (2019), no. 2, 347–373","journalUrl":"https://doi.org/10.2140/pjm.2019.300.347"},{"id":"1111.6452","title":"Counting Using Hall Algebras I. Quivers","authors":["Jiarui Fei"],"year":2011,"submitted":"2011-11-28","updated":"2012-09-24","url":"https://arxiv.org/abs/1111.6452","summary":"Uses the Hopf algebra structure of a quiver's Hall algebra to count points over finite fields in representation moduli spaces, quiver Grassmannians, and flag varieties, with applications to cluster algebras.","tags":["representations","clusters"],"journal":"Journal of Algebra 372 (2012), 542–559","journalUrl":"https://doi.org/10.1016/j.jalgebra.2012.08.018"},{"id":"1011.6106","title":"Moduli of Representations I. Projections from Quivers","authors":["Jiarui Fei"],"year":2010,"submitted":"2010-11-28","updated":"2013-04-11","url":"https://arxiv.org/abs/1011.6106","summary":"Uses orthogonal projection functors to relate moduli spaces of quiver representations to those for quivers with one fewer vertex, identifying blow-ups under suitable conditions and comparing stability and ample divisors.","tags":["representations","invariants"],"journal":null,"journalUrl":null},{"id":"0911.4913","title":"General Presentations of Algebras","authors":["Harm Derksen","Jiarui Fei"],"year":2009,"submitted":"2009-11-25","updated":"2015-04-08","url":"https://arxiv.org/abs/0911.4913","summary":"Develops canonical decompositions of general presentations of finite-dimensional algebras and a simplicial complex organizing rigid presentations.","tags":["representations"],"journal":"Advances in Mathematics 278 (2015), 210–237","journalUrl":"https://doi.org/10.1016/j.aim.2015.03.012"}],"identitySources":["https://sites.google.com/umich.edu/jiarui/","https://postd.sjtu.edu.cn/info/1068/1189_1.htm","https://nice-math.sjtu.edu.cn/Data/List/RESEARCHGROUPS","https://icra21.sjtu.edu.cn/ICRAProgFinal2.pdf"],"hexagonProfileUrl":"https://hexagonmath.org/users/user_8367f1ec-cdf6-4867-9128-8b2bc4b24373"}</script>
+</section>
+<script>
+window.jrResearchReady = (async () => {
+  const root = document.getElementById('jr-research-page');
+  if (!root || root.dataset.researchReady === 'true') return;
+  root.dataset.researchReady = 'true';
+  const topicLabels = {
+    all:'All', representations:'Representation theory', clusters:'Cluster algebras',
+    invariants:'Invariant theory', other:'Others'
+  };
+  const topicOrder = ['representations','clusters','invariants','other'];
+  const selectedTopics = topic => topic === 'all' ? [] : topic.split('+');
+  const topicLabel = topic => topic === 'all' ? topicLabels.all : selectedTopics(topic).map(key => topicLabels[key]).join(' ∩ ');
+  const initialLimit = 5;
+  const isObject = value => value !== null && typeof value === 'object' && !Array.isArray(value);
+  if (!window.jrStateStore) {
+    const normalizeSnapshot = value => ({
+      modelContent:isObject(value?.modelContent) ? {...value.modelContent} : {},
+      privateContent:isObject(value?.privateContent) ? {...value.privateContent} : {}
+    });
+    const ordered = value => Array.isArray(value) ? value.map(ordered) : isObject(value) ? Object.fromEntries(Object.keys(value).sort().map(key => [key,ordered(value[key])])) : value;
+    const fingerprint = value => JSON.stringify(ordered(normalizeSnapshot(value)));
+    const copy = value => JSON.parse(JSON.stringify(value));
+    const merge = (previous,patch) => ({
+      modelContent:{...previous.modelContent,...(isObject(patch?.modelContent) ? patch.modelContent : {})},
+      privateContent:{...previous.privateContent,...(isObject(patch?.privateContent) ? patch.privateContent : {})}
+    });
+    let current = normalizeSnapshot(window.openai?.widgetState);
+    let propertySignature = fingerprint(window.openai?.widgetState);
+    function acceptHost(snapshot,notify=false) {
+      if (!isObject(snapshot)) return;
+      const next = merge(current,normalizeSnapshot(snapshot));
+      if (fingerprint(next) === fingerprint(current)) return;
+      current = next;
+      if (notify) window.dispatchEvent(new CustomEvent('jr:state-restored',{detail:{snapshot:copy(current)}}));
+    }
+    function refreshProperty() {
+      const signature=fingerprint(window.openai?.widgetState);
+      if(signature===propertySignature)return;
+      propertySignature=signature;
+      acceptHost(window.openai?.widgetState);
+    }
+    window.jrStateStore = {
+      read() { refreshProperty(); return copy(current); },
+      patch(patch) {
+        refreshProperty();
+        current = merge(current,patch);
+        const snapshot = copy(current);
+        if (typeof window.openai?.setWidgetState === 'function') window.openai.setWidgetState(snapshot).catch(() => {});
+        return snapshot;
+      }
+    };
+    window.addEventListener('openai:set_globals',event => acceptHost(event.detail?.globals?.widgetState,true));
+  }
+  const stateStore = window.jrStateStore;
+  const safeUrl = value => {
+    try { const parsed = new URL(String(value)); return ['https:','http:'].includes(parsed.protocol) ? parsed.href : null; }
+    catch { return null; }
+  };
+  const formatDate = value => {
+    if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+    const date = new Date(value + 'T00:00:00Z');
+    return Number.isFinite(date.getTime()) ? new Intl.DateTimeFormat('en',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}).format(date) : null;
+  };
+  let catalog = {name:'JiaRui',papers:[]};
+  try {
+    const raw = document.getElementById('jr-research-data')?.textContent || '';
+    if (raw.trim()) {
+      let parsed = JSON.parse(raw);
+      if(parsed.encoding==='gzip-base64'){
+        const bytes=Uint8Array.from(atob(parsed.payload),character=>character.charCodeAt(0));
+        const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+        parsed=JSON.parse(await new Response(stream).text());
+      }
+      if (isObject(parsed) && Array.isArray(parsed.papers)) catalog = parsed;
+    }
+  } catch {}
+  const usedIds = new Set();
+  const papers = catalog.papers.filter(isObject).filter(paper => typeof paper.title === 'string' && paper.title.trim()).map((paper,index) => {
+    const id = typeof paper.id === 'string' && paper.id ? paper.id : 'paper-' + index;
+    if (usedIds.has(id)) return null;
+    usedIds.add(id);
+    return {...paper,id,domId:'jr-research-brief-' + index,
+      authors:Array.isArray(paper.authors) ? paper.authors.filter(author => typeof author === 'string') : [],
+      tags:Array.isArray(paper.tags) ? [...new Set(paper.tags.filter(tag => tag !== 'all' && Object.hasOwn(topicLabels,tag)))] : [],
+      url:safeUrl(paper.url), journalUrl:safeUrl(paper.journalUrl)
+    };
+  }).filter(Boolean).sort((a,b) => {
+    const dateA = typeof (a.posted||a.submitted) === 'string' ? (a.posted||a.submitted) : String(a.year || '');
+    const dateB = typeof (b.posted||b.submitted) === 'string' ? (b.posted||b.submitted) : String(b.year || '');
+    return dateB.localeCompare(dateA) || a.title.localeCompare(b.title);
+  });
+  const counts = Object.fromEntries(Object.keys(topicLabels).map(topic => [topic,topic === 'all' ? papers.length : papers.filter(paper => paper.tags.includes(topic)).length]));
+  const state = {topic:'all',showAll:false,expanded:new Set()};
+  const list = root.querySelector('[data-research-list]');
+  const countLabel = root.querySelector('[data-research-count]');
+  const empty = root.querySelector('[data-research-empty]');
+  const moreRow = root.querySelector('[data-research-more-row]');
+  const moreButton = root.querySelector('[data-research-more]');
+  const live = root.querySelector('[data-research-live]');
+  const intersection = root.querySelector('[data-research-intersection]');
+  const intersectionTitle = root.querySelector('[data-research-intersection-title]');
+  const intersectionNote = root.querySelector('[data-research-intersection-note]');
+  const topicButtons = [...root.querySelectorAll('[data-research-topic]')];
+  function normalizeTopic(value) {
+    const aliases = {'representation theory':'representations','cluster algebra':'clusters','cluster algebras':'clusters','invariant theory':'invariants','other directions':'other','others':'other'};
+    const inputs = Array.isArray(value) ? value : typeof value === 'string' ? value.split('+') : ['all'];
+    const candidates = inputs.map(input => typeof input === 'string' ? input.toLowerCase().trim() : '').map(input => aliases[input] || input);
+    if (!candidates.length || candidates.some(candidate => !topicOrder.includes(candidate))) return 'all';
+    const selected = new Set(candidates);
+    return topicOrder.filter(topic => selected.has(topic)).join('+');
+  }
+  function researchSnapshot() {
+    return {
+      modelContent:{researchTopic:topicLabel(state.topic),researchTopics:selectedTopics(state.topic).map(key => topicLabels[key]),researchExpandedPaperIds:[...state.expanded]},
+      privateContent:{research:{schema:1,topic:state.topic,showAll:state.showAll,expanded:[...state.expanded]}}
+    };
+  }
+  function save() { stateStore.patch(researchSnapshot()); }
+  function element(tag,className,text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined && text !== null) node.textContent = String(text);
+    return node;
+  }
+  function sourceLink(label,url,className) {
+    const anchor = element('a',className,label);
+    anchor.href = url; anchor.target = '_blank'; anchor.rel = 'noopener noreferrer';
+    return anchor;
+  }
+  function paperElement(paper) {
+    const article = element('article','jr-r-paper');
+    article.dataset.paperId = paper.id;
+    const yearColumn = element('div','jr-r-year-column');
+    const year = Number.isInteger(paper.year) ? paper.year : /^\d{4}/.test(String(paper.submitted || '')) ? String(paper.submitted).slice(0,4) : '—';
+    yearColumn.append(element('p','jr-r-year',year),element('span','jr-r-first-posted','First posted'));
+    const content = element('div','jr-r-paper-content');
+    content.append(element('h3','',paper.title));
+    if (paper.authors.length) content.append(element('p','jr-r-authors',paper.authors.join(' · ')));
+    if (paper.tags.length) {
+      const tags = element('div','jr-r-tags');
+      for (const tag of paper.tags) tags.append(element('span','jr-r-tag',topicLabels[tag]));
+      content.append(tags);
+    }
+    const actions = element('div','jr-r-actions');
+    if (paper.url) {
+      const repository=new URL(paper.url).hostname==='hexagonmath.org'?'Hexagon':'arXiv';
+      const readLink = sourceLink('Read on '+repository+' ↗',paper.url,'jr-r-paper-link');
+      readLink.setAttribute('aria-label','Read ' + paper.title + ' on '+repository+' (opens in a new tab)');
+      actions.append(readLink);
+    }
+    if (paper.journalUrl) {
+      const journalLink = sourceLink('Journal reference ↗',paper.journalUrl,'jr-r-paper-link');
+      journalLink.setAttribute('aria-label','Journal reference for ' + paper.title + ' (opens in a new tab)');
+      actions.append(journalLink);
+    }
+    if (actions.childElementCount) content.append(actions);
+    if (typeof paper.summary === 'string' && paper.summary.trim()) {
+      const details = element('details','jr-r-brief');
+      details.id = paper.domId; details.open = state.expanded.has(paper.id);
+      const summary = element('summary','cursor-interaction','In brief');
+      summary.setAttribute('aria-label','In brief: ' + paper.title);
+      const body = element('div','jr-r-brief-content');
+      body.append(element('p','jr-r-summary-text',paper.summary));
+      const dates = [];
+      const submitted = formatDate(paper.posted||paper.submitted), updated = formatDate(paper.updated);
+      if (submitted) dates.push('First posted ' + submitted);
+      if (updated && paper.updated !== paper.submitted) dates.push('Updated ' + updated);
+      if (dates.length) body.append(element('p','jr-r-source-dates',dates.join(' · ')));
+      if (typeof paper.journal === 'string' && paper.journal.trim()) body.append(element('p','jr-r-journal','Journal reference: ' + paper.journal));
+      details.append(summary,body);
+      details.addEventListener('toggle',() => {
+        if (!details.isConnected || state.expanded.has(paper.id) === details.open) return;
+        if (details.open) state.expanded.add(paper.id); else state.expanded.delete(paper.id);
+        save();
+      });
+      content.append(details);
+    } else if (typeof paper.journal === 'string' && paper.journal.trim()) {
+      content.append(element('p','jr-r-journal','Journal reference: ' + paper.journal));
+    }
+    article.append(yearColumn,content);
+    return article;
+  }
+  function render(announce=false) {
+    const topics = selectedTopics(state.topic);
+    const selected = papers.filter(paper => topics.every(topic => paper.tags.includes(topic)));
+    const visible = state.showAll ? selected : selected.slice(0,initialLimit);
+    for (const button of topicButtons) button.setAttribute('aria-pressed',String(topics.length ? topics.includes(button.dataset.researchTopic) : button.dataset.researchTopic === 'all'));
+    intersection.hidden = topics.length < 2;
+    intersectionTitle.textContent = topicLabel(state.topic);
+    const sharedTopics = topics.length === 2 ? 'both topics' : topics.length === 3 ? 'all three topics' : 'all four topics';
+    intersectionNote.textContent = 'Papers belonging to ' + sharedTopics + '.';
+    list.replaceChildren(...visible.map(paperElement));
+    empty.hidden = selected.length > 0;
+    empty.textContent = topics.length > 1 ? 'No papers in this selected collection belong to ' + sharedTopics + ' yet.' : papers.length ? 'No papers in this selection yet.' : 'Selected papers will appear here.';
+    countLabel.textContent = (visible.length < selected.length ? visible.length + ' of ' + selected.length : String(selected.length)) + (selected.length === 1 ? ' paper' : ' papers') + ' · newest first';
+    moreRow.hidden = selected.length <= initialLimit;
+    moreButton.textContent = state.showAll ? 'Show fewer works' : 'Show all works';
+    moreButton.setAttribute('aria-expanded',String(state.showAll));
+    moreButton.setAttribute('aria-label',state.showAll ? 'Show the first ' + initialLimit + ' selected papers' : 'Show all ' + selected.length + ' selected papers');
+    if (announce) live.textContent = (state.topic === 'all' ? 'All topics' : topicLabel(state.topic)) + ': showing ' + visible.length + ' of ' + selected.length + (selected.length === 1 ? ' selected paper.' : ' selected papers.');
+  }
+  function restore(snapshot) {
+    const saved = snapshot?.privateContent?.research;
+    if (!isObject(saved) || saved.schema !== 1) return false;
+    const nextTopic=normalizeTopic(saved.topic),nextShowAll=saved.showAll===true;
+    const nextExpanded=new Set(Array.isArray(saved.expanded) ? saved.expanded.filter(id => usedIds.has(id)) : []);
+    const changed=state.topic!==nextTopic || state.showAll!==nextShowAll || state.expanded.size!==nextExpanded.size || [...nextExpanded].some(id=>!state.expanded.has(id));
+    state.topic=nextTopic;state.showAll=nextShowAll;state.expanded=nextExpanded;
+    return changed;
+  }
+  for (const button of topicButtons) {
+    const topic = button.dataset.researchTopic;
+    button.hidden = false;
+    if (papers.length) {
+      const count = element('span','jr-r-topic-count',counts[topic]);
+      count.setAttribute('aria-hidden','true'); button.append(count);
+      button.setAttribute('aria-label',topicLabels[topic] + ', ' + counts[topic] + (counts[topic] === 1 ? ' paper' : ' papers'));
+    }
+    button.addEventListener('click',() => {state.topic=topic;state.showAll=false;render(true);save();});
+  }
+  moreButton.addEventListener('click',() => {state.showAll=!state.showAll;render(true);save();});
+  root.querySelectorAll('[data-research-home]').forEach(button => button.addEventListener('click',() => window.dispatchEvent(new CustomEvent('jr:research-home'))));
+  if (typeof catalog.name === 'string' && catalog.name.trim()) root.querySelector('[data-research-name]').textContent = catalog.name;
+  const profileUrl = safeUrl(catalog.profileUrl);
+  if (profileUrl) {const profile=root.querySelector('[data-research-profile]');profile.href=profileUrl;profile.hidden=false;}
+  const asOf = formatDate(catalog.asOf);
+  if (asOf) root.querySelector('[data-research-asof]').textContent = 'Selected collection · as of ' + asOf;
+  window.jrOpenResearch = (topic='all',options={}) => {
+    state.topic=normalizeTopic(topic);
+    if(options.reset!==false)state.showAll=false;
+    render(options.announce!==false);
+    const snapshot=researchSnapshot();
+    if(options.save!==false)stateStore.patch(snapshot);
+    return snapshot;
+  };
+  window.addEventListener('jr:research-open',event => {
+    const topic=event.detail?.topics ?? event.detail?.topic ?? 'all';
+    if(typeof window.jrNavigateResearch==='function')window.jrNavigateResearch(topic);
+    else window.jrOpenResearch(topic);
+  });
+  window.addEventListener('jr:state-restored',event => {if(restore(event.detail?.snapshot))render();});
+  restore(stateStore.read());
+  render();
+  if (globalThis.Tweak) {
+    const appearance = {paperSpacing:28,titleSize:27};
+    const tweak = new Tweak({container:root,onChange:() => {root.style.setProperty('--jr-r-row-space',appearance.paperSpacing+'px');root.style.setProperty('--jr-r-title-size',appearance.titleSize+'px');}});
+    tweak.addSlider(appearance,'paperSpacing',{label:'Space between papers',min:20,max:42,unit:'px',reference:'--jr-r-row-space'});
+    tweak.addSlider(appearance,'titleSize',{label:'Paper title size',min:23,max:31,unit:'px',reference:'--jr-r-title-size'});
+  }
+})();
+</script>
+<script>(()=>{
+  function remember(route){
+    const patch={modelContent:{currentPage:route},privateContent:{route}};
+    if(window.jrStateStore){window.jrStateStore.patch(patch);return;}
+    const previous=window.openai?.widgetState||{};
+    window.openai?.setWidgetState?.({modelContent:{...previous.modelContent,...patch.modelContent},privateContent:{...previous.privateContent,...patch.privateContent}}).catch(()=>{});
+  }
+  document.addEventListener('click',event=>{
+    const anchor=event.target.closest?.('a[data-teaching-home],a[data-research-link],a[data-teaching-link]');
+    if(!anchor||event.defaultPrevented||event.ctrlKey||event.metaKey||event.shiftKey||event.altKey||event.button>0||(anchor.target&&anchor.target!=='_self')||anchor.hasAttribute('download'))return;
+    remember(anchor.hasAttribute('data-teaching-home')?'home':anchor.hasAttribute('data-research-link')?'research':'teaching');
+  });
+  window.addEventListener('jr:research-home',()=>{remember('home');window.location.href='homepage-preview.html';});
+})();</script><script type="application/json" id="jr-music-tracks">[{"id":"music-bc17fa387980be07","composer":"Antonio Lauro","title":"4 Valses venezolanos, No. 3, Natalia (Vals criollo)","performer":"John Williams","filename":"Antonio Lauro - 4 Valses venezolanos, No. 3, Natalia (Vals criollo) - John Williams.mp3","type":"audio/mpeg","calmer":false,"src":"music/Antonio%20Lauro%20-%204%20Valses%20venezolanos%2C%20No.%203%2C%20Natalia%20(Vals%20criollo)%20-%20John%20Williams.mp3"},{"id":"music-1bee1e8e883b18fe","composer":"Antonio Lauro","title":"Carora","performer":"Alirio Díaz","filename":"Antonio Lauro - Carora - Alirio Díaz.mp3","type":"audio/mpeg","calmer":false,"src":"music/Antonio%20Lauro%20-%20Carora%20-%20Alirio%20D%C3%ADaz.mp3"},{"id":"music-f2a9787e30462939","composer":"Antonio Vivaldi","title":"Guitar Concerto in C major, RV 425, III. Allegro","performer":"Christopher Parkening, Academy of St Martin in the Fields and Iona Brown","filename":"Antonio Vivaldi - Guitar Concerto in C major, RV 425, III. Allegro - Christopher Parkening, Academy of St Martin in the Fields and Iona Brown.m4a","type":"audio/mp4","calmer":false,"src":"music/Antonio%20Vivaldi%20-%20Guitar%20Concerto%20in%20C%20major%2C%20RV%20425%2C%20III.%20Allegro%20-%20Christopher%20Parkening%2C%20Academy%20of%20St%20Martin%20in%20the%20Fields%20and%20Iona%20Brown.m4a"},{"id":"music-42b1b3530a55e1fd","composer":"Astor Piazzolla","title":"Invierno Porteño","performer":"Duo Siqueira Lima","filename":"Astor Piazzolla - Invierno Porteño - Duo Siqueira Lima.mp3","type":"audio/mpeg","calmer":false,"src":"music/Astor%20Piazzolla%20-%20Invierno%20Porte%C3%B1o%20-%20Duo%20Siqueira%20Lima.mp3"},{"id":"music-567dbad9d5041060","composer":"Astor Piazzolla","title":"Tango Suite","performer":"Sérgio and Odair Assad","filename":"Astor Piazzolla - Tango Suite - Sérgio and Odair Assad.mp3","type":"audio/mpeg","calmer":false,"src":"music/Astor%20Piazzolla%20-%20Tango%20Suite%20-%20S%C3%A9rgio%20and%20Odair%20Assad.mp3"},{"id":"music-0550dca7a10e7cc6","composer":"Agustín Barrios Mangoré","title":"La Catedral, III. Allegro solemne","performer":"Raphaël Feuillâtre","filename":"calmer/Agustín Barrios Mangoré - La Catedral, III. Allegro solemne - Raphaël Feuillâtre.flac","type":"audio/flac","calmer":true,"src":"music/calmer/Agust%C3%ADn%20Barrios%20Mangor%C3%A9%20-%20La%20Catedral%2C%20III.%20Allegro%20solemne%20-%20Rapha%C3%ABl%20Feuill%C3%A2tre.flac"},{"id":"music-0e48bd2749fd2dbf","composer":"Agustín Barrios Mangoré","title":"Una limosna por amor de Dios","performer":"David Russell","filename":"calmer/Agustín Barrios Mangoré - Una limosna por amor de Dios - David Russell.flac","type":"audio/flac","calmer":true,"src":"music/calmer/Agust%C3%ADn%20Barrios%20Mangor%C3%A9%20-%20Una%20limosna%20por%20amor%20de%20Dios%20-%20David%20Russell.flac"},{"id":"music-5a03871c7095ac4c","composer":"Antonio Vivaldi","title":"Concerto in D major, RV 93, II. Largo (arr. for guitar)","performer":"Sharon Isbin, Orchestre de Chambre de Lausanne and Lawrence Foster","filename":"calmer/Antonio Vivaldi - Concerto in D major, RV 93, II. Largo (arr. for guitar) - Sharon Isbin, Orchestre de Chambre de Lausanne and Lawrence Foster.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/Antonio%20Vivaldi%20-%20Concerto%20in%20D%20major%2C%20RV%2093%2C%20II.%20Largo%20(arr.%20for%20guitar)%20-%20Sharon%20Isbin%2C%20Orchestre%20de%20Chambre%20de%20Lausanne%20and%20Lawrence%20Foster.mp3"},{"id":"music-45e7c619e935f27a","composer":"Baden Powell","title":"Retrato brasileiro","performer":"Gerald Garcia","filename":"calmer/Baden Powell - Retrato brasileiro - Gerald Garcia.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/Baden%20Powell%20-%20Retrato%20brasileiro%20-%20Gerald%20Garcia.mp3"},{"id":"music-d86717ff6279d397","composer":"Carlo Domeniconi","title":"Koyunbaba, Op. 19","performer":"Miloš Karadaglić","filename":"calmer/Carlo Domeniconi - Koyunbaba, Op. 19 - Miloš Karadaglić.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/Carlo%20Domeniconi%20-%20Koyunbaba%2C%20Op.%2019%20-%20Milo%C5%A1%20Karadagli%C4%87.mp3"},{"id":"music-9331231120d90652","composer":"Claude Debussy","title":"Deux arabesques, L. 66, No. 1, Andantino con moto (arr. for two guitars)","performer":"ChromaDuo","filename":"calmer/Claude Debussy - Deux arabesques, L. 66, No. 1, Andantino con moto (arr. for two guitars) - ChromaDuo.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/Claude%20Debussy%20-%20Deux%20arabesques%2C%20L.%2066%2C%20No.%201%2C%20Andantino%20con%20moto%20(arr.%20for%20two%20guitars)%20-%20ChromaDuo.mp3"},{"id":"music-f8892c621ab6bdfc","composer":"Claude Debussy","title":"Petite Suite, L. 65, I. En bateau (arr. for two guitars)","performer":"Kazuhito Yamashita and Naoko Yamashita","filename":"calmer/Claude Debussy - Petite Suite, L. 65, I. En bateau (arr. for two guitars) - Kazuhito Yamashita and Naoko Yamashita.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/Claude%20Debussy%20-%20Petite%20Suite%2C%20L.%2065%2C%20I.%20En%20bateau%20(arr.%20for%20two%20guitars)%20-%20Kazuhito%20Yamashita%20and%20Naoko%20Yamashita.mp3"},{"id":"music-dc1db2c8c09cb17c","composer":"Domenico Scarlatti","title":"Keyboard Sonata in A major, K. 322 (arr. for guitar)","performer":"Julian Byzantine","filename":"calmer/Domenico Scarlatti - Keyboard Sonata in A major, K. 322 (arr. for guitar) - Julian Byzantine.m4a","type":"audio/mp4","calmer":true,"src":"music/calmer/Domenico%20Scarlatti%20-%20Keyboard%20Sonata%20in%20A%20major%2C%20K.%20322%20(arr.%20for%20guitar)%20-%20Julian%20Byzantine.m4a"},{"id":"music-5b3500869930d7a2","composer":"Domenico Scarlatti","title":"Sonata in B minor, K. 173","performer":"Beijing Guitar Duo","filename":"calmer/Domenico Scarlatti - Sonata in B minor, K. 173 - Beijing Guitar Duo.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/Domenico%20Scarlatti%20-%20Sonata%20in%20B%20minor%2C%20K.%20173%20-%20Beijing%20Guitar%20Duo.mp3"},{"id":"music-073e07090e8bd124","composer":"Egberto Gismonti","title":"Água e vinho","performer":"NoiZ Guitar Duo","filename":"calmer/Egberto Gismonti - Água e vinho - NoiZ Guitar Duo.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/Egberto%20Gismonti%20-%20%C3%81gua%20e%20vinho%20-%20NoiZ%20Guitar%20Duo.mp3"},{"id":"music-a8148cc9f1b86de0","composer":"Enrique Granados","title":"12 Danzas españolas, Op. 37, No. 2, Oriental (arr. for two guitars)","performer":"Manuel Barrueco and Thomas Müller-Pering","filename":"calmer/Enrique Granados - 12 Danzas españolas, Op. 37, No. 2, Oriental (arr. for two guitars) - Manuel Barrueco and Thomas Müller-Pering.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/Enrique%20Granados%20-%2012%20Danzas%20espa%C3%B1olas%2C%20Op.%2037%2C%20No.%202%2C%20Oriental%20(arr.%20for%20two%20guitars)%20-%20Manuel%20Barrueco%20and%20Thomas%20M%C3%BCller-Pering.mp3"},{"id":"music-29ffb700bea642ef","composer":"Ernesto Lecuona","title":"Danzas afro-cubanas, No. 6, La comparsa","performer":"Manuel Barrueco","filename":"calmer/Ernesto Lecuona - Danzas afro-cubanas, No. 6, La comparsa - Manuel Barrueco.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/Ernesto%20Lecuona%20-%20Danzas%20afro-cubanas%2C%20No.%206%2C%20La%20comparsa%20-%20Manuel%20Barrueco.mp3"},{"id":"music-da4b00d63f35bc1e","composer":"Federico Mompou","title":"Suite compostelana, V. Canción","performer":"Oscar Ghiglia","filename":"calmer/Federico Mompou - Suite compostelana, V. Canción - Oscar Ghiglia.m4a","type":"audio/mp4","calmer":true,"src":"music/calmer/Federico%20Mompou%20-%20Suite%20compostelana%2C%20V.%20Canci%C3%B3n%20-%20Oscar%20Ghiglia.m4a"},{"id":"music-87a013570d5da6ce","composer":"Federico Moreno Torroba","title":"Estampas","performer":"Los Romeros","filename":"calmer/Federico Moreno Torroba - Estampas - Los Romeros.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/Federico%20Moreno%20Torroba%20-%20Estampas%20-%20Los%20Romeros.mp3"},{"id":"music-e19b89d721e638e7","composer":"Federico Moreno Torroba","title":"Romance de los pinos","performer":"Christopher Parkening","filename":"calmer/Federico Moreno Torroba - Romance de los pinos - Christopher Parkening.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/Federico%20Moreno%20Torroba%20-%20Romance%20de%20los%20pinos%20-%20Christopher%20Parkening.mp3"},{"id":"music-cebb95cc93df990d","composer":"Francisco Tárrega","title":"Marieta (Mazurka)","performer":"Norbert Kraft","filename":"calmer/Francisco Tárrega - Marieta (Mazurka) - Norbert Kraft.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/Francisco%20T%C3%A1rrega%20-%20Marieta%20(Mazurka)%20-%20Norbert%20Kraft.mp3"},{"id":"music-305536f920530585","composer":"Francisco Tárrega","title":"Recuerdos de la Alhambra","performer":"Norbert Kraft","filename":"calmer/Francisco Tárrega - Recuerdos de la Alhambra - Norbert Kraft.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/Francisco%20T%C3%A1rrega%20-%20Recuerdos%20de%20la%20Alhambra%20-%20Norbert%20Kraft.mp3"},{"id":"music-2389915edc6e9728","composer":"François Couperin","title":"Les barricades mystérieuses (arr. Antoine Fougeray for guitar)","performer":"Raphaël Feuillâtre","filename":"calmer/François Couperin - Les barricades mystérieuses (arr. Antoine Fougeray for guitar) - Raphaël Feuillâtre.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/Fran%C3%A7ois%20Couperin%20-%20Les%20barricades%20myst%C3%A9rieuses%20(arr.%20Antoine%20Fougeray%20for%20guitar)%20-%20Rapha%C3%ABl%20Feuill%C3%A2tre.mp3"},{"id":"music-3c3389a0e6ec1c3c","composer":"Gaspar Sanz","title":"Pavanas","performer":"Alirio Díaz","filename":"calmer/Gaspar Sanz - Pavanas - Alirio Díaz.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/Gaspar%20Sanz%20-%20Pavanas%20-%20Alirio%20D%C3%ADaz.mp3"},{"id":"music-f82e1ec309ae88e5","composer":"George Frideric Handel","title":"Chaconne in G major, HWV 435 (arr. for two guitars)","performer":"Julian Gray and Ronald Pearl","filename":"calmer/George Frideric Handel - Chaconne in G major, HWV 435 (arr. for two guitars) - Julian Gray and Ronald Pearl.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/George%20Frideric%20Handel%20-%20Chaconne%20in%20G%20major%2C%20HWV%20435%20(arr.%20for%20two%20guitars)%20-%20Julian%20Gray%20and%20Ronald%20Pearl.mp3"},{"id":"music-65ed378868054c8b","composer":"George Frideric Handel","title":"Keyboard Suite No. 4 in D minor, HWV 437, III. Sarabande and Variations (arr. for guitar)","performer":"Konrad Ragossnig","filename":"calmer/George Frideric Handel - Keyboard Suite No. 4 in D minor, HWV 437, III. Sarabande and Variations (arr. for guitar) - Konrad Ragossnig.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/George%20Frideric%20Handel%20-%20Keyboard%20Suite%20No.%204%20in%20D%20minor%2C%20HWV%20437%2C%20III.%20Sarabande%20and%20Variations%20(arr.%20for%20guitar)%20-%20Konrad%20Ragossnig.mp3"},{"id":"music-1c3b97d2b873cc05","composer":"Heitor Villa-Lobos","title":"Bachianas brasileiras No. 5, I. Ária (Cantilena)","performer":"Laurindo Almeida and Salli Terri","filename":"calmer/Heitor Villa-Lobos - Bachianas brasileiras No. 5, I. Ária (Cantilena) - Laurindo Almeida and Salli Terri.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/Heitor%20Villa-Lobos%20-%20Bachianas%20brasileiras%20No.%205%2C%20I.%20%C3%81ria%20(Cantilena)%20-%20Laurindo%20Almeida%20and%20Salli%20Terri.mp3"},{"id":"music-c1db023f5813fc37","composer":"Heitor Villa-Lobos","title":"Five Preludes, W 419, No. 1 in E minor, Andantino espressivo","performer":"Alexander-Sergei Ramírez","filename":"calmer/Heitor Villa-Lobos - Five Preludes, W 419, No. 1 in E minor, Andantino espressivo - Alexander-Sergei Ramírez.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/Heitor%20Villa-Lobos%20-%20Five%20Preludes%2C%20W%20419%2C%20No.%201%20in%20E%20minor%2C%20Andantino%20espressivo%20-%20Alexander-Sergei%20Ram%C3%ADrez.mp3"},{"id":"music-d583bc792ddd65d7","composer":"Henry Purcell","title":"Abdelazer, Z. 570, II. Rondeau (arr. for guitar)","performer":"Konrad Ragossnig","filename":"calmer/Henry Purcell - Abdelazer, Z. 570, II. Rondeau (arr. for guitar) - Konrad Ragossnig.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/Henry%20Purcell%20-%20Abdelazer%2C%20Z.%20570%2C%20II.%20Rondeau%20(arr.%20for%20guitar)%20-%20Konrad%20Ragossnig.mp3"},{"id":"music-213b69285642aa2f","composer":"Isaac Albéniz","title":"España, Op. 165, No. 2, Tango","performer":"Pepe Romero and Celin Romero","filename":"calmer/Isaac Albéniz - España, Op. 165, No. 2, Tango - Pepe Romero and Celin Romero.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/Isaac%20Alb%C3%A9niz%20-%20Espa%C3%B1a%2C%20Op.%20165%2C%20No.%202%2C%20Tango%20-%20Pepe%20Romero%20and%20Celin%20Romero.mp3"},{"id":"music-6b999c308484b357","composer":"Johann Sebastian Bach","title":"Cello Suite No. 1 in G major, BWV 1007, IV. Sarabande (arr. for guitar)","performer":"Wulfin Lieske","filename":"calmer/Johann Sebastian Bach - Cello Suite No. 1 in G major, BWV 1007, IV. Sarabande (arr. for guitar) - Wulfin Lieske.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/Johann%20Sebastian%20Bach%20-%20Cello%20Suite%20No.%201%20in%20G%20major%2C%20BWV%201007%2C%20IV.%20Sarabande%20(arr.%20for%20guitar)%20-%20Wulfin%20Lieske.mp3"},{"id":"music-c998ece5015dd011","composer":"Johann Sebastian Bach","title":"Cello Suite No. 6, BWV 1012, Gavottes I & II (arr. for guitar)","performer":"Alexandre Lagoya","filename":"calmer/Johann Sebastian Bach - Cello Suite No. 6, BWV 1012, Gavottes I & II (arr. for guitar) - Alexandre Lagoya.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/Johann%20Sebastian%20Bach%20-%20Cello%20Suite%20No.%206%2C%20BWV%201012%2C%20Gavottes%20I%20%26%20II%20(arr.%20for%20guitar)%20-%20Alexandre%20Lagoya.mp3"},{"id":"music-157e70b4680715f7","composer":"Johann Sebastian Bach","title":"Ich ruf zu dir, Herr Jesu Christ, BWV 639 (arr. Abiton for guitar)","performer":"Raphaël Feuillâtre","filename":"calmer/Johann Sebastian Bach - Ich ruf zu dir, Herr Jesu Christ, BWV 639 (arr. Abiton for guitar) - Raphaël Feuillâtre.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/Johann%20Sebastian%20Bach%20-%20Ich%20ruf%20zu%20dir%2C%20Herr%20Jesu%20Christ%2C%20BWV%20639%20(arr.%20Abiton%20for%20guitar)%20-%20Rapha%C3%ABl%20Feuill%C3%A2tre.mp3"},{"id":"music-e07546ccc212c8ba","composer":"Johann Sebastian Bach","title":"Sonata for Solo Violin No. 1 in G minor, BWV 1001, II. Fuga (arr. John W. Duarte for guitar)","performer":"Alirio Díaz","filename":"calmer/Johann Sebastian Bach - Sonata for Solo Violin No. 1 in G minor, BWV 1001, II. Fuga (arr. John W. Duarte for guitar) - Alirio Díaz.flac","type":"audio/flac","calmer":true,"src":"music/calmer/Johann%20Sebastian%20Bach%20-%20Sonata%20for%20Solo%20Violin%20No.%201%20in%20G%20minor%2C%20BWV%201001%2C%20II.%20Fuga%20(arr.%20John%20W.%20Duarte%20for%20guitar)%20-%20Alirio%20D%C3%ADaz.flac"},{"id":"music-00b399a1feea8a75","composer":"Leo Brouwer","title":"Dos temas populares cubanos, No. 1, Canción de cuna (after Drume negrita by Grenet)","performer":"Manuel Barrueco","filename":"calmer/Leo Brouwer - Dos temas populares cubanos, No. 1, Canción de cuna (after Drume negrita by Grenet) - Manuel Barrueco.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/Leo%20Brouwer%20-%20Dos%20temas%20populares%20cubanos%2C%20No.%201%2C%20Canci%C3%B3n%20de%20cuna%20(after%20Drume%20negrita%20by%20Grenet)%20-%20Manuel%20Barrueco.mp3"},{"id":"narvaez","composer":"Luis de Narváez","title":"Variations sur Guárdame las vacas","performer":"Oscar Ghiglia","filename":"calmer/Luis de Narváez - Variations sur Guárdame las vacas - Oscar Ghiglia.mp3","type":"audio/mpeg","calmer":true,"fullDuration":186.41,"src":"music/calmer/Luis%20de%20Narv%C3%A1ez%20-%20Variations%20sur%20Gu%C3%A1rdame%20las%20vacas%20-%20Oscar%20Ghiglia.mp3"},{"id":"music-42846a0411266be4","composer":"Luiz Bonfá","title":"Manhã de Carnaval","performer":"Gerald Garcia","filename":"calmer/Luiz Bonfá - Manhã de Carnaval - Gerald Garcia.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/Luiz%20Bonf%C3%A1%20-%20Manh%C3%A3%20de%20Carnaval%20-%20Gerald%20Garcia.mp3"},{"id":"music-d98d0261e3305066","composer":"Maurice Ravel","title":"Pavane pour une infante défunte, M. 19 (arr. Sean Shibe for guitar)","performer":"Sean Shibe","filename":"calmer/Maurice Ravel - Pavane pour une infante défunte, M. 19 (arr. Sean Shibe for guitar) - Sean Shibe.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/Maurice%20Ravel%20-%20Pavane%20pour%20une%20infante%20d%C3%A9funte%2C%20M.%2019%20(arr.%20Sean%20Shibe%20for%20guitar)%20-%20Sean%20Shibe.mp3"},{"id":"music-6b9554c936c6b652","composer":"Napoléon Coste","title":"Études de genre, Op. 38, No. 14, Andante (Extrait de la Fantaisie symphonique)","performer":"Shin-ichi Fukuda","filename":"calmer/Napoléon Coste - Études de genre, Op. 38, No. 14, Andante (Extrait de la Fantaisie symphonique) - Shin-ichi Fukuda.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/Napol%C3%A9on%20Coste%20-%20%C3%89tudes%20de%20genre%2C%20Op.%2038%2C%20No.%2014%2C%20Andante%20(Extrait%20de%20la%20Fantaisie%20symphonique)%20-%20Shin-ichi%20Fukuda.mp3"},{"id":"music-a9d99d6cadc9caad","composer":"Stanley Myers","title":"Cavatina (from The Deer Hunter)","performer":"John Williams and String Orchestra","filename":"calmer/Stanley Myers - Cavatina (from The Deer Hunter) - John Williams and String Orchestra.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/Stanley%20Myers%20-%20Cavatina%20(from%20The%20Deer%20Hunter)%20-%20John%20Williams%20and%20String%20Orchestra.mp3"},{"id":"weiss","composer":"Sylvius Leopold Weiss","title":"Fantasie, SW 9 (arr. for guitar)","performer":"Alexandre Lagoya","filename":"calmer/Sylvius Leopold Weiss - Fantasie, SW 9 (arr. for guitar) - Alexandre Lagoya.mp3","type":"audio/mpeg","calmer":true,"fullDuration":212.53,"src":"music/calmer/Sylvius%20Leopold%20Weiss%20-%20Fantasie%2C%20SW%209%20(arr.%20for%20guitar)%20-%20Alexandre%20Lagoya.mp3"},{"id":"music-a7e006493b68cf5d","composer":"William Lawes","title":"Suite for Two Guitars","performer":"Julian Bream and John Williams","filename":"calmer/William Lawes - Suite for Two Guitars - Julian Bream and John Williams.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/William%20Lawes%20-%20Suite%20for%20Two%20Guitars%20-%20Julian%20Bream%20and%20John%20Williams.mp3"},{"id":"music-ff695e05d5899659","composer":"Wolfgang Amadeus Mozart","title":"Solemn Vespers, K. 339, V. Laudate Dominum (Praise Ye the Lord)","performer":"Christopher Parkening","filename":"calmer/Wolfgang Amadeus Mozart - Solemn Vespers, K. 339, V. Laudate Dominum (Praise Ye the Lord) - Christopher Parkening.mp3","type":"audio/mpeg","calmer":true,"src":"music/calmer/Wolfgang%20Amadeus%20Mozart%20-%20Solemn%20Vespers%2C%20K.%20339%2C%20V.%20Laudate%20Dominum%20(Praise%20Ye%20the%20Lord)%20-%20Christopher%20Parkening.mp3"},{"id":"music-8ac173e7f1fdcf49","composer":"Enrique Granados","title":"12 Danzas españolas, Op. 37, No. 5, Andaluza (Playera)","performer":"Manuel Barrueco","filename":"Enrique Granados - 12 Danzas españolas, Op. 37, No. 5, Andaluza (Playera) - Manuel Barrueco.mp3","type":"audio/mpeg","calmer":false,"src":"music/Enrique%20Granados%20-%2012%20Danzas%20espa%C3%B1olas%2C%20Op.%2037%2C%20No.%205%2C%20Andaluza%20(Playera)%20-%20Manuel%20Barrueco.mp3"},{"id":"granados","composer":"Enrique Granados","title":"Valses poéticos (arr. Julian Bream for guitar)","performer":"Julian Bream","filename":"Enrique Granados - Valses poéticos (arr. Julian Bream for guitar) - Julian Bream.mp3","type":"audio/mpeg","calmer":false,"fullDuration":751.96,"src":"music/Enrique%20Granados%20-%20Valses%20po%C3%A9ticos%20(arr.%20Julian%20Bream%20for%20guitar)%20-%20Julian%20Bream.mp3"},{"id":"music-e9ed5a4886704138","composer":"Ferdinando Carulli","title":"Carnaval de Venise","performer":"Philippe Lemaigre and Guy Lukowski","filename":"Ferdinando Carulli - Carnaval de Venise - Philippe Lemaigre and Guy Lukowski.mp3","type":"audio/mpeg","calmer":false,"src":"music/Ferdinando%20Carulli%20-%20Carnaval%20de%20Venise%20-%20Philippe%20Lemaigre%20and%20Guy%20Lukowski.mp3"},{"id":"music-d38a5c76a97c038b","composer":"Fernando Sor","title":"Introduction and Variations on a Theme by Mozart, Op. 9","performer":"Alirio Díaz","filename":"Fernando Sor - Introduction and Variations on a Theme by Mozart, Op. 9 - Alirio Díaz.mp3","type":"audio/mpeg","calmer":false,"src":"music/Fernando%20Sor%20-%20Introduction%20and%20Variations%20on%20a%20Theme%20by%20Mozart%2C%20Op.%209%20-%20Alirio%20D%C3%ADaz.mp3"},{"id":"music-23668de2be9faf5a","composer":"Gaspar Sanz","title":"Españoleta","performer":"Alirio Díaz","filename":"Gaspar Sanz - Españoleta - Alirio Díaz.mp3","type":"audio/mpeg","calmer":false,"src":"music/Gaspar%20Sanz%20-%20Espa%C3%B1oleta%20-%20Alirio%20D%C3%ADaz.mp3"},{"id":"music-4ff8ef8ac7daf0dc","composer":"Isaac Albéniz","title":"Cantos de España, Op. 232, No. 4, Córdoba (Nocturne, arr. for two guitars)","performer":"Julian Bream and John Williams","filename":"Isaac Albéniz - Cantos de España, Op. 232, No. 4, Córdoba (Nocturne, arr. for two guitars) - Julian Bream and John Williams.mp3","type":"audio/mpeg","calmer":false,"src":"music/Isaac%20Alb%C3%A9niz%20-%20Cantos%20de%20Espa%C3%B1a%2C%20Op.%20232%2C%20No.%204%2C%20C%C3%B3rdoba%20(Nocturne%2C%20arr.%20for%20two%20guitars)%20-%20Julian%20Bream%20and%20John%20Williams.mp3"},{"id":"music-6dae0efa35dbced2","composer":"Isaac Albéniz","title":"Suite española, Op. 47, No. 3, Sevilla","performer":"Miloš Karadaglić","filename":"Isaac Albéniz - Suite española, Op. 47, No. 3, Sevilla - Miloš Karadaglić.mp3","type":"audio/mpeg","calmer":false,"src":"music/Isaac%20Alb%C3%A9niz%20-%20Suite%20espa%C3%B1ola%2C%20Op.%2047%2C%20No.%203%2C%20Sevilla%20-%20Milo%C5%A1%20Karadagli%C4%87.mp3"},{"id":"music-a25b3f6c86b1b0fc","composer":"Isaac Albéniz","title":"Suite española, Op. 47, No. 5, Asturias (Leyenda)","performer":"Miloš Karadaglić","filename":"Isaac Albéniz - Suite española, Op. 47, No. 5, Asturias (Leyenda) - Miloš Karadaglić.mp3","type":"audio/mpeg","calmer":false,"src":"music/Isaac%20Alb%C3%A9niz%20-%20Suite%20espa%C3%B1ola%2C%20Op.%2047%2C%20No.%205%2C%20Asturias%20(Leyenda)%20-%20Milo%C5%A1%20Karadagli%C4%87.mp3"},{"id":"music-a5fa95fb7458a67c","composer":"Jacques Ibert","title":"Entr’acte","performer":"Laurindo Almeida and Martin Ruderman","filename":"Jacques Ibert - Entr’acte - Laurindo Almeida and Martin Ruderman.mp3","type":"audio/mpeg","calmer":false,"src":"music/Jacques%20Ibert%20-%20Entr%E2%80%99acte%20-%20Laurindo%20Almeida%20and%20Martin%20Ruderman.mp3"},{"id":"music-5dd9f4c07b808395","composer":"Joaquín Malats","title":"Serenata española","performer":"Andrés Segovia","filename":"Joaquín Malats - Serenata española - Andrés Segovia.mp3","type":"audio/mpeg","calmer":false,"src":"music/Joaqu%C3%ADn%20Malats%20-%20Serenata%20espa%C3%B1ola%20-%20Andr%C3%A9s%20Segovia.mp3"},{"id":"music-e052269fab1a11b6","composer":"Luigi Boccherini","title":"Guitar Quintet No. 4 in D major, G. 448, III. Grave assai – IV. Fandango","performer":"Pepe Romero and the Academy of St Martin in the Fields Chamber Ensemble","filename":"Luigi Boccherini - Guitar Quintet No. 4 in D major, G. 448, III. Grave assai – IV. Fandango - Pepe Romero and the Academy of St Martin in the Fields Chamber Ensemble.mp3","type":"audio/mpeg","calmer":false,"src":"music/Luigi%20Boccherini%20-%20Guitar%20Quintet%20No.%204%20in%20D%20major%2C%20G.%20448%2C%20III.%20Grave%20assai%20%E2%80%93%20IV.%20Fandango%20-%20Pepe%20Romero%20and%20the%20Academy%20of%20St%20Martin%20in%20the%20Fields%20Chamber%20Ensemble.mp3"},{"id":"music-2e2904d1e0d8e66a","composer":"Malcolm Arnold","title":"Concerto for Guitar and Chamber Orchestra, Op. 67, III. Con brio","performer":"Julian Bream, Melos Ensemble and Malcolm Arnold","filename":"Malcolm Arnold - Concerto for Guitar and Chamber Orchestra, Op. 67, III. Con brio - Julian Bream, Melos Ensemble and Malcolm Arnold.mp3","type":"audio/mpeg","calmer":false,"src":"music/Malcolm%20Arnold%20-%20Concerto%20for%20Guitar%20and%20Chamber%20Orchestra%2C%20Op.%2067%2C%20III.%20Con%20brio%20-%20Julian%20Bream%2C%20Melos%20Ensemble%20and%20Malcolm%20Arnold.mp3"},{"id":"music-8e2f93a9d9e1e2cb","composer":"Manuel de Falla","title":"La vida breve, Danza española No. 1","performer":"Julian Bream and John Williams","filename":"Manuel de Falla - La vida breve, Danza española No. 1 - Julian Bream and John Williams.mp3","type":"audio/mpeg","calmer":false,"src":"music/Manuel%20de%20Falla%20-%20La%20vida%20breve%2C%20Danza%20espa%C3%B1ola%20No.%201%20-%20Julian%20Bream%20and%20John%20Williams.mp3"},{"id":"castelnuovo-sonatina","composer":"Mario Castelnuovo-Tedesco","title":"Sonatina canonica, Op. 196","performer":"Brasil Guitar Duo","filename":"Mario Castelnuovo-Tedesco - Sonatina canonica, Op. 196 - Brasil Guitar Duo.mp3","type":"audio/mpeg","calmer":false,"fullDuration":592.93,"src":"music/Mario%20Castelnuovo-Tedesco%20-%20Sonatina%20canonica%2C%20Op.%20196%20-%20Brasil%20Guitar%20Duo.mp3"},{"id":"music-f2b0d12fa6a7543c","composer":"Roland Dyens","title":"Tango en skaï","performer":"Kaori Muraji","filename":"Roland Dyens - Tango en skaï - Kaori Muraji.mp3","type":"audio/mpeg","calmer":false,"src":"music/Roland%20Dyens%20-%20Tango%20en%20ska%C3%AF%20-%20Kaori%20Muraji.mp3"}]</script>
+<!-- JR_BACKGROUND_MUSIC_START -->
+<style>
+:is(#jr-directions, #jr-research-page, #jr-teaching-route, #jr-linked-route) .jr-bgm { --bgm-ink:var(--ink,var(--jr-r-ink,light-dark(#343c34,#e7eadf))); --bgm-soft:var(--soft,var(--jr-r-soft,light-dark(#626b5d,#b3bdac))); --bgm-rule:var(--rule,var(--jr-r-rule,light-dark(#d6d8c9,#4c5546))); display:flex; flex-wrap:wrap; align-items:center; gap:2px 15px; max-width:100%; color:var(--bgm-ink); font-family:var(--sans,'DM Sans',Arial,sans-serif); line-height:1.5; }
+:is(#jr-directions, #jr-research-page, #jr-teaching-route, #jr-linked-route) .jr-bgm .jr-bgm-button { padding:5px 0; border:0; border-bottom:1px solid transparent; border-radius:0; background:transparent; color:var(--bgm-ink); font:inherit; font-size:12px; white-space:nowrap; }
+:is(#jr-directions, #jr-research-page, #jr-teaching-route, #jr-linked-route) .jr-bgm .jr-bgm-button:hover { border-bottom-color:var(--bgm-rule); }
+:is(#jr-directions, #jr-research-page, #jr-teaching-route, #jr-linked-route) .jr-bgm-calmer[aria-pressed="true"] { border-bottom-color:currentColor; font-weight:600; }
+:is(#jr-directions, #jr-research-page, #jr-teaching-route, #jr-linked-route) .jr-bgm .jr-bgm-button:disabled { opacity:.45; }
+:is(#jr-directions, #jr-research-page, #jr-teaching-route, #jr-linked-route) .jr-bgm-preview { color:var(--bgm-soft); font-size:11px; }
+:is(#jr-directions, #jr-research-page, #jr-teaching-route, #jr-linked-route) .jr-bgm-credit { flex-basis:100%; min-width:0; max-width:270px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--bgm-soft); font-size:11px; }
+:is(#jr-directions, #jr-research-page, #jr-teaching-route, #jr-linked-route) .jr-bgm-status { flex-basis:100%; max-width:270px; color:var(--bgm-soft); font-size:11px; }
+:is(#jr-directions, #jr-research-page, #jr-teaching-route, #jr-linked-route) .jr-bgm [hidden] { display:none !important; }
+@media (pointer:coarse) { :is(#jr-directions, #jr-research-page, #jr-teaching-route, #jr-linked-route) .jr-bgm .jr-bgm-button { min-height:44px; } }
+#jr-teaching-route .jr-background-mount { margin-top: 8px; }
+</style>
+<template id="jr-background-music-template">
+  <div class="jr-bgm" role="group" aria-label="Background music">
+    <button class="jr-bgm-button jr-bgm-toggle cursor-interaction" type="button" aria-pressed="false" aria-label="Music off — play background music">Music off</button>
+    <button class="jr-bgm-button jr-bgm-next cursor-interaction" type="button">Next song</button>
+    <button class="jr-bgm-button jr-bgm-calmer cursor-interaction" type="button" aria-pressed="false">Calmer</button>
+    <span class="jr-bgm-preview" hidden>Preview</span>
+    <span class="jr-bgm-credit"></span>
+    <span class="jr-bgm-status" role="status" aria-live="polite" hidden></span>
+  </div>
+</template>
+<div id="jr-background-music-source" hidden></div>
+<script>
+(async () => {
+  const source=document.getElementById('jr-background-music-source');
+  const template=document.getElementById('jr-background-music-template');
+  if(!source || !template || document.querySelector('.jr-background-audio'))return;
+  let tracks=[];
+  try {
+    let data=JSON.parse(document.getElementById('jr-music-tracks')?.textContent || '[]');
+    if(data?.encoding==='gzip-base64'){
+      const bytes=Uint8Array.from(atob(data.payload),c=>c.charCodeAt(0));
+      data=JSON.parse(await new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'))).text());
+    }
+    const seen=new Set();
+    if(Array.isArray(data))tracks=data.filter(track=>{
+      if(!track || typeof track.id!=='string' || !track.id || seen.has(track.id) || typeof track.src!=='string' || !track.src || typeof track.title!=='string')return false;
+      seen.add(track.id);return true;
+    });
+  }catch{}
+  const byId=new Map(tracks.map(track=>[track.id,track]));
+  const mounts=[];
+  const audio=document.createElement('audio');
+  audio.className='jr-background-audio';audio.preload='none';audio.volume=.35;
+  source.append(audio);
+  const playable=tracks.filter(track=>!track.type || audio.canPlayType(track.type));
+  const isCalmer=track=>track?.calmer===true || track?.filename?.startsWith('calmer/');
+  const unavailable=new Set();
+  let currentId='',bag=[],calmer=false,request=0,wantPlaying=false,pending=false,status='';
+  const stateOrigin=globalThis.crypto?.randomUUID?.() || Date.now().toString(36)+'-'+Math.random().toString(36).slice(2);
+  let stateRevision=0;
+  const stateStore=globalThis.jrStateStore || (typeof jrStateStore!=='undefined'?jrStateStore:null);
+  function shuffle(values) {
+    const result=values.slice();
+    for(let i=result.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[result[i],result[j]]=[result[j],result[i]];}
+    return result;
+  }
+  function eligibleIds(onlyCalmer=calmer) {
+    return playable.filter(track=>(!onlyCalmer || isCalmer(track)) && !unavailable.has(track.id)).map(track=>track.id);
+  }
+  function nextId() {
+    const ids=eligibleIds();
+    if(!ids.length)return '';
+    bag=bag.filter(id=>ids.includes(id));
+    if(!bag.length){
+      bag=shuffle(ids);
+      if(bag.length>1 && bag[0]===currentId){const j=1+Math.floor(Math.random()*(bag.length-1));[bag[0],bag[j]]=[bag[j],bag[0]];}
+    }
+    return bag.shift();
+  }
+  function render() {
+    const track=byId.get(currentId);
+    const eligible=eligibleIds();
+    const playing=!!track && wantPlaying && !audio.paused && !audio.ended;
+    const credit=track?[track.composer,track.title].filter(Boolean).join(' · ')+(track.performer?' — '+track.performer:''):(calmer?'No playable calmer recordings':'No playable recordings');
+    const preview=!!track && track.src.startsWith('data:audio/');
+    for(const mount of mounts){
+      const toggle=mount.querySelector('.jr-bgm-toggle');
+      toggle.textContent=playing?'Music on':'Music off';
+      toggle.disabled=!track;
+      toggle.setAttribute('aria-pressed',String(playing));
+      toggle.setAttribute('aria-busy',String(pending));
+      toggle.setAttribute('aria-label',playing?'Music on — pause background music':'Music off — play background music');
+      mount.querySelector('.jr-bgm-next').disabled=eligible.length<2;
+      const mode=mount.querySelector('.jr-bgm-calmer');
+      mode.setAttribute('aria-pressed',String(calmer));
+      mode.disabled=!calmer && !eligibleIds(true).length;
+      const line=mount.querySelector('.jr-bgm-credit');
+      line.textContent=credit;line.setAttribute('data-tooltip',credit);
+      mount.querySelector('.jr-bgm-preview').hidden=!preview;
+      const message=mount.querySelector('.jr-bgm-status');
+      message.hidden=!status;message.textContent=status;
+      mount.dataset.trackId=currentId;
+    }
+  }
+  function save() {
+    const snapshot={version:2,trackId:currentId,calmer,bag:bag.slice(),poolSize:eligibleIds().length,origin:stateOrigin,revision:++stateRevision};
+    try {
+      if(stateStore?.patch)Promise.resolve(stateStore.patch({privateContent:{backgroundMusic:snapshot}})).catch(()=>{});
+      else if(window.openai?.setWidgetState){
+        const current=window.openai.widgetState || {};
+        Promise.resolve(window.openai.setWidgetState({...current,privateContent:{...current.privateContent,backgroundMusic:snapshot}})).catch(()=>{});
+      }
+    }catch{}
+  }
+  function pause() {
+    request++;wantPlaying=false;pending=false;audio.pause();render();
+  }
+  function loadTrack(id) {
+    const track=byId.get(id);
+    pause();currentId=id;status='';
+    if(track)audio.src=track.src;
+    else audio.removeAttribute('src');
+    audio.load();render();
+  }
+  async function play() {
+    if(!byId.has(currentId))return;
+    const token=++request;wantPlaying=true;pending=true;status='';render();
+    try {
+      await audio.play();
+      if(token!==request)return;
+      pending=false;render();
+    }catch(error) {
+      if(token!==request)return;
+      if(error?.name==='NotSupportedError' || audio.error){skipUnavailable();return;}
+      wantPlaying=false;pending=false;audio.pause();
+      status='Music could not start. Try playing again.';render();
+    }
+  }
+  function advance(continuePlaying) {
+    const id=nextId();
+    loadTrack(id);save();
+    if(id && continuePlaying)play();
+  }
+  function skipUnavailable() {
+    if(!currentId || unavailable.has(currentId))return;
+    unavailable.add(currentId);
+    advance(wantPlaying);
+  }
+  function changeMode() {
+    calmer=!calmer;
+    const ids=eligibleIds();
+    bag=shuffle(ids.filter(id=>id!==currentId));
+    if(!ids.includes(currentId))advance(wantPlaying);
+    else {render();save();}
+  }
+  function toggle() {
+    if(wantPlaying || !audio.paused)pause();
+    else play();
+    save();
+  }
+  function restore(widgetState) {
+    const saved=widgetState?.privateContent?.backgroundMusic;
+    if(!saved || (saved.version!==1 && saved.version!==2))return false;
+    // Own optimistic writes are already applied; delayed acknowledgements must not rewind playback.
+    if(saved.origin===stateOrigin && Number.isInteger(saved.revision) && saved.revision<=stateRevision)return true;
+    calmer=saved.version===2 && saved.calmer===true;
+    if(calmer && !eligibleIds().length && eligibleIds(false).length)calmer=false;
+    const ids=eligibleIds();
+    const trackId=ids.includes(saved.trackId)?saved.trackId:'';
+    const validBag=saved.version===2 && saved.poolSize===ids.length && trackId && Array.isArray(saved.bag) &&
+      saved.bag.every(id=>ids.includes(id) && id!==trackId) && new Set(saved.bag).size===saved.bag.length;
+    bag=validBag?saved.bag.slice():shuffle(ids.filter(id=>id!==trackId));
+    const restoredId=trackId || nextId();
+    if(currentId!==restoredId)loadTrack(restoredId);
+    else render();
+    return true;
+  }
+  for(const target of document.querySelectorAll('[data-background-music]')){
+    if(target.querySelector('.jr-bgm'))continue;
+    const control=template.content.firstElementChild.cloneNode(true);
+    control.querySelector('.jr-bgm-toggle').addEventListener('click',toggle);
+    control.querySelector('.jr-bgm-next').addEventListener('click',()=>advance(wantPlaying || !audio.paused));
+    control.querySelector('.jr-bgm-calmer').addEventListener('click',changeMode);
+    target.append(control);mounts.push(control);
+  }
+  audio.addEventListener('playing',()=>{if(!wantPlaying){audio.pause();return;}pending=false;render();});
+  audio.addEventListener('pause',render);
+  audio.addEventListener('ended',()=>{if(audio.ended && wantPlaying)advance(true);else render();});
+  audio.addEventListener('error',()=>{if(audio.error)skipUnavailable();});
+  if(!restore(window.openai?.widgetState))loadTrack(nextId());
+  render();
+  window.addEventListener('openai:set_globals',event=>restore(event.detail?.globals?.widgetState));
+  window.addEventListener('pagehide',pause);
+})();
+</script>
+
+<!-- JR_BACKGROUND_MUSIC_END -->
+
+<!-- JR_LPA_FEED_START -->
+<style>
+#jr-research-page .jr-lpa { margin-top:14px; }
+#jr-research-page .jr-lpa p { font-size:12px; line-height:1.65; }
+#jr-research-page .jr-lpa-period { color:var(--jr-r-ink); }
+#jr-research-page .jr-lpa-sources { display:flex; flex-wrap:wrap; gap:10px 22px; margin-top:12px; font-size:12px; }
+#jr-research-page .jr-lpa-list { margin:18px 0 0; padding:0; list-style:none; }
+#jr-research-page .jr-lpa-paper { padding:16px 0; border-top:1px solid var(--jr-r-rule); }
+#jr-research-page .jr-lpa-paper h3 { font:400 23px/1.25 'Cormorant Garamond',Georgia,serif; overflow-wrap:anywhere; }
+#jr-research-page .jr-lpa-paper h3 a { text-decoration:none; }
+#jr-research-page .jr-lpa-paper h3 a:hover { text-decoration:underline; }
+#jr-research-page .jr-lpa-meta { overflow-wrap:anywhere; }
+#jr-research-page .jr-lpa-links { display:flex; flex-wrap:wrap; gap:8px 18px; align-items:center; margin-top:8px; font-size:12px; }
+#jr-research-page .jr-lpa-abstract,#jr-research-page .jr-lpa-notes { margin-top:9px; }
+#jr-research-page .jr-lpa-abstract summary,#jr-research-page .jr-lpa-about summary,#jr-research-page .jr-lpa-notes summary { cursor:pointer; color:var(--jr-r-soft); font-size:12px; }
+#jr-research-page .jr-lpa-abstract p { max-width:75ch; color:var(--jr-r-ink); white-space:pre-line; overflow-wrap:anywhere; }
+#jr-research-page .jr-lpa-label { font-size:11px; color:var(--jr-r-soft); }
+#jr-research-page .jr-lpa-more { padding:8px 0; border:0; background:none; font:inherit; font-size:12px; color:var(--jr-r-ink); text-decoration:underline; text-underline-offset:4px; cursor:pointer; }
+#jr-research-page .jr-lpa-about { margin-top:15px; }
+#jr-research-page .jr-lpa-note { border-left:2px solid var(--jr-r-rule); padding-left:12px; }
+#jr-research-page .jr-lpa :focus-visible { outline:2px solid var(--jr-r-accent); outline-offset:4px; }
+@media(pointer:coarse) { #jr-research-page .jr-lpa-more,#jr-research-page .jr-lpa summary,#jr-research-page .jr-lpa-sources a,#jr-research-page .jr-lpa-links a { min-height:44px; padding-top:10px; padding-bottom:10px; } }
+</style>
+<template id="jr-lpa-template">
+  <div class="jr-lpa">
+    <p class="jr-lpa-period" data-lpa-period>Recent papers · the past month</p>
+    <p data-lpa-status role="status" aria-live="polite"></p>
+    <p class="jr-lpa-note" data-lpa-note hidden></p>
+    <nav class="jr-lpa-sources" aria-label="Search the original paper sources" data-lpa-sources></nav>
+    <ul class="jr-lpa-list" id="jr-lpa-papers" data-lpa-list></ul>
+    <button class="jr-lpa-more" type="button" data-lpa-more aria-expanded="false" aria-controls="jr-lpa-papers" hidden>Show all recent papers</button>
+    <details class="jr-lpa-about"><summary>About this search</summary><p data-lpa-scope></p></details>
+  </div>
+</template>
+<script type="application/json" id="jr-lpa-data">{"schemaVersion":1,"topic":"Laurent Phenomenon Algebras","checkedAt":"2026-11-17T04:07:46.564Z","range":{"from":"2026-10-17","through":"2026-11-17","basis":"published-or-updated","window":"calendar-month"},"scope":"Title and abstract matches for “Laurent phenomenon algebra(s)” or “LP algebra(s)”, including hyphenated forms. New submissions and revisions in the past calendar month.","sources":[{"id":"arxiv","name":"arXiv","searchUrl":"https://arxiv.org/search/?query=%22Laurent+phenomenon+algebra%22+OR+%22LP+algebra%22&searchtype=all&abstracts=show&order=-announced_date_first&size=50","status":"complete","checkedAt":"2026-11-17T04:07:46.564Z","lastSuccessAt":"2026-11-17T04:07:46.564Z","matchedCount":0},{"id":"hexagon","name":"Hexagon","searchUrl":"https://hexagonmath.org/search?q=Laurent&per_page=100","status":"complete","checkedAt":"2026-11-17T04:07:46.564Z","lastSuccessAt":"2026-11-17T04:07:46.564Z","matchedCount":3}],"papers":[{"id":"hexagon:2611.00328","title":"Laurent Phenomenon Algebras on Minuscule Grassmannians and their Mirrors","authors":["Jiarui Fei"],"abstract":"We construct Laurent phenomenon algebra structures on the homogeneous coordinate rings of the half-spin Grassmannians and the Freudenthal variety. Their frozen variables are the linear coordinates in a Coxeter orbit, and the resulting boundary divisors are anticanonical. Together with the construction of Daisey--Ducat for the Cayley plane, these examples admit explicit mirrors described by Newton polytopes. We identify the upper Laurent phenomenon algebras of the mirror seeds with the intrinsic mirror algebras of Keel--Yu at the specialization $q^\\beta=1$, including the theta functions associated with the individual boundary components. The half-spin construction is uniform in the rank. In the exceptional cases, contact calculations and Laurent divisibility determine the local expansions; the Freudenthal comparison also uses exact calculations of divisorial valuations. We obtain integral comparisons and valuative independence of the intrinsic theta basis in every reachable seed.","published":"2026-11-12","updated":"2026-11-12","activityDate":"2026-11-12","sources":[{"source":"hexagon","id":"2611.00328","versionId":"2611.00328v1","url":"https://hexagonmath.org/2611.00328v1","published":"2026-11-12","updated":"2026-11-12","labels":["A mix of human-written and AI-generated text","Human understanding: some parts"]}],"labels":["A mix of human-written and AI-generated text","Human understanding: some parts"]},{"id":"hexagon:2611.00284","title":"Positive bases and polytopes for Laurent phenomenon algebras","authors":["Qiyue Tang"],"abstract":"We prove that the cluster monomials of every graph Laurent phenomenon algebra form an atomic positive basis. For every finite normalized Laurent phenomenon algebra over a unique factorization domain, we construct a simple lattice polytope with unimodular normal fan whose polar realizes the cluster complex. We also prove that cluster monomials form a basis of the upper algebra in the finite case. In particular, every linear Laurent phenomenon algebra admits such a polyhedral realization.","published":"2026-11-11","updated":"2026-11-11","activityDate":"2026-11-11","sources":[{"source":"hexagon","id":"2611.00284","versionId":"2611.00284v1","url":"https://hexagonmath.org/2611.00284v1","published":"2026-11-11","updated":"2026-11-11","labels":["Primarily AI-generated text","Human understanding: some parts"]}],"labels":["Primarily AI-generated text","Human understanding: some parts"]},{"id":"hexagon:2611.00289","title":"Positivity for Weighted Linear Laurent Phenomenon Algebras","authors":["Qiyue Tang"],"abstract":"We prove Laurent positivity for ordinary Laurent phenomenon algebras whose initial exchange polynomials are nonconstant affine linear polynomials with positive constant terms and nonnegative numerical coefficients.","published":"2026-11-11","updated":"2026-11-11","activityDate":"2026-11-11","sources":[{"source":"hexagon","id":"2611.00289","versionId":"2611.00289v1","url":"https://hexagonmath.org/2611.00289v1","published":"2026-11-11","updated":"2026-11-11","labels":["Primarily AI-generated text","Human understanding: some parts"]}],"labels":["Primarily AI-generated text","Human understanding: some parts"]}]}</script>
+<script>
+(() => {
+  const mount=document.querySelector('[data-lpa-feed]');
+  if(!mount || mount.dataset.ready)return;
+  mount.dataset.ready='true';
+  mount.replaceChildren(document.getElementById('jr-lpa-template').content.cloneNode(true));
+  const find=selector=>mount.querySelector(selector);
+  const list=find('[data-lpa-list]'),more=find('[data-lpa-more]'),note=find('[data-lpa-note]');
+  let data,expanded=false;
+  const isDay=value=>typeof value==='string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(value)) && new Date(value).toISOString().slice(0,10)===value;
+  const date=value=>isDay(value?.slice(0,10))?new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}).format(new Date(value.slice(0,10)+'T00:00:00Z')):'';
+  const valid=value=>value?.schemaVersion===1 && isDay(value.range?.from) && isDay(value.range?.through) && value.range.from<=value.range.through
+    && Number.isFinite(Date.parse(value.checkedAt)) && typeof value.scope==='string'
+    && Array.isArray(value.sources) && ['arxiv','hexagon'].every(id=>value.sources.some(source=>source?.id===id && ['complete','error'].includes(source.status)))
+    && Array.isArray(value.papers) && value.papers.every(paper=>paper && typeof paper.title==='string' && Array.isArray(paper.authors) && Array.isArray(paper.sources) && isDay(paper.activityDate));
+  const safeUrl=value=>{try{const url=new URL(value);return url.protocol==='https:' && ['arxiv.org','export.arxiv.org','hexagonmath.org'].includes(url.hostname)?url.href:null;}catch{return null;}};
+  const element=(tag,cls,text)=>{const el=document.createElement(tag);if(cls)el.className=cls;if(text)el.textContent=text;return el;};
+  const link=(text,url)=>{const el=element('a','',text);el.href=url;el.target='_blank';el.rel='noopener noreferrer';return el;};
+  function paperRow(paper){
+    const row=element('li','jr-lpa-paper');
+    const sources=(paper.sources||[]).filter(source=>safeUrl(source.url));
+    const heading=element('h3');
+    heading.append(sources.length?link(paper.title,safeUrl(sources[0].url)):document.createTextNode(paper.title));
+    const authors=Array.isArray(paper.authors)?paper.authors.join(' · '):'';
+    const revised=paper.updated && paper.published && paper.updated>paper.published;
+    const when=(revised?'Revised ':'Posted ')+date(paper.activityDate||paper.updated||paper.published);
+    row.append(heading,element('p','jr-lpa-meta',[authors,when].filter(Boolean).join(' · ')));
+    const links=element('div','jr-lpa-links');
+    for(const source of sources)links.append(link((source.source==='arxiv'?'arXiv':'Hexagon')+' ↗',safeUrl(source.url)));
+    row.append(links);
+    if(paper.abstract){const details=element('details','jr-lpa-abstract');details.append(element('summary','','Abstract'),element('p','',paper.abstract));row.append(details);}
+    if(Array.isArray(paper.labels) && paper.labels.length){const details=element('details','jr-lpa-notes');details.append(element('summary','','Hexagon’s source notes'),element('p','jr-lpa-label',paper.labels.join(' · ')));row.append(details);}
+    return row;
+  }
+  function render(){
+    const papers=data.papers;
+    const failed=data.sources.filter(source=>source.status!=='complete');
+    const stale=Date.now()-Date.parse(data.checkedAt)>48*60*60*1000;
+    find('[data-lpa-period]').textContent=date(data.range.from)+' – '+date(data.range.through)+' · new papers and revisions';
+    find('[data-lpa-status]').textContent=papers.length
+      ?papers.length+' matching '+(papers.length===1?'paper':'papers')+' · last checked '+date(data.checkedAt)
+      :(failed.length?'The search is incomplete. Check the original sources below.':'No matching papers were posted or revised in this period.')+' Last checked '+date(data.checkedAt)+'.';
+    const notices=[];
+    if(failed.length)notices.push(failed.map(source=>source.name).join(' and ')+' could not be refreshed. Previously found papers within this month are retained.');
+    if(stale)notices.push('This saved search is more than two days old; use the source links for the latest papers.');
+    note.textContent=notices.join(' ');note.hidden=!notices.length;
+    const sources=find('[data-lpa-sources]');sources.replaceChildren();
+    for(const source of data.sources){const url=safeUrl(source.searchUrl);if(url)sources.append(link('Search '+source.name+' ↗',url));}
+    find('[data-lpa-scope]').textContent=data.scope+' Cross-posted copies are grouped when their metadata agree.';
+    list.replaceChildren(...(expanded?papers:papers.slice(0,4)).map(paperRow));
+    more.hidden=papers.length<=4;more.textContent=expanded?'Show fewer papers':'Show all '+papers.length+' recent papers';more.setAttribute('aria-expanded',String(expanded));
+  }
+  more.addEventListener('click',()=>{expanded=!expanded;render();});
+  try{data=JSON.parse(document.getElementById('jr-lpa-data').textContent);if(!valid(data))throw Error('Invalid saved search');render();}
+  catch{find('[data-lpa-status]').textContent='The recent-paper list is unavailable.';}
+  // The published site reads the file refreshed by its daily search. Local file
+  // previews use the embedded snapshot and do not depend on cross-origin APIs.
+  if(location.protocol==='https:' || location.protocol==='http:'){
+    window.jrLpaReady=fetch(new URL('assets/lpa-papers.json',document.baseURI),{cache:'no-store',signal:AbortSignal.timeout(12000)})
+      .then(response=>{if(!response.ok)throw Error('Recent-paper list unavailable');return response.json();})
+      .then(value=>{if(!valid(value))throw Error('Invalid recent-paper list');data=value;render();})
+      .catch(()=>{note.hidden=false;note.textContent+=(note.textContent?' ':'')+'The latest list could not be loaded; this is the saved search.';});
+  }else window.jrLpaReady=Promise.resolve();
+})();
+</script>
+
+<!-- JR_LPA_FEED_END -->
+</body></html>

@@ -1,0 +1,888 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Pell Equation Solver · JiaRui</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --paper: light-dark(#f5f2ea, #222420);
+      --panel: light-dark(#fcfaf4, #282c25);
+      --ink: light-dark(#26352b, #e8eddf);
+      --muted: light-dark(#536456, #b8c5b3);
+      --line: light-dark(#d4d9ca, #4b594b);
+      --accent: light-dark(#205d49, #9ed7b7);
+      --wash: light-dark(#e6efe4, #344638);
+      --warning: light-dark(#963d26, #f3ae99);
+      background: var(--paper);
+      color: var(--ink);
+      font: 15px/1.55 system-ui, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; }
+    [hidden] { display: none !important; }
+    .shell { width: min(1180px, 100%); margin: auto; padding: 0 clamp(16px, 4vw, 54px) 52px; }
+    a { color: var(--accent); text-underline-offset: .24em; }
+    :is(a, button, input, select, summary, [tabindex]):focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    header { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--line); padding: 21px 0; }
+    header a { font-size: .88rem; }
+    .name { font: 1.35rem Georgia, serif; }
+    .intro { padding: clamp(28px, 5vw, 54px) 0 23px; }
+    .course, .small { color: var(--muted); font-size: .87rem; }
+    h1, h2, p, dl, dd { margin: 0; }
+    h1, h2 { font: 400 1.6rem/1.16 Georgia, serif; }
+    h1 { font-size: clamp(2.55rem, 7vw, 4.55rem); letter-spacing: -.055em; line-height: 1.04; margin: 8px 0 12px; }
+    h3 { font-size: 1rem; margin: 0; }
+    .panel { min-width: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 15px; padding: clamp(14px, 2vw, 23px); }
+    .controls { display: grid; grid-template-columns: minmax(0, .55fr) minmax(0, 1fr) auto; gap: 10px; align-items: end; max-width: 600px; }
+    label { display: grid; gap: 4px; color: var(--muted); font-size: .87rem; min-width: 0; }
+    input, select, button { font: inherit; }
+    input, select, button {
+      min-width: 0; max-width: 100%; min-height: 42px; border: 1px solid var(--line);
+      border-radius: 8px; background: var(--panel); color: var(--ink); padding: 7px 10px;
+    }
+    button { cursor: pointer; color: var(--accent); }
+    button:hover { border-color: var(--accent); background: var(--wash); }
+    .solve { background: var(--wash); border-color: var(--accent); font-weight: 600; padding-inline: 17px; }
+    .presets { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; margin-top: 12px; }
+    .presets button { min-height: 34px; border-radius: 40px; padding: 3px 11px; }
+    #limits { margin-top: 11px; }
+    #feedback { margin-top: 7px; }
+    #feedback[data-error="true"] { color: var(--warning); }
+    .result { margin-top: 16px; background: var(--wash); }
+    .result > p { margin-top: 7px; }
+    .pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 19px; margin: 13px 0 6px; }
+    .pair dt { color: var(--muted); }
+    .pair dd { font: 530 clamp(1.15rem, 2.8vw, 1.85rem)/1.25 system-ui, sans-serif; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+    .equation { overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+    .methods { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 370px), 1fr)); gap: 12px; margin-top: 14px; align-items: start; }
+    .methods:empty { display: none; }
+    .method-note { color: var(--muted); font-size: .85rem; margin: 4px 0 10px; }
+    .steps { padding-inline-start: 1.35em; margin: 9px 0 0; }
+    .steps li + li { margin-top: 8px; }
+    .period { text-decoration: overline; text-decoration-thickness: 1px; }
+    .method-equation { margin: 9px 0; }
+    #analytic-content details h3 { margin: 1.15em 0 .35em; }
+    details { margin-top: 12px; }
+    summary { color: var(--accent); cursor: pointer; width: fit-content; }
+    .scroll { max-height: 300px; overflow: auto; margin-top: 8px; border: 1px solid var(--line); border-radius: 7px; }
+    table { border-spacing: 0; width: 100%; text-align: right; font-variant-numeric: tabular-nums; }
+    th, td { border-bottom: 1px solid var(--line); padding: 4px 8px; }
+    thead th { position: sticky; top: 0; background: var(--panel); color: var(--muted); }
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr[data-solution="true"] { background: var(--wash); font-weight: 650; }
+    .powers { margin-top: 14px; }
+    .powers p { margin-top: 6px; }
+    .power-form { display: flex; gap: 10px; flex-wrap: wrap; align-items: end; margin: 10px 0; }
+    .power-form label { width: 130px; }
+    #power-result { min-height: 1.55em; }
+    @media (max-width: 480px) {
+      .controls { grid-template-columns: minmax(0, .6fr) minmax(0, 1fr); }
+      .controls .solve { grid-column: 1 / -1; justify-self: start; }
+      .presets { gap: 5px; }
+    }
+    @media (pointer: coarse) {
+      summary { min-height: 44px; padding-block: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <a href="teaching.html#2022-fall-elementary-number-theory">← Teaching</a>
+      <span class="name">JiaRui</span>
+    </header>
+    <div class="intro">
+      <p class="course">Elementary Number Theory</p>
+      <h1>Pell Equation Solver</h1>
+      <p>Find the least positive solution of <span class="equation">x² − Dy² = 1</span> by two independent methods.</p>
+    </div>
+    <section class="panel" aria-label="Solver controls">
+      <form id="pell-form" class="controls" novalidate>
+        <label>D<input id="pell-d" type="text" inputmode="numeric" value="61" aria-describedby="limits feedback" required></label>
+        <label>Method<select id="method">
+          <option value="both">Compare both</option>
+          <option value="analytic">L-value and class number formula</option>
+          <option value="cf">Continued fractions</option>
+        </select></label>
+        <button class="solve" type="submit">Solve</button>
+      </form>
+      <div class="presets" id="presets">
+        <span class="small">Try D</span>
+        <button type="button" data-d="2">2</button>
+        <button type="button" data-d="3">3</button>
+        <button type="button" data-d="5">5</button>
+        <button type="button" data-d="10">10</button>
+        <button type="button" data-d="12">12</button>
+        <button type="button" data-d="13">13</button>
+        <button type="button" data-d="61">61</button>
+      </div>
+      <p id="limits" class="small"></p>
+      <p id="feedback" role="status"></p>
+      <noscript><p>Enable JavaScript to solve the equation.</p></noscript>
+    </section>
+    <section id="result" class="panel result" aria-labelledby="result-heading" hidden>
+      <h2 id="result-heading">Fundamental positive solution</h2>
+      <dl class="pair">
+        <div><dt>x₁</dt><dd id="result-x"></dd></div>
+        <div><dt>y₁</dt><dd id="result-y"></dd></div>
+      </dl>
+      <p id="result-norm" class="equation"></p>
+      <p id="agreement" class="small"></p>
+    </section>
+    <div id="method-panels" class="methods">
+      <section id="analytic-panel" class="panel" aria-labelledby="analytic-heading" hidden>
+        <h2 id="analytic-heading">L-value and class number formula</h2>
+        <div id="analytic-content"></div>
+      </section>
+      <section id="cf-panel" class="panel" aria-labelledby="cf-heading" hidden>
+        <h2 id="cf-heading">Continued fractions</h2>
+        <p class="method-note">Period parity and convergents</p>
+        <div id="cf-content"></div>
+      </section>
+    </div>
+    <section id="powers-panel" class="panel powers" aria-labelledby="powers-heading" hidden>
+      <h2 id="powers-heading">Generate other solutions</h2>
+      <p>All solutions come from ±(x₁ + y₁√D)ⁿ with n an integer.</p>
+      <form id="power-form" class="power-form" novalidate>
+        <label>Exponent n<input id="exponent" type="number" step="1" min="-10" max="10" value="2"></label>
+        <button type="submit">Compute power</button>
+      </form>
+      <p id="power-result" class="equation" role="status"></p>
+      <details id="power-working" hidden>
+        <summary>Show algebraic steps</summary>
+        <div id="power-steps" class="equation"></div>
+      </details>
+    </section>
+  </main>
+  <script>
+(() => {
+  'use strict';
+  const {integerSquareRoot, solveByContinuedFraction} = (() => {
+function integerSquareRoot(n) {
+  if (typeof n !== 'bigint') throw new TypeError('Expected a BigInt.');
+  if (n < 0n) throw new RangeError('The integer square root requires a nonnegative integer.');
+  if (n < 2n) return n;
+
+  const bits = n.toString(2).length;
+  let root = 1n << BigInt(Math.ceil(bits / 2));
+  let next = (root + n / root) / 2n;
+  while (next < root) {
+    root = next;
+    next = (root + n / root) / 2n;
+  }
+  return root;
+}
+
+function solveByContinuedFraction(D) {
+  if (typeof D !== 'bigint') throw new TypeError('D must be a BigInt.');
+  if (D <= 1n) throw new RangeError('D must be greater than 1.');
+  const a0 = integerSquareRoot(D);
+  if (a0 * a0 === D) throw new RangeError('D must not be a perfect square.');
+
+  let m = 0n;
+  let denominator = 1n;
+  let a = a0;
+  const periodicSteps = [];
+  do {
+    m = denominator * a - m;
+    denominator = (D - m * m) / denominator;
+    a = (a0 + m) / denominator;
+    periodicSteps.push({m, denominator, a});
+  } while (m !== a0 || denominator !== 1n);
+
+  const period = periodicSteps.map(step => step.a);
+  const length = period.length;
+  const targetIndex = (length % 2 === 0 ? length : 2 * length) - 1;
+
+  let prevP = 1n;
+  let beforePrevP = 0n;
+  let prevQ = 0n;
+  let beforePrevQ = 1n;
+  const convergents = [];
+  for (let index = 0; index <= targetIndex; index++) {
+    const step = index === 0
+      ? {m: 0n, denominator: 1n, a: a0}
+      : periodicSteps[(index - 1) % length];
+    const p = step.a * prevP + beforePrevP;
+    const q = step.a * prevQ + beforePrevQ;
+    convergents.push({index, ...step, p, q, norm: p * p - D * q * q});
+    beforePrevP = prevP;
+    prevP = p;
+    beforePrevQ = prevQ;
+    prevQ = q;
+  }
+
+  return {x: prevP, y: prevQ, a0, period, targetIndex, convergents};
+}
+
+    return {integerSquareRoot, solveByContinuedFraction};
+  })();
+  const {ANALYTIC_MAX_DISCRIMINANT, describeQuadraticField, solveByClassNumber} = (() => {
+const ANALYTIC_MAX_DISCRIMINANT = 4096;
+
+function factorInteger(n) {
+  const factors = [];
+  for (let prime = 2n; prime * prime <= n; prime += prime === 2n ? 1n : 2n) {
+    if (n % prime !== 0n) continue;
+    let exponent = 0;
+    do {
+      n /= prime;
+      exponent++;
+    } while (n % prime === 0n);
+    factors.push({prime, exponent});
+  }
+  if (n > 1n) factors.push({prime: n, exponent: 1});
+  return factors;
+}
+
+function describeQuadraticField(D) {
+  if (typeof D !== 'bigint' && (typeof D !== 'number' || !Number.isSafeInteger(D))) {
+    throw new RangeError('D must be a positive integer.');
+  }
+  const input = BigInt(D);
+  if (input < 2n) throw new RangeError('D must be greater than 1.');
+  let squarefreeD = 1n;
+  let scale = 1n;
+  for (const {prime, exponent} of factorInteger(input)) {
+    scale *= prime ** BigInt(Math.floor(exponent / 2));
+    if (exponent % 2 === 1) squarefreeD *= prime;
+  }
+  if (squarefreeD === 1n) throw new RangeError('D must not be a perfect square.');
+  const oddDiscriminant = squarefreeD % 4n === 1n;
+  return {
+    squarefreeD,
+    scale,
+    discriminant: oddDiscriminant ? squarefreeD : 4n * squarefreeD
+  };
+}
+
+function gcd(a, b) {
+  while (b !== 0) [a, b] = [b, a % b];
+  return a;
+}
+
+// Here the integer arguments are at most the small discriminant limit.
+function jacobi(a, b) {
+  a %= b;
+  let sign = 1;
+  while (a !== 0) {
+    while (a % 2 === 0) {
+      a /= 2;
+      if (b % 8 === 3 || b % 8 === 5) sign = -sign;
+    }
+    if (a % 4 === 3 && b % 4 === 3) sign = -sign;
+    [a, b] = [b % a, a];
+  }
+  return b === 1 ? sign : 0;
+}
+
+function characterValue(discriminant, residue) {
+  if (residue === 0) return 0;
+  if (residue % 2 === 1) return jacobi(discriminant, residue);
+  if (discriminant % 2 === 0) return 0;
+  const two = discriminant % 8 === 1 || discriminant % 8 === 7 ? 1 : -1;
+  let sign = 1;
+  while (residue % 2 === 0) {
+    residue /= 2;
+    sign *= two;
+  }
+  return sign * jacobi(discriminant, residue);
+}
+
+function exactDivide(value, divisor) {
+  if (value % divisor !== 0n) throw new Error('The quadratic-unit calculation did not give an integer.');
+  return value / divisor;
+}
+
+function cyclotomicProjection(discriminant) {
+  if (discriminant === 12n) {
+    // Pairing conjugate factors gives N = 2 + √3 and N/M = (2 + √3)^2.
+    return {
+      characterCount: 4,
+      cyclotomicNumerator: {a: 4n, b: 1n},
+      cyclotomicProduct: 1n,
+      LValue: Math.log(2 + Math.sqrt(3)) / Math.sqrt(3)
+    };
+  }
+  const delta = Number(discriminant);
+  const character = Array.from({length: delta}, (_, a) => characterValue(delta, a));
+  const factors = factorInteger(discriminant);
+  const totient = factors.reduce((value, {prime}) => value / prime * (prime - 1n), discriminant);
+  const cyclotomicProduct = factors.length === 1 ? factors[0].prime : 1n;
+  // For divisor k = Δ/gcd(Δ,r), the Ramanujan sum is μ(k)φ(Δ)/φ(k).
+  const ramanujan = new Map();
+  for (let divisor = 1; divisor <= delta; divisor++) {
+    if (delta % divisor !== 0) continue;
+    const local = factorInteger(BigInt(divisor));
+    if (local.some(({exponent}) => exponent > 1)) {
+      ramanujan.set(divisor, 0n);
+      continue;
+    }
+    const localTotient = local.reduce((value, {prime}) => value * (prime - 1n), 1n);
+    ramanujan.set(divisor, (local.length % 2 === 0 ? 1n : -1n) * (totient / localTotient));
+  }
+
+  // Multiply by (1 − X^a) in Z[X]/(X^Δ − 1) for each negative character value.
+  let polynomial = Array(delta).fill(0n);
+  let next = Array(delta);
+  polynomial[0] = 1n;
+  const negativeResidues = [];
+  let logarithmicSum = 0;
+  for (let a = 1; a < delta; a++) {
+    if (character[a] === 0) continue;
+    logarithmicSum += character[a] * Math.log(2 * Math.sin(Math.PI * a / delta));
+    if (character[a] === 1) continue;
+    negativeResidues.push(a);
+    let shifted = delta - a;
+    for (let r = 0; r < delta; r++) {
+      next[r] = polynomial[r] - polynomial[shifted];
+      if (++shifted === delta) shifted = 0;
+    }
+    [polynomial, next] = [next, polynomial];
+  }
+
+  // The untwisted and character-twisted Galois traces project onto 1 and √Δ.
+  const coefficientsByTrace = new Map();
+  let characterSum = 0n;
+  for (let r = 0; r < delta; r++) {
+    const weight = ramanujan.get(delta / gcd(delta, r));
+    if (weight !== 0n && polynomial[r] !== 0n) {
+      coefficientsByTrace.set(weight, (coefficientsByTrace.get(weight) ?? 0n) + polynomial[r]);
+    }
+    characterSum += polynomial[r] * BigInt(character[r]);
+  }
+  const traceSum = [...coefficientsByTrace].reduce((sum, [weight, coefficient]) => sum + weight * coefficient, 0n);
+  const a = exactDivide(2n * traceSum, totient);
+  const b = exactDivide(2n * characterSum, totient);
+  return {
+    characterCount: Number(totient),
+    projectionSteps: {negativeResidues, coefficientsByTrace, traceSum},
+    cyclotomicNumerator: {a, b},
+    cyclotomicProduct,
+    LValue: -logarithmicSum / Math.sqrt(delta)
+  };
+}
+
+function bitLength(n) {
+  return n.toString(2).length;
+}
+
+function integerRoot(value, degree) {
+  if (value < 2n) return value;
+  let low = 1n;
+  let high = 1n << BigInt(Math.ceil(bitLength(value) / degree));
+  const exponent = BigInt(degree);
+  while (high - low > 1n) {
+    const middle = (high + low) / 2n;
+    if (middle ** exponent <= value) low = middle;
+    else high = middle;
+  }
+  return low;
+}
+
+function unitWithTrace(trace, d, norm) {
+  const difference = trace * trace - 4n * norm;
+  if (difference % d !== 0n) return null;
+  const quotient = difference / d;
+  const coefficient = integerRoot(quotient, 2);
+  if (coefficient * coefficient !== quotient) return null;
+  if (d % 4n === 1n ? (trace - coefficient) % 2n !== 0n : (trace % 2n !== 0n || coefficient % 2n !== 0n)) {
+    return null;
+  }
+  return {trace, coefficient, norm};
+}
+
+function powerTrace(trace, exponent) {
+  let current = 2n;
+  let next = trace;
+  for (const bit of exponent.toString(2)) {
+    const adjacent = current * next - trace;
+    if (bit === '0') [current, next] = [current * current - 2n, adjacent];
+    else [current, next] = [adjacent, next * next - 2n];
+  }
+  return current;
+}
+
+function primesUpTo(limit) {
+  const composite = new Uint8Array(limit + 1);
+  const primes = [];
+  for (let candidate = 2; candidate <= limit; candidate++) {
+    if (composite[candidate]) continue;
+    primes.push(candidate);
+    for (let j = candidate * candidate; j <= limit; j += candidate) composite[j] = 1;
+  }
+  return primes;
+}
+
+function extractPrimitiveUnit(analyticUnit, d) {
+  let primitiveUnit = analyticUnit;
+  let extractedExponent = 1;
+  for (const prime of primesUpTo(bitLength(analyticUnit.trace))) {
+    // Every nontrivial positive norm-one unit has trace at least 3 and exceeds 2.
+    while (prime < bitLength(primitiveUnit.trace)) {
+      // For a norm-one root with trace t, (t−1)^p < Tr(root^p) < t^p.
+      const candidate = integerRoot(primitiveUnit.trace, prime) + 1n;
+      if (powerTrace(candidate, prime) !== primitiveUnit.trace) break;
+      const root = unitWithTrace(candidate, d, 1n);
+      if (!root) break;
+      primitiveUnit = root;
+      extractedExponent *= prime;
+    }
+  }
+  return {primitiveUnit, extractedExponent};
+}
+
+function descendToPellOrder(unit, d, scale) {
+  const oddDiscriminant = d % 4n === 1n;
+  const orderConductor = oddDiscriminant ? 2n * scale : scale;
+  const square = oddDiscriminant ? (d - 1n) / 4n : d;
+  const linear = oddDiscriminant ? 1n : 0n;
+  const base = oddDiscriminant
+    ? [(unit.trace - unit.coefficient) / 2n, unit.coefficient]
+    : [unit.trace / 2n, unit.coefficient / 2n];
+  const multiply = ([a, b], [c, e]) => [a * c + square * b * e, a * e + b * c + linear * b * e];
+
+  // In the integral basis (1, ω), membership in the Pell order is b = 0 mod f.
+  const reduce = pair => pair.map(value => value % orderConductor);
+  const step = reduce(base);
+  let reducedPower = step;
+  let orderExponent = 1;
+  while (reducedPower[1] !== 0n) {
+    reducedPower = reduce(multiply(reducedPower, step));
+    orderExponent++;
+  }
+
+  let power = [1n, 0n];
+  let term = base;
+  let exponent = orderExponent;
+  while (exponent > 0) {
+    if (exponent % 2 === 1) power = multiply(power, term);
+    exponent = Math.floor(exponent / 2);
+    if (exponent > 0) term = multiply(term, term);
+  }
+  const [a, b] = power;
+  const x = oddDiscriminant ? a + b / 2n : a;
+  const y = exactDivide(b, orderConductor);
+  return {x, y, orderExponent, orderConductor};
+}
+
+function solveByClassNumber(D) {
+  const field = describeQuadraticField(D);
+  const {squarefreeD: d, scale, discriminant} = field;
+  if (discriminant > BigInt(ANALYTIC_MAX_DISCRIMINANT)) {
+    throw new RangeError('The class number method supports field discriminants up to ' + ANALYTIC_MAX_DISCRIMINANT + '.');
+  }
+  const projection = cyclotomicProjection(discriminant);
+  const {cyclotomicNumerator: {a, b}, cyclotomicProduct: product} = projection;
+
+  // N/M = N²/ΦΔ(1) = exp(√Δ L(1, χΔ)) = ε_K^(2h_K).
+  if (a * a - discriminant * b * b !== 4n * product) {
+    throw new Error('The cyclotomic product failed its norm check.');
+  }
+  const trace = exactDivide(a * a + b * b * discriminant, 2n * product);
+  const analyticUnit = unitWithTrace(trace, d, 1n);
+  if (!analyticUnit || analyticUnit.coefficient === 0n || a * b <= 0n) {
+    throw new Error('The class number formula did not produce a positive norm-one unit.');
+  }
+  const {primitiveUnit, extractedExponent} = extractPrimitiveUnit(analyticUnit, d);
+
+  // A square root of primitiveUnit of norm −1 must have trace √(trace − 2).
+  const candidate = integerRoot(primitiveUnit.trace - 2n, 2);
+  const negativeUnit = candidate * candidate === primitiveUnit.trace - 2n
+    ? unitWithTrace(candidate, d, -1n) : null;
+  const fieldFundamentalUnit = negativeUnit ?? primitiveUnit;
+  const classNumber = negativeUnit ? extractedExponent : extractedExponent / 2;
+  if (!Number.isInteger(classNumber) || classNumber < 1) throw new Error('The recovered class number is invalid.');
+
+  const solution = descendToPellOrder(primitiveUnit, d, scale);
+  const {x, y} = solution;
+  if (x <= 0n || y <= 0n || x * x - BigInt(D) * y * y !== 1n) throw new Error('The Pell solution failed its norm check.');
+  return {...field, ...projection, analyticUnit, primitiveUnit, fieldFundamentalUnit, classNumber, extractedExponent, ...solution};
+}
+
+    return {ANALYTIC_MAX_DISCRIMINANT, describeQuadraticField, solveByClassNumber};
+  })();
+
+const byId = id => document.getElementById(id);
+const input = byId('pell-d');
+const method = byId('method');
+const feedback = byId('feedback');
+const result = byId('result');
+const analyticPanel = byId('analytic-panel');
+const cfPanel = byId('cf-panel');
+const powersPanel = byId('powers-panel');
+const maxD = 1_000_000n;
+const numberFormat = new Intl.NumberFormat('en-US');
+let current;
+
+function format(value) {
+  return numberFormat.format(value).replace('-', '−');
+}
+
+function element(tag, text, className) {
+  const node = document.createElement(tag);
+  if (text !== undefined) node.textContent = text;
+  if (className) node.className = className;
+  return node;
+}
+
+function pairText({x, y}) {
+  return '(' + format(x) + ', ' + format(y) + ')';
+}
+
+function halfUnitText(a, b, d) {
+  if (a % 2n === 0n && b % 2n === 0n) return radical(a / 2n, b / 2n);
+  return '(' + radical(a, b) + ')/2';
+
+  function radical(constant, coefficient) {
+    const magnitude = coefficient < 0n ? -coefficient : coefficient;
+    const term = (magnitude === 1n ? '' : format(magnitude)) + '√' + format(d);
+    return format(constant) + (coefficient < 0n ? ' − ' : ' + ') + term;
+  }
+}
+
+function setFeedback(message, isError = false) {
+  feedback.textContent = message;
+  feedback.dataset.error = String(isError);
+}
+
+const asPower = value => String(value).replace(/\d/g, digit => '⁰¹²³⁴⁵⁶⁷⁸⁹'[digit]);
+
+function traceCalculation({coefficientsByTrace, traceSum}) {
+  const terms = [];
+  for (const [weight, coefficient] of coefficientsByTrace) {
+    if (coefficient === 0n) continue;
+    const absolute = value => format(value < 0n ? -value : value);
+    const negative = weight * coefficient < 0n;
+    const sign = terms.length ? (negative ? ' − ' : ' + ') : (negative ? '−' : '');
+    terms.push(sign + absolute(weight) + ' × ' + absolute(coefficient));
+  }
+  return terms.join('') + ' = ' + format(traceSum);
+}
+
+function showAnalyticSteps(details, D, solution) {
+  const {squarefreeD: d, scale, discriminant, analyticUnit, primitiveUnit, fieldFundamentalUnit,
+    cyclotomicNumerator: {a, b}, cyclotomicProduct, projectionSteps, characterCount,
+    classNumber, orderExponent, extractedExponent, x, y} = solution;
+  const delta = format(discriminant);
+  const u = halfUnitText(analyticUnit.trace, analyticUnit.coefficient, d);
+  const eta = halfUnitText(primitiveUnit.trace, primitiveUnit.coefficient, d);
+  const equation = text => element('p', text, 'method-equation equation');
+  const heading = text => element('h3', text);
+
+  details.append(heading('Pair the character products'),
+    equation('Let ζ = exp(2πi/' + delta + '). Write N for the product of 1 − ζᵃ over χΔ(a) = −1, and M for the product over χΔ(a) = +1.'),
+    equation('Conjugate factors pair to give (1 − ζᵃ)(1 − ζ⁻ᵃ) = 2 − 2 cos(2πa/Δ). The finite log-sine sum gives √Δ L(1, χΔ) = log N − log M.'));
+
+  if (discriminant === 12n) {
+    details.append(
+      equation('N = (1 − ζ⁵)(1 − ζ⁷) = 2 − 2 cos(5π/6) = 2 + √3'),
+      equation('M = (1 − ζ)(1 − ζ¹¹) = 2 − 2 cos(π/6) = 2 − √3'),
+      heading('Evaluate the L-value'),
+      equation('NM = (2 + √3)(2 − √3) = 1'),
+      equation('U = N/M = (2 + √3)² = 4 + 4√3 + 3 = 7 + 4√3'),
+      equation('L(1, χ₁₂) = log(U)/√12 = 2 log(2 + √3)/(2√3) = log(2 + √3)/√3'));
+  } else {
+    const residues = projectionSteps.negativeResidues;
+    const factor = exponent => '(1 − X' + asPower(exponent) + ')';
+    const factors = residues.length <= 6 ? residues.map(factor).join('')
+      : residues.slice(0, 3).map(factor).join('') + ' ⋯ ' + factor(residues.at(-1));
+    const numerator = halfUnitText(a, b, discriminant);
+    const phi = format(cyclotomicProduct);
+    details.append(
+      equation('NM = ΦΔ(1) = ' + phi + ', so U = N/M = N²/' + phi + '.'),
+      heading('Recover the two conjugates'),
+      equation('P(X) = ' + factors + ' (' + format(residues.length) + ' factors). Then P(ζ) = N.'),
+      equation('Multiply modulo X' + asPower(discriminant) + ' − 1. Each factor 1 − Xᵃ changes the coefficient at r from cᵣ to cᵣ − cᵣ₋ₐ, with indices taken modulo ' + delta + '.'),
+      equation('For j coprime to ' + delta + ', P(ζʲ) takes each value N and M exactly ' + format(characterCount / 2) + ' times. To sum these values, group powers Xʳ with the same weight ∑ⱼ ζʲʳ.'),
+      equation('S = ∑ⱼ P(ζʲ) = ' + traceCalculation(projectionSteps)),
+      equation('N + M = 2S/φ(Δ) = 2 × ' + format(projectionSteps.traceSum) + '/' + format(characterCount) + ' = ' + format(a)),
+      equation('N and M are the roots of t² − ' + format(a) + 't + ' + phi + ' = 0. Its discriminant is ' + format(a) + '² − 4 × ' + phi + ' = ' + format(b) + '² × ' + delta + '.'),
+      equation('Since U = exp(√Δ L(1, χΔ)) > 1, N is the larger root. Thus N = ' + numerator + '.'),
+      heading('Evaluate the L-value'),
+      equation('U = N²/ΦΔ(1) = (' + format(a) + '² + ' + delta + ' × ' + format(b) + '² + 2 × ' + format(a) + ' × ' + format(b) + '√' + delta + ')/(4 × ' + phi + ') = ' + u),
+      equation('L(1, χΔ) = log(' + u + ')/√' + delta));
+  }
+
+  const epsilon = halfUnitText(fieldFundamentalUnit.trace, fieldFundamentalUnit.coefficient, d);
+  details.append(heading('Pass to the Pell equation'),
+    equation('U = ε_K' + asPower(2 * classNumber) + ', where ε_K = ' + epsilon + ' has norm ' + format(fieldFundamentalUnit.norm) + ' and h = ' + format(classNumber) + '.'));
+  details.append(equation(extractedExponent === 1
+    ? 'U is the least positive norm-one unit greater than 1, so η = U.'
+    : 'Taking the positive root in U = η' + asPower(extractedExponent) + ' gives η = ' + eta + '.'));
+  const pellUnit = halfUnitText(2n * x, 2n * y, D);
+  if (orderExponent === 1) {
+    details.append(equation('η = ' + pellUnit + ' already has integer coefficients in the basis 1, √' + format(D) + '.'));
+    return;
+  }
+  // η^k = A_k η − A_(k−1). Recover the two recurrence values from the
+  // exact power already computed by the order-membership calculation.
+  const multiple = 2n * scale * y / primitiveUnit.coefficient;
+  const previous = (multiple * primitiveUnit.trace - 2n * x) / 2n;
+  details.append(
+    equation('Since η + η⁻¹ = ' + format(primitiveUnit.trace) + ', write ηʲ = Aⱼ η − Aⱼ₋₁ with A₀ = 0, A₁ = 1 and Aⱼ₊₁ = ' + format(primitiveUnit.trace) + 'Aⱼ − Aⱼ₋₁.'),
+    equation('The √' + format(D) + ' coefficient is ' + format(primitiveUnit.coefficient) + 'Aⱼ/' + format(2n * scale) + '. It first becomes an integer for j ≥ 1 at j = ' + format(orderExponent) + '.'),
+    equation('η' + asPower(orderExponent) + ' = ' + format(multiple) + 'η − ' + format(previous) + ' = ' + pellUnit));
+}
+
+function renderAnalytic(D, solution) {
+  const {squarefreeD: d, scale, discriminant, LValue, analyticUnit, primitiveUnit,
+    extractedExponent, orderExponent} = solution;
+  const steps = element('ol', undefined, 'steps');
+  const field = scale === 1n ? 'd = D = ' + format(d) : 'D = ' + format(d) + ' × ' + format(scale) + '²';
+  steps.append(element('li', field + '. The field ℚ(√' + format(d) + ') has discriminant Δ = ' + format(discriminant) + '.'));
+
+  const lText = discriminant === 12n
+    ? 'Pairing conjugate factors gives L(1, χ₁₂) = log(2 + √3)/√3.'
+    : 'Evaluate the character L-value by the finite log-sine sum. L(1, χΔ) ≈ ' + LValue.toPrecision(12) + '.';
+  steps.append(element('li', lText));
+
+  const u = halfUnitText(analyticUnit.trace, analyticUnit.coefficient, d);
+  steps.append(element('li', 'The class number formula gives U = exp(√Δ L(1, χΔ)) = ε_K^(2h). The exact unit is U = ' + u + '.',
+    'equation'));
+
+  const eta = halfUnitText(primitiveUnit.trace, primitiveUnit.coefficient, d);
+  steps.append(element('li', 'Extract exact roots to obtain the least norm-one field unit η = ' + eta
+    + '. Here U = η^' + format(extractedExponent) + '.', 'equation'));
+  steps.append(element('li', 'The first power η^k in ℤ[√' + format(D) + '] has k = ' + format(orderExponent)
+    + ' and gives ' + pairText(solution) + '.', 'equation'));
+
+  const details = element('details');
+  details.append(element('summary', 'Show algebraic steps for the L-value'));
+  details.addEventListener('toggle', () => {
+    if (details.open && details.childElementCount === 1) showAnalyticSteps(details, D, solution);
+  });
+  byId('analytic-content').replaceChildren(steps, details);
+}
+
+function convergentTable(convergents) {
+  const scroll = element('div', undefined, 'scroll');
+  scroll.tabIndex = 0;
+  scroll.setAttribute('role', 'region');
+  scroll.setAttribute('aria-label', 'Continued-fraction convergents');
+  const table = element('table');
+  const thead = element('thead');
+  const header = element('tr');
+  for (const text of ['n', 'mₙ', 'dₙ', 'aₙ', 'pₙ', 'qₙ', 'Norm']) {
+    const th = element('th', text);
+    th.scope = 'col';
+    header.append(th);
+  }
+  thead.append(header);
+  const body = element('tbody');
+  const displayed = convergents.length > 100
+    ? [...convergents.slice(0, 30), null, ...convergents.slice(-30)]
+    : convergents;
+  for (const step of displayed) {
+    const row = element('tr');
+    if (step === null) {
+      const omitted = element('td', format(convergents.length - 60) + ' intermediate convergents omitted');
+      omitted.colSpan = 7;
+      row.append(omitted);
+    } else {
+      const {index, m, denominator, a, p, q, norm} = step;
+      for (const value of [index, m, denominator, a, p, q, norm]) row.append(element('td', format(value)));
+      row.dataset.solution = String(index === convergents.length - 1);
+    }
+    body.append(row);
+  }
+  table.append(thead, body);
+  scroll.append(table);
+  return scroll;
+}
+
+function renderContinuedFractions(D, {a0, period, targetIndex, convergents, x, y}) {
+  const length = period.length;
+  const coefficients = period.slice(0, 48).map(format).join(', ') + (length > 48 ? ', …' : '');
+  const expansion = element('p', '√' + format(D) + ' = [' + format(a0) + '; ', 'method-equation equation');
+  const repeating = element('span', coefficients, 'period');
+  repeating.setAttribute('aria-label', 'repeating ' + coefficients);
+  expansion.append(repeating, ']');
+
+  const steps = element('ol', undefined, 'steps');
+  const parity = length % 2 === 0 ? 'even' : 'odd';
+  steps.append(element('li', 'The period length ℓ = ' + format(length) + ' is ' + parity + '.'));
+  if (parity === 'odd') {
+    const negative = convergents[length - 1];
+    steps.append(element('li', 'At index ℓ − 1, the convergent ' + format(negative.p) + '/' + format(negative.q)
+      + ' has norm −1. Continue to index 2ℓ − 1.', 'equation'));
+  }
+  const indexRule = parity === 'even' ? 'ℓ − 1' : '2ℓ − 1';
+  steps.append(element('li', 'At index ' + indexRule + ' = ' + format(targetIndex) + ', the convergent '
+    + format(x) + '/' + format(y) + ' has norm 1.', 'equation'));
+
+  const algebra = element('details');
+  algebra.append(element('summary', 'Show algebraic steps'));
+  algebra.addEventListener('toggle', () => {
+    if (!algebra.open || algebra.childElementCount > 1) return;
+    // The first convergent has negative norm, so the solution always has index at least 1.
+    const previous = convergents[targetIndex - 1];
+    const earlier = convergents[targetIndex - 2] ?? {p: 1n, q: 0n};
+    const {m, denominator, a} = convergents[targetIndex];
+    const line = text => element('p', text, 'method-equation equation');
+    algebra.append(
+      line(`At n = ${format(targetIndex)}, use the preceding row to compute the partial quotient.`),
+      line(`mₙ = dₙ₋₁ aₙ₋₁ − mₙ₋₁ = ${format(previous.denominator)} × ${format(previous.a)} − ${format(previous.m)} = ${format(m)}`),
+      line(`dₙ = (D − mₙ²) / dₙ₋₁ = (${format(D)} − ${format(m)}²) / ${format(previous.denominator)} = ${format(denominator)}`),
+      line(`aₙ = ⌊(a₀ + mₙ) / dₙ⌋ = ⌊(${format(a0)} + ${format(m)}) / ${format(denominator)}⌋ = ${format(a)}`)
+    );
+    if (targetIndex === 1) algebra.append(line('The recurrence starts with p₋₁ = 1 and q₋₁ = 0.'));
+    algebra.append(
+      line(`pₙ = aₙ pₙ₋₁ + pₙ₋₂ = ${format(a)} × ${format(previous.p)} + ${format(earlier.p)} = ${format(x)}`),
+      line(`qₙ = aₙ qₙ₋₁ + qₙ₋₂ = ${format(a)} × ${format(previous.q)} + ${format(earlier.q)} = ${format(y)}`)
+    );
+  });
+
+  const details = element('details');
+  details.append(element('summary', 'View convergents'));
+  details.addEventListener('toggle', () => {
+    if (details.open && details.childElementCount === 1) details.append(convergentTable(convergents));
+  });
+  byId('cf-content').replaceChildren(expansion, steps, algebra, details);
+}
+
+function showPowerSteps(container, D, n, baseX, baseY, powers) {
+  const radicand = format(D);
+  const unit = halfUnitText(2n * baseX, 2n * baseY, D);
+  container.append(element('p', 'Let u = ' + unit + '.'));
+  if (n === 0) {
+    container.append(element('p', 'u⁰ = 1 = 1 + 0√' + radicand + '.'));
+    return;
+  }
+  const signedY = n < 0 ? -baseY : baseY;
+  if (n < 0) {
+    const conjugate = halfUnitText(2n * baseX, 2n * signedY, D);
+    container.append(element('p', 'Since ' + format(baseX) + '² − ' + radicand + ' × ' + format(baseY)
+      + '² = 1, the conjugate gives u⁻¹ = ' + conjugate + '.'));
+  }
+  if (Math.abs(n) === 1) {
+    container.append(element('p', 'Reading off the coefficients gives (x, y) = ' + pairText(powers[1]) + '.'));
+    return;
+  }
+  container.append(element('p', 'Multiply by ' + (n < 0 ? 'u⁻¹' : 'u') + ' at each step, using (√' + radicand + ')² = ' + radicand + '.'));
+  const productFactor = value => value < 0n ? '(' + format(value) + ')' : format(value);
+  const steps = element('ol', undefined, 'steps');
+  for (let k = 2; k < powers.length; k++) {
+    const previous = powers[k - 1];
+    const next = powers[k];
+    const entry = element('li');
+    const heading = element('strong', 'u');
+    heading.append(element('sup', format(n < 0 ? -k : k)));
+    entry.append(heading);
+    entry.append(element('div', 'x = ' + format(previous.x) + ' × ' + format(baseX) + ' + ' + radicand + ' × '
+      + productFactor(previous.y) + ' × ' + productFactor(signedY) + ' = ' + format(next.x)));
+    entry.append(element('div', 'y = ' + format(previous.x) + ' × ' + productFactor(signedY) + ' + '
+      + productFactor(previous.y) + ' × ' + format(baseX) + ' = ' + format(next.y)));
+    steps.append(entry);
+  }
+  container.append(steps);
+}
+
+function renderPower() {
+  if (!current) return;
+  const field = byId('exponent');
+  const n = Number(field.value);
+  const valid = field.value !== '' && Number.isInteger(n) && n >= -10 && n <= 10;
+  field.setAttribute('aria-invalid', String(!valid));
+  const working = byId('power-working');
+  const steps = byId('power-steps');
+  working.hidden = !valid;
+  working.ontoggle = null;
+  steps.replaceChildren();
+  if (!valid) {
+    byId('power-result').textContent = 'Enter an integer exponent between −10 and 10.';
+    return;
+  }
+  const {D, x: baseX, y: baseY} = current;
+  const b = n < 0 ? -baseY : baseY;
+  const powers = [{x: 1n, y: 0n}];
+  for (let k = 1; k <= Math.abs(n); k++) {
+    const {x, y} = powers[k - 1];
+    powers.push({x: x * baseX + D * y * b, y: x * b + y * baseX});
+  }
+  byId('power-result').textContent = 'For n = ' + format(n) + ', (x, y) = ' + pairText(powers.at(-1)) + '.';
+  const reveal = () => {
+    if (working.open && !steps.hasChildNodes()) showPowerSteps(steps, D, n, baseX, baseY, powers);
+  };
+  working.ontoggle = reveal;
+  reveal();
+}
+
+function solve() {
+  current = undefined;
+  for (const panel of [result, analyticPanel, cfPanel, powersPanel]) panel.hidden = true;
+  const raw = input.value.trim();
+  const D = /^[0-9]{1,7}$/.test(raw) ? BigInt(raw) : 0n;
+  const insideRange = D >= 2n && D <= maxD;
+  const root = insideRange ? integerSquareRoot(D) : 0n;
+  const valid = insideRange && root * root !== D;
+  input.setAttribute('aria-invalid', String(!valid));
+  if (!valid) {
+    setFeedback(insideRange ? 'Choose a nonsquare D. For square D the only solutions are (±1, 0).'
+      : 'Enter a whole number D between 2 and ' + format(maxD) + '.', true);
+    return;
+  }
+
+  setFeedback('');
+  try {
+    const {discriminant} = describeQuadraticField(D);
+    const exceedsAnalyticLimit = discriminant > BigInt(ANALYTIC_MAX_DISCRIMINANT);
+    if (exceedsAnalyticLimit && method.value !== 'cf') {
+      setFeedback('The field discriminant Δ = ' + format(discriminant)
+        + ' exceeds the L-value method’s limit of ' + format(ANALYTIC_MAX_DISCRIMINANT) + '.'
+        + (method.value === 'analytic' ? ' Select Continued fractions to solve this input.' : ' Using continued fractions.'),
+        method.value === 'analytic');
+      if (method.value === 'analytic') return;
+    }
+    const analytic = method.value !== 'cf' && !exceedsAnalyticLimit ? solveByClassNumber(D) : undefined;
+    const continued = method.value !== 'analytic' ? solveByContinuedFraction(D) : undefined;
+    if (analytic && continued && (analytic.x !== continued.x || analytic.y !== continued.y)) {
+      throw Error('The methods returned different solutions.');
+    }
+    const {x, y} = analytic ?? continued;
+    const norm = x * x - D * y * y;
+    if (x <= 0n || y <= 0n || norm !== 1n) throw Error('The exact substitution failed.');
+
+    current = {D, x, y};
+    byId('result-x').textContent = format(x);
+    byId('result-y').textContent = format(y);
+    byId('result-norm').textContent = format(x) + '² − ' + format(D) + ' × ' + format(y) + '² = ' + format(norm);
+    byId('agreement').textContent = analytic && continued ? 'Both methods agree exactly.' : 'Verified by exact substitution.';
+    if (analytic) renderAnalytic(D, analytic);
+    if (continued) renderContinuedFractions(D, continued);
+    result.hidden = false;
+    analyticPanel.hidden = !analytic;
+    cfPanel.hidden = !continued;
+    powersPanel.hidden = false;
+    renderPower();
+  } catch (error) {
+    current = undefined;
+    setFeedback('The solver stopped. ' + error.message, true);
+  }
+}
+
+byId('limits').textContent = 'Enter a nonsquare D ≤ ' + format(maxD) + '. The L-value method supports field discriminants Δ ≤ '
+  + format(ANALYTIC_MAX_DISCRIMINANT) + '.';
+byId('pell-form').addEventListener('submit', event => {
+  event.preventDefault();
+  solve();
+});
+method.addEventListener('change', solve);
+byId('presets').addEventListener('click', event => {
+  const button = event.target.closest('button[data-d]');
+  if (!button) return;
+  input.value = button.dataset.d;
+  solve();
+});
+byId('power-form').addEventListener('submit', event => {
+  event.preventDefault();
+  renderPower();
+});
+solve();
+
+})();
+</script>
+</body>
+</html>

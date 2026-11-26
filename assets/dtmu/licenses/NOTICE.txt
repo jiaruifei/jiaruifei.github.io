@@ -1,0 +1,23 @@
+Bundled Python search runtime
+=============================
+
+The browser resource bundle includes unmodified files from these projects:
+
+Pyodide 314.0.8, Mozilla Public License 2.0
+  License: Pyodide-MPL-2.0.txt
+  Source: https://github.com/pyodide/pyodide/tree/314.0.8
+  Distribution: https://cdn.jsdelivr.net/pyodide/v314.0.8/full/
+
+CPython 3.14.2, Python Software Foundation License and bundled notices
+  License: CPython-LICENSE.txt
+  Source: https://github.com/python/cpython/tree/v3.14.2
+
+NumPy 2.4.6, BSD-3-Clause and bundled third-party notices
+  Licenses: NumPy-licenses.txt (collected from the unchanged wheel)
+  Source: https://github.com/numpy/numpy/tree/v2.4.6
+
+The original NumPy wheel, including its license files, remains intact in the
+resource bundle. The sibling pyodide-resources-manifest.json records the exact
+source URLs, byte sizes, and SHA-256 hashes of all six bundled resources.
+
+The homepage's loader and DTmu adapter are separate from the runtime modules.

@@ -1,0 +1,852 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Dirichlet Inverses · JiaRui</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --paper: light-dark(#f5f2ea, #222420);
+      --panel: light-dark(#fcfaf4, #282c25);
+      --ink: light-dark(#26352b, #e8eddf);
+      --muted: light-dark(#536456, #b8c5b3);
+      --line: light-dark(#d4d9ca, #4b594b);
+      --accent: light-dark(#205d49, #9ed7b7);
+      --wash: light-dark(#e6efe4, #344638);
+      --warning: light-dark(#963d26, #f3ae99);
+      background: var(--paper);
+      color: var(--ink);
+      font: 15px/1.55 system-ui, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; }
+    .shell { width: min(1230px, 100%); margin: auto; padding: 0 clamp(16px, 4vw, 54px) 52px; }
+    a { color: var(--accent); text-underline-offset: .24em; }
+    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible, [tabindex="0"]:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+    header { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; border-bottom: 1px solid var(--line); padding: 21px 0; }
+    header a { font-size: .88rem; }
+    .name { font: 1.35rem Georgia, serif; }
+    .intro { padding: clamp(28px, 5vw, 56px) 0 28px; }
+    .course { color: var(--muted); font-size: .87rem; }
+    h1, h2, p { margin: 0; }
+    h1, h2 { font-family: Georgia, serif; font-weight: 400; }
+    h1 { font-size: clamp(2.5rem, 6.6vw, 4.55rem); letter-spacing: -.055em; line-height: 1.04; margin: 8px 0 13px; }
+    h2 { font-size: 1.65rem; line-height: 1.15; }
+    .intro > p:last-child { max-width: 69ch; color: var(--muted); }
+    .lab { display: grid; grid-template-columns: minmax(0, .97fr) minmax(0, 1.03fr); gap: clamp(14px, 2.6vw, 28px); align-items: start; }
+    .panel { min-width: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: clamp(15px, 2vw, 24px); }
+    .filters, .fields { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .8fr); gap: 10px; margin: 16px 0 8px; }
+    label { display: grid; align-content: start; gap: 4px; min-width: 0; font-size: .86rem; color: var(--muted); }
+    input, select, button { font: inherit; }
+    input, select, .action {
+      min-width: 0; min-height: 40px; max-width: 100%; border-radius: 8px; border: 1px solid var(--line);
+      background: var(--panel); color: var(--ink); padding: 7px 9px;
+    }
+    .action { cursor: pointer; color: var(--accent); padding-inline: 11px; }
+    .action:hover, .action[aria-pressed="true"] { background: var(--wash); border-color: var(--accent); }
+    .small { font-size: .85rem; color: var(--muted); }
+    .table-window { max-height: 520px; overflow: auto; scrollbar-gutter: stable; border: 1px solid var(--line); border-radius: 9px; margin-top: 9px; }
+    table { width: 100%; border-collapse: separate; border-spacing: 0; text-align: left; }
+    th, td { padding: 7px 9px; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; vertical-align: top; }
+    thead th { position: sticky; top: 0; z-index: 1; background: var(--panel); color: var(--muted); font-size: .79rem; }
+    tbody tr:last-child > * { border-bottom: 0; }
+    #function-rows th { width: 51%; font-weight: 500; padding: 0; }
+    #function-rows tr:has(button[aria-pressed="true"]) { background: var(--wash); }
+    .row-button { width: 100%; min-height: 46px; cursor: pointer; border: 0; background: transparent; color: var(--ink); font: inherit; text-align: left; padding: 7px 9px; overflow-wrap: anywhere; }
+    .row-button:hover { color: var(--accent); }
+    .row-button:disabled { cursor: default; color: var(--ink); opacity: 1; }
+    .row-button:focus-visible { outline-offset: -3px; }
+    .row-symbol { display: block; color: var(--muted); font-size: .77rem; }
+    .row-formula { font-weight: 550; }
+    .heading-line, .control-line { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; justify-content: space-between; }
+    #selected-description { margin-top: 7px; }
+    .fields { grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr) auto; align-items: end; }
+    .fields:has([hidden]) { grid-template-columns: minmax(0, 1fr) auto; }
+    .message { color: var(--warning); font-size: .88rem; margin: 7px 0; }
+    .result { margin-top: 15px; }
+    .values { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: 9px; overflow: hidden; margin: 0; }
+    .values > div { min-width: 0; padding: 8px 11px; }
+    .values > div + div { border-left: 1px solid var(--line); background: var(--wash); }
+    .values dt { font-size: .8rem; color: var(--muted); }
+    .values dd { margin: 0; font-size: clamp(1.13rem, 2vw, 1.55rem); font-weight: 530; overflow-wrap: anywhere; }
+    .factorization { margin-top: 9px; overflow-wrap: anywhere; }
+    .series-section { margin-top: 18px; border-top: 1px solid var(--line); padding-top: 14px; }
+    .series-section h3 { margin: 0; font-size: 1rem; font-weight: 600; }
+    .prime-field { display: flex; align-items: center; gap: 7px; }
+    .formula-line { margin: 8px 0; overflow-wrap: anywhere; }
+    .coefficient-window { max-height: none; margin: 8px 0; }
+    .coefficient-window td, .coefficient-window th { text-align: right; font-variant-numeric: tabular-nums; }
+    .coefficient-window th:first-child { text-align: left; white-space: nowrap; }
+    details { margin-top: 15px; }
+    summary { cursor: pointer; color: var(--accent); width: fit-content; font-weight: 550; }
+    #verification-result { margin: 7px 0; }
+    .terms { max-height: 300px; }
+    .terms :is(th,td) { text-align: right; font-variant-numeric: tabular-nums; }
+    [hidden] { display: none !important; }
+    @media (max-width: 830px) {
+      .lab { grid-template-columns: minmax(0, 1fr); }
+      .table-window:not(.coefficient-window) { max-height: 320px; }
+      #function-rows th { width: 48%; }
+    }
+    @media (max-width: 390px) {
+      .fields { grid-template-columns: minmax(0, 1fr) minmax(0, .8fr); }
+      .fields > .action { grid-column: 1 / -1; justify-self: start; }
+      .fields:has([hidden]) > .action { grid-column: auto; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <a href="teaching.html#2022-fall-elementary-number-theory">← Teaching</a>
+      <span class="name">JiaRui</span>
+    </header>
+    <div class="intro">
+      <p class="course">Elementary Number Theory</p>
+      <h1>Dirichlet Inverses</h1>
+      <p>Choose an arithmetic function, take the reciprocal of its prime-power series, and check the resulting Dirichlet inverse at any integer in the calculator.</p>
+    </div>
+    <div class="lab">
+      <section class="panel" aria-labelledby="catalog-heading">
+        <h2 id="catalog-heading">Arithmetic functions</h2>
+        <div class="filters">
+          <label>Search functions<input id="search" type="search" placeholder="Try totient or Möbius" disabled></label>
+          <label>Category<select id="category" disabled><option value="">All categories</option></select></label>
+        </div>
+        <p class="small" id="startup-note">JavaScript enables selection and calculations.</p>
+        <p class="small" id="catalog-count" role="status">33 functions</p>
+        <div class="table-window" tabindex="0" role="region" aria-label="Arithmetic function catalog">
+          <table>
+            <thead><tr><th scope="col">Function</th><th scope="col">Dirichlet inverse</th></tr></thead>
+            <tbody id="function-rows">
+              <tr><th scope="row"><button type="button" class="row-button" data-function="one" aria-pressed="false" disabled>Constant function<span class="row-symbol">𝟙 · Basics</span></button></th><td class="row-formula">Möbius function μ</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="mu" aria-pressed="false" disabled>Möbius function<span class="row-symbol">μ · Basics</span></button></th><td class="row-formula">Constant function 𝟙</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="epsilon" aria-pressed="false" disabled>Convolution identity<span class="row-symbol">ε · Basics</span></button></th><td class="row-formula">ε</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="power" aria-pressed="false" disabled>Power function<span class="row-symbol">idₖ · Basics</span></button></th><td class="row-formula">Pointwise product μ(n) nᵏ</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="tau" aria-pressed="false" disabled>Divisor count<span class="row-symbol">τ · Divisor sums</span></button></th><td class="row-formula">μ * μ</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="sigma" aria-pressed="false" disabled>Sum of divisor powers<span class="row-symbol">σₖ · Divisor sums</span></button></th><td class="row-formula">μ * (μ · idₖ)</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="divisor-tuples" aria-pressed="false" disabled>Ordered factorization count<span class="row-symbol">dₖ · Divisor sums</span></button></th><td class="row-formula">The k-fold Dirichlet convolution of μ</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="divisor-squares" aria-pressed="false" disabled>Divisors of the square<span class="row-symbol">τ(n²) · Divisor sums</span></button></th><td class="row-formula">λ * μ * μ</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="square-divisors" aria-pressed="false" disabled>Square divisor count<span class="row-symbol">τ□ · Divisor sums</span></button></th><td class="row-formula">Local series (1 − t)(1 − t²)</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="squared-divisor-count" aria-pressed="false" disabled>Squared divisor count<span class="row-symbol">τ(n)² · Divisor sums</span></button></th><td class="row-formula">λ * μ * μ * μ</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="unitary-count" aria-pressed="false" disabled>Unitary divisor count<span class="row-symbol">2^ω · Divisor sums</span></button></th><td class="row-formula">Pointwise product λ(n) 2^ω(n)</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="unitary-sum" aria-pressed="false" disabled>Sum of unitary divisor powers<span class="row-symbol">σₖ⁎ · Divisor sums</span></button></th><td class="row-formula">Local series (1 − t)(1 − pᵏt) / (1 − pᵏt²)</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="sigma-square-argument" aria-pressed="false" disabled>Divisor sum of the square<span class="row-symbol">σ₁(n²) · Divisor sums</span></button></th><td class="row-formula">Local series (1 − t)(1 − p²t) / (1 + pt)</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="phi" aria-pressed="false" disabled>Euler totient<span class="row-symbol">φ · Totients</span></button></th><td class="row-formula">Product of (1 − p) over the distinct primes p dividing n</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="jordan" aria-pressed="false" disabled>Jordan totient<span class="row-symbol">Jₖ · Totients</span></button></th><td class="row-formula">Product of (1 − pᵏ) over the distinct primes p dividing n</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="psi" aria-pressed="false" disabled>Dedekind psi function<span class="row-symbol">ψ · Totients</span></button></th><td class="row-formula">λ * (μ · id₁)</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="radical" aria-pressed="false" disabled>Radical<span class="row-symbol">rad · Prime factors</span></button></th><td class="row-formula">At pᵃ with a ≥ 1, the inverse is −p(1 − p)ᵃ⁻¹</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="lambda" aria-pressed="false" disabled>Liouville function<span class="row-symbol">λ · Prime factors</span></button></th><td class="row-formula">Squarefree indicator μ²</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="signed-distinct" aria-pressed="false" disabled>Parity of distinct prime factors<span class="row-symbol">(−1)^ω · Prime factors</span></button></th><td class="row-formula">2 raised to Ω(n) − ω(n)</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="omega-weight" aria-pressed="false" disabled>Weight per distinct prime<span class="row-symbol">k^ω · Prime factors</span></button></th><td class="row-formula">Local series (1 − t) / (1 + (k − 1)t)</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="omega-total-weight" aria-pressed="false" disabled>Weight per prime factor<span class="row-symbol">k^Ω · Prime factors</span></button></th><td class="row-formula">Pointwise product μ(n) k^Ω(n)</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="squarefree" aria-pressed="false" disabled>Squarefree indicator<span class="row-symbol">μ² · Indicators</span></button></th><td class="row-formula">Liouville function λ</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="power-free" aria-pressed="false" disabled>Power-free indicator<span class="row-symbol">𝟙ₖ₋free · Indicators</span></button></th><td class="row-formula">Local series (1 − t) / (1 − tᵏ)</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="perfect-power" aria-pressed="false" disabled>Perfect power indicator<span class="row-symbol">𝟙ₖ₋power · Indicators</span></button></th><td class="row-formula">μ(m) when n = mᵏ, and 0 otherwise</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="powerful" aria-pressed="false" disabled>Powerful number indicator<span class="row-symbol">𝟙powerful · Indicators</span></button></th><td class="row-formula">Local series (1 − t) / (1 − t + t²)</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="gcd-fixed" aria-pressed="false" disabled>GCD with a fixed modulus<span class="row-symbol">gcd(n,m) · Prime factors</span></button></th><td class="row-formula">Local series (1 − t) divided by the sum of φ(pʲ)tʲ for 0 ≤ j ≤ vₚ(m)</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="principal-character" aria-pressed="false" disabled>Principal Dirichlet character<span class="row-symbol">χ₀ · Characters</span></button></th><td class="row-formula">Pointwise product μ · χ₀</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="chi-minus-4" aria-pressed="false" disabled>Quadratic character of discriminant −4<span class="row-symbol">χ₋₄ · Characters</span></button></th><td class="row-formula">Pointwise product μ · χ₋₄</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="chi-5" aria-pressed="false" disabled>Quadratic character of discriminant 5<span class="row-symbol">χ₅ · Characters</span></button></th><td class="row-formula">Pointwise product μ · χ₅</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="chi-8" aria-pressed="false" disabled>Quadratic character of discriminant 8<span class="row-symbol">χ₈ · Characters</span></button></th><td class="row-formula">Pointwise product μ · χ₈</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="chi-12" aria-pressed="false" disabled>Quadratic character of discriminant 12<span class="row-symbol">χ₁₂ · Characters</span></button></th><td class="row-formula">Pointwise product μ · χ₁₂</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="two-squares" aria-pressed="false" disabled>Normalized two-square count<span class="row-symbol">r₂/4 · Sums of squares</span></button></th><td class="row-formula">μ * (μ · χ₋₄)</td></tr>
+              <tr><th scope="row"><button type="button" class="row-button" data-function="four-squares" aria-pressed="false" disabled>Normalized four-square count<span class="row-symbol">r₄/8 · Sums of squares</span></button></th><td class="row-formula">Local series (1 − t) / (1 + 2t) at p = 2, and (1 − t)(1 − pt) at odd primes</td></tr>
+              <tr id="no-functions" hidden><td colspan="2">No functions match these filters.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section class="panel" id="calculator" aria-labelledby="selected-title" hidden>
+        <div class="heading-line">
+          <h2 id="selected-title" tabindex="-1">Divisor count</h2>
+          <button class="action" id="swap" type="button" aria-pressed="false">Swap f and f⁻¹</button>
+        </div>
+        <p class="small" id="selected-description"></p>
+        <form class="fields" id="integer-form" novalidate>
+          <label>Integer n<input id="integer" type="text" inputmode="numeric" value="12" aria-describedby="input-message"></label>
+          <label id="parameter-field" hidden><span id="parameter-label"></span><input id="parameter" type="number" step="1"></label>
+          <button class="action" type="submit">Evaluate</button>
+        </form>
+        <p id="input-message" class="message" role="alert" hidden></p>
+        <div class="result" id="result" aria-live="polite">
+          <dl class="values">
+            <div><dt id="value-label">f(n)</dt><dd id="value"></dd></div>
+            <div><dt id="inverse-label">f⁻¹(n)</dt><dd id="inverse-value"></dd></div>
+          </dl>
+          <p id="factorization" class="factorization small"></p>
+          <p id="inverse-factors" class="factorization small"></p>
+        </div>
+        <section class="series-section" aria-labelledby="series-title">
+          <div class="control-line">
+            <h3 id="series-title">Prime-power series</h3>
+            <label class="prime-field">Prime p<select id="prime"></select></label>
+          </div>
+          <p class="small">Fₚ(t) has coefficient f(pᵃ) at tᵃ.</p>
+          <p id="source-formula" class="formula-line"></p>
+          <button id="invert" type="button" class="action" aria-expanded="false" aria-controls="reciprocal">Invert series</button>
+          <div id="reciprocal" hidden>
+            <p id="inverse-formula" class="formula-line"></p>
+          </div>
+          <div class="table-window coefficient-window" tabindex="0" role="region" aria-label="Prime-power coefficients">
+            <table id="coefficients" aria-label="Prime-power coefficients"></table>
+          </div>
+        </section>
+        <details id="verification">
+          <summary>Verify the convolution</summary>
+          <p id="verification-result"></p>
+          <div class="table-window terms" tabindex="0" role="region" aria-label="Convolution terms">
+            <table>
+              <thead><tr><th scope="col">d</th><th scope="col">n/d</th><th scope="col">f(d)</th><th scope="col">f⁻¹(n/d)</th><th scope="col">Product</th></tr></thead>
+              <tbody id="convolution-terms"></tbody>
+            </table>
+          </div>
+        </details>
+      </section>
+    </div>
+  </main>
+  <script>
+(() => {
+  'use strict';
+  const catalog = (() => {
+const one = [1n];
+
+function linear(root) {
+  return root === 0n ? one : [1n, -root];
+}
+
+function product(left, right) {
+  const result = Array(left.length + right.length - 1).fill(0n);
+  for (const [i, a] of left.entries()) {
+    for (const [j, b] of right.entries()) result[i + j] += a * b;
+  }
+  return result;
+}
+
+function power(polynomial, exponent) {
+  let result = one;
+  for (let i = 0; i < exponent; i++) result = product(result, polynomial);
+  return result;
+}
+
+function oneMinusPower(exponent) {
+  const coefficients = Array(exponent + 1).fill(0n);
+  coefficients[0] = 1n;
+  coefficients[exponent] = -1n;
+  return coefficients;
+}
+
+function ratio(numerator = one, denominator = one) {
+  return {numerator, denominator};
+}
+
+function geometric(root) {
+  return ratio(one, linear(root));
+}
+
+function exponentParameter(defaultValue = 1) {
+  return {label: 'Exponent k', default: defaultValue, min: 0, max: 8};
+}
+
+function localCharacter(prime, modulus, positive, negative) {
+  const residue = Number(prime % BigInt(modulus));
+  if (positive.includes(residue)) return 1n;
+  if (negative.includes(residue)) return -1n;
+  return 0n;
+}
+
+function character({id, symbol, discriminant, modulus, positive, negative, description}) {
+  return {
+    id,
+    name: `Quadratic character of discriminant ${discriminant}`,
+    symbol,
+    category: 'Characters',
+    description,
+    aliases: [`modulo ${modulus}`, `mod ${modulus}`, 'Kronecker symbol', 'Dirichlet character'],
+    inverse: `Pointwise product μ · ${symbol}`,
+    series: p => geometric(localCharacter(p, modulus, positive, negative))
+  };
+}
+
+const catalog = [
+  {
+    id: 'one', name: 'Constant function', symbol: '𝟙', category: 'Basics',
+    description: 'Assigns 1 to every positive integer.',
+    aliases: ['one', 'zeta'], inverse: 'Möbius function μ',
+    series: () => geometric(1n)
+  },
+  {
+    id: 'mu', name: 'Möbius function', symbol: 'μ', category: 'Basics',
+    description: 'Assigns zero if a prime square divides n, and otherwise alternates with the number of prime divisors.',
+    aliases: ['mobius', 'moebius', 'inclusion exclusion'], inverse: 'Constant function 𝟙',
+    series: () => ratio(linear(1n))
+  },
+  {
+    id: 'epsilon', name: 'Convolution identity', symbol: 'ε', category: 'Basics',
+    description: 'Assigns 1 at n = 1 and zero everywhere else.',
+    aliases: ['delta', 'unit', 'identity element'], inverse: 'ε',
+    series: () => ratio()
+  },
+  {
+    id: 'power', name: 'Power function', symbol: 'idₖ', category: 'Basics',
+    description: 'Assigns the kth power nᵏ to n. The choice k = 1 gives the identity map on integers.',
+    aliases: ['identity map', 'power weight', 'monomial'], inverse: 'Pointwise product μ(n) nᵏ',
+    parameter: exponentParameter(), series: (p, k) => geometric(p ** BigInt(k))
+  },
+  {
+    id: 'tau', name: 'Divisor count', symbol: 'τ', category: 'Divisor sums',
+    description: 'Counts the positive divisors of n.',
+    aliases: ['d', 'd(n)', 'sigma zero', 'tau'], inverse: 'μ * μ',
+    series: () => ratio(one, power(linear(1n), 2))
+  },
+  {
+    id: 'sigma', name: 'Sum of divisor powers', symbol: 'σₖ', category: 'Divisor sums',
+    description: 'Sums dᵏ over the positive divisors d of n.',
+    aliases: ['sigma', 'divisor sum', 'sum of divisors', 'perfect numbers'],
+    inverse: 'μ * (μ · idₖ)', parameter: exponentParameter(),
+    series: (p, k) => ratio(one, product(linear(1n), linear(p ** BigInt(k))))
+  },
+  {
+    id: 'divisor-tuples', name: 'Ordered factorization count', symbol: 'dₖ', category: 'Divisor sums',
+    description: 'Counts ordered k-tuples of positive integers whose product is n.',
+    aliases: ['generalized divisor function', 'Piltz', 'convolution power', 'factorization'],
+    inverse: 'The k-fold Dirichlet convolution of μ',
+    parameter: {label: 'Number of factors k', default: 3, min: 2, max: 8},
+    series: (_, k) => ratio(one, power(linear(1n), k))
+  },
+  {
+    id: 'divisor-squares', name: 'Divisors of the square', symbol: 'τ(n²)', category: 'Divisor sums',
+    description: 'Counts the positive divisors of n². At pᵃ the count is 2a + 1.',
+    aliases: ['divisor count at n squared', 'divisors of n squared'], inverse: 'λ * μ * μ',
+    series: () => ratio(linear(-1n), power(linear(1n), 2))
+  },
+  {
+    id: 'square-divisors', name: 'Square divisor count', symbol: 'τ□', category: 'Divisor sums',
+    description: 'Counts the perfect squares among the positive divisors of n.',
+    aliases: ['square divisors', 'count divisors which are squares'],
+    inverse: 'Local series (1 − t)(1 − t²)',
+    series: () => ratio(one, product(linear(1n), oneMinusPower(2)))
+  },
+  {
+    id: 'squared-divisor-count', name: 'Squared divisor count', symbol: 'τ(n)²', category: 'Divisor sums',
+    description: 'Counts ordered pairs of positive divisors of n.',
+    aliases: ['tau squared', 'pointwise square of divisor count'],
+    inverse: 'λ * μ * μ * μ',
+    series: () => ratio(linear(-1n), power(linear(1n), 3))
+  },
+  {
+    id: 'unitary-count', name: 'Unitary divisor count', symbol: '2^ω', category: 'Divisor sums',
+    description: 'Counts divisors d for which d and n/d are coprime.',
+    aliases: ['unitary', 'unitary divisors', 'two to the omega', 'squarefree divisor count'],
+    inverse: 'Pointwise product λ(n) 2^ω(n)',
+    series: () => ratio(linear(-1n), linear(1n))
+  },
+  {
+    id: 'unitary-sum', name: 'Sum of unitary divisor powers', symbol: 'σₖ⁎', category: 'Divisor sums',
+    description: 'Sums dᵏ over divisors d for which d and n/d are coprime.',
+    aliases: ['unitary divisor sum', 'unitary sigma'], parameter: exponentParameter(),
+    inverse: 'Local series (1 − t)(1 − pᵏt) / (1 − pᵏt²)',
+    series: (p, k) => {
+      const q = p ** BigInt(k);
+      return ratio([1n, 0n, -q], product(linear(1n), linear(q)));
+    }
+  },
+  {
+    id: 'sigma-square-argument', name: 'Divisor sum of the square', symbol: 'σ₁(n²)', category: 'Divisor sums',
+    description: 'Adds all the positive divisors of n².',
+    aliases: ['sum divisors of n squared'], inverse: 'Local series (1 − t)(1 − p²t) / (1 + pt)',
+    series: p => ratio(linear(-p), product(linear(1n), linear(p ** 2n)))
+  },
+  {
+    id: 'phi', name: 'Euler totient', symbol: 'φ', category: 'Totients',
+    description: 'Counts integers in 1 through n that are coprime to n.',
+    aliases: ['euler phi', 'euler function', 'totient function'],
+    inverse: 'Product of (1 − p) over the distinct primes p dividing n',
+    series: p => ratio(linear(1n), linear(p))
+  },
+  {
+    id: 'jordan', name: 'Jordan totient', symbol: 'Jₖ', category: 'Totients',
+    description: 'Counts k-tuples in 1 through n with no common prime divisor of n.',
+    aliases: ['jordan phi', 'higher totient', 'coprime tuples', 'primitive tuples'],
+    inverse: 'Product of (1 − pᵏ) over the distinct primes p dividing n',
+    parameter: {label: 'Tuple size k', default: 2, min: 1, max: 8},
+    series: (p, k) => ratio(linear(1n), linear(p ** BigInt(k)))
+  },
+  {
+    id: 'psi', name: 'Dedekind psi function', symbol: 'ψ', category: 'Totients',
+    description: 'Multiplies n by one factor (1 + 1/p) for each distinct prime p dividing n.',
+    aliases: ['dedekind psi', 'projective line', 'psi'], inverse: 'λ * (μ · id₁)',
+    series: p => ratio(linear(-1n), linear(p))
+  },
+  {
+    id: 'radical', name: 'Radical', symbol: 'rad', category: 'Prime factors',
+    description: 'Multiplies the distinct prime divisors of n together.',
+    aliases: ['squarefree kernel', 'product of distinct primes'],
+    inverse: 'At pᵃ with a ≥ 1, the inverse is −p(1 − p)ᵃ⁻¹',
+    series: p => ratio(linear(1n - p), linear(1n))
+  },
+  {
+    id: 'lambda', name: 'Liouville function', symbol: 'λ', category: 'Prime factors',
+    description: 'Alternates between 1 and −1 according to the total number of prime factors counted with multiplicity.',
+    aliases: ['lambda', 'liouville parity', 'big omega parity'], inverse: 'Squarefree indicator μ²',
+    series: () => geometric(-1n)
+  },
+  {
+    id: 'signed-distinct', name: 'Parity of distinct prime factors', symbol: '(−1)^ω', category: 'Prime factors',
+    description: 'Alternates between 1 and −1 according to the number of distinct prime divisors.',
+    aliases: ['little omega parity', 'unitary mobius', 'unitary Möbius'],
+    inverse: '2 raised to Ω(n) − ω(n)',
+    series: () => ratio(linear(2n), linear(1n))
+  },
+  {
+    id: 'omega-weight', name: 'Weight per distinct prime', symbol: 'k^ω', category: 'Prime factors',
+    description: 'Multiplies by k once for each distinct prime divisor of n.',
+    aliases: ['little omega', 'number of distinct prime factors', 'weighted distinct primes'],
+    inverse: 'Local series (1 − t) / (1 + (k − 1)t)',
+    parameter: {label: 'Weight k', default: 3, min: 2, max: 8},
+    series: (_, k) => ratio(linear(1n - BigInt(k)), linear(1n))
+  },
+  {
+    id: 'omega-total-weight', name: 'Weight per prime factor', symbol: 'k^Ω', category: 'Prime factors',
+    description: 'Multiplies by k for each prime factor of n counted with multiplicity.',
+    aliases: ['big omega', 'total number of prime factors', 'completely multiplicative'],
+    inverse: 'Pointwise product μ(n) k^Ω(n)',
+    parameter: {label: 'Weight k', default: 2, min: 2, max: 8},
+    series: (_, k) => geometric(BigInt(k))
+  },
+  {
+    id: 'squarefree', name: 'Squarefree indicator', symbol: 'μ²', category: 'Indicators',
+    description: 'Assigns 1 when n is squarefree and zero when a prime square divides n.',
+    aliases: ['square free', 'squares', 'mobius squared'], inverse: 'Liouville function λ',
+    series: () => ratio(linear(-1n))
+  },
+  {
+    id: 'power-free', name: 'Power-free indicator', symbol: '𝟙ₖ₋free', category: 'Indicators',
+    description: 'Assigns 1 when n is divisible by no kth power of a prime, and zero otherwise.',
+    aliases: ['cube free', 'cubefree', 'k free', 'power free'],
+    inverse: 'Local series (1 − t) / (1 − tᵏ)',
+    parameter: {label: 'Power k', default: 3, min: 2, max: 8},
+    series: (_, k) => ratio(Array(k).fill(1n))
+  },
+  {
+    id: 'perfect-power', name: 'Perfect power indicator', symbol: '𝟙ₖ₋power', category: 'Indicators',
+    description: 'Assigns 1 when n is a perfect kth power, and zero otherwise.',
+    aliases: ['square indicator', 'cube indicator', 'perfect square', 'perfect cube'],
+    inverse: 'μ(m) when n = mᵏ, and 0 otherwise',
+    parameter: {label: 'Power k', default: 2, min: 2, max: 8},
+    series: (_, k) => ratio(one, oneMinusPower(k))
+  },
+  {
+    id: 'powerful', name: 'Powerful number indicator', symbol: '𝟙powerful', category: 'Indicators',
+    description: 'Assigns 1 when the exponent of every prime dividing n is at least two, and zero otherwise.',
+    aliases: ['squarefull', 'squareful', 'powerful number', 'square full'],
+    inverse: 'Local series (1 − t) / (1 − t + t²)',
+    series: () => ratio([1n, -1n, 1n], linear(1n))
+  },
+  {
+    id: 'gcd-fixed', name: 'GCD with a fixed modulus', symbol: 'gcd(n,m)', category: 'Prime factors',
+    description: 'Assigns the greatest common divisor of n and a fixed positive integer m.',
+    aliases: ['greatest common divisor', 'fixed gcd'],
+    inverse: 'Local series (1 − t) divided by the sum of φ(pʲ)tʲ for 0 ≤ j ≤ vₚ(m)',
+    parameter: {label: 'Modulus m', default: 12, min: 1, max: 30},
+    series: (p, m) => {
+      let remaining = BigInt(m);
+      let primePower = 1n;
+      const numerator = [1n];
+      while (remaining % p === 0n) {
+        numerator.push(primePower * (p - 1n));
+        primePower *= p;
+        remaining /= p;
+      }
+      return ratio(numerator, linear(1n));
+    }
+  },
+  {
+    id: 'principal-character', name: 'Principal Dirichlet character', symbol: 'χ₀', category: 'Characters',
+    description: 'Assigns 1 when n is coprime to the chosen modulus m, and zero otherwise.',
+    aliases: ['principal character', 'coprime indicator', 'unit group'],
+    inverse: 'Pointwise product μ · χ₀',
+    parameter: {label: 'Modulus m', default: 12, min: 1, max: 30},
+    series: (p, m) => geometric(BigInt(m) % p === 0n ? 0n : 1n)
+  },
+  character({
+    id: 'chi-minus-4', symbol: 'χ₋₄', discriminant: '−4', modulus: 4, positive: [1], negative: [3],
+    description: 'Assigns 1 on residue 1 modulo 4, −1 on residue 3, and zero on even integers.'
+  }),
+  character({
+    id: 'chi-5', symbol: 'χ₅', discriminant: '5', modulus: 5, positive: [1, 4], negative: [2, 3],
+    description: 'Assigns 1 on the nonzero quadratic residues modulo 5, −1 on the nonresidues, and zero on multiples of 5.'
+  }),
+  character({
+    id: 'chi-8', symbol: 'χ₈', discriminant: '8', modulus: 8, positive: [1, 7], negative: [3, 5],
+    description: 'Assigns 1 on residues ±1 modulo 8, −1 on ±3, and zero on even integers.'
+  }),
+  character({
+    id: 'chi-12', symbol: 'χ₁₂', discriminant: '12', modulus: 12, positive: [1, 11], negative: [5, 7],
+    description: 'Assigns 1 on residues ±1 modulo 12, −1 on ±5, and zero on integers sharing a factor with 12.'
+  }),
+  {
+    id: 'two-squares', name: 'Normalized two-square count', symbol: 'r₂/4', category: 'Sums of squares',
+    description: 'Counts ordered signed representations of n as two integer squares and divides by 4.',
+    aliases: ['sum of two squares', 'Gaussian integers', 'r2', '1 * chi -4'], inverse: 'μ * (μ · χ₋₄)',
+    series: p => ratio(one, product(linear(1n), linear(localCharacter(p, 4, [1], [3]))))
+  },
+  {
+    id: 'four-squares', name: 'Normalized four-square count', symbol: 'r₄/8', category: 'Sums of squares',
+    description: 'Counts ordered signed representations of n as four integer squares and divides by 8.',
+    aliases: ['sum of four squares', 'Jacobi four squares', 'r4'],
+    inverse: 'Local series (1 − t) / (1 + 2t) at p = 2, and (1 − t)(1 − pt) at odd primes',
+    series: p => p === 2n ? ratio([1n, 2n], linear(1n)) : ratio(one, product(linear(1n), linear(p)))
+  }
+];
+
+    return catalog;
+  })();
+  const {evaluateConvolution, primePowerCoefficients} = (() => {
+function factorInteger(n) {
+  if (typeof n !== 'bigint' && !Number.isSafeInteger(n)) {
+    throw new RangeError('Enter a positive integer.');
+  }
+  if (n < 1) throw new RangeError('Enter a positive integer.');
+
+  let remaining = BigInt(n);
+  const factors = [];
+  for (let prime = 2n; prime * prime <= remaining; prime += prime === 2n ? 1n : 2n) {
+    let exponent = 0;
+    while (remaining % prime === 0n) {
+      remaining /= prime;
+      exponent += 1;
+    }
+    if (exponent > 0) factors.push({prime, exponent});
+  }
+  if (remaining > 1n) factors.push({prime: remaining, exponent: 1});
+  return factors;
+}
+
+function primePowerCoefficients(series, maxExponent, swap = false) {
+  if (!Number.isSafeInteger(maxExponent) || maxExponent < 0) {
+    throw new RangeError('The exponent must be a nonnegative integer.');
+  }
+
+  const numerator = swap ? series.denominator : series.numerator;
+  const denominator = swap ? series.numerator : series.denominator;
+  if (numerator[0] !== 1n || denominator[0] !== 1n) {
+    throw new RangeError('Both polynomials must have constant term 1.');
+  }
+
+  // The denominator times the series is the numerator, coefficient by coefficient.
+  const coefficients = [1n];
+  for (let exponent = 1; exponent <= maxExponent; exponent += 1) {
+    let coefficient = numerator[exponent] ?? 0n;
+    for (let degree = 1; degree <= exponent && degree < denominator.length; degree += 1) {
+      coefficient -= denominator[degree] * coefficients[exponent - degree];
+    }
+    coefficients.push(coefficient);
+  }
+  return coefficients;
+}
+
+function evaluateConvolution(entry, n, k, swap = false) {
+  const factors = factorInteger(n).map(({prime, exponent}) => {
+    const series = entry.series(prime, k);
+    return {
+      prime,
+      exponent,
+      values: primePowerCoefficients(series, exponent, swap),
+      inverseValues: primePowerCoefficients(series, exponent, !swap)
+    };
+  });
+
+  let value = 1n;
+  let inverseValue = 1n;
+  let divisors = [{divisor: 1n, value: 1n, inverseValue: 1n}];
+  for (const factor of factors) {
+    const {prime, exponent, values, inverseValues} = factor;
+    value *= values[exponent];
+    inverseValue *= inverseValues[exponent];
+
+    // To extend f(d)g(n/d) by this prime, pair p^i with p^(exponent-i).
+    const extendedDivisors = [];
+    for (const item of divisors) {
+      let primePower = 1n;
+      for (let i = 0; i <= exponent; i += 1) {
+        extendedDivisors.push({
+          divisor: item.divisor * primePower,
+          value: item.value * values[i],
+          inverseValue: item.inverseValue * inverseValues[exponent - i]
+        });
+        primePower *= prime;
+      }
+    }
+    divisors = extendedDivisors;
+  }
+
+  const integer = BigInt(n);
+  const terms = divisors.map(item => ({
+    ...item,
+    quotient: integer / item.divisor,
+    product: item.value * item.inverseValue
+  }));
+  terms.sort((a, b) => Number(a.divisor > b.divisor) - Number(a.divisor < b.divisor));
+  const sum = terms.reduce((total, term) => total + term.product, 0n);
+  return {factors, value, inverseValue, terms, sum};
+}
+
+    return {evaluateConvolution, primePowerCoefficients};
+  })();
+
+const byId = id => document.getElementById(id);
+const search = byId('search');
+const category = byId('category');
+const rows = byId('function-rows');
+const entriesById = new Map(catalog.map(entry => [entry.id, entry]));
+const catalogRows = [...rows.querySelectorAll('button[data-function]')].map(button => ({
+  button,
+  row: button.closest('tr'),
+  entry: entriesById.get(button.dataset.function)
+}));
+const integer = byId('integer');
+const parameter = byId('parameter');
+const parameterField = byId('parameter-field');
+const prime = byId('prime');
+const swap = byId('swap');
+const invert = byId('invert');
+const verification = byId('verification');
+const title = byId('selected-title');
+const seriesPanel = byId('series-title').closest('section');
+
+const maxInteger = 1_000_000_000n;
+const samplePrimes = [2n, 3n, 5n, 7n, 11n];
+const superscript = exponent => String(exponent).replace(/\d/g, digit => '⁰¹²³⁴⁵⁶⁷⁸⁹'[digit]);
+const compareBigInts = (a, b) => a < b ? -1 : Number(a > b);
+const displayInteger = value => value.toLocaleString('en-US').replace('-', '−');
+
+let active = catalog.find(entry => entry.id === 'tau');
+let swapped = false;
+let revealed = false;
+let calculation;
+
+function element(tag, text, className) {
+  const node = document.createElement(tag);
+  if (text !== undefined) node.textContent = text;
+  if (className) node.className = className;
+  return node;
+}
+
+function normalize(text) {
+  return text.normalize('NFKD').toLowerCase().replace(/\p{Mark}/gu, '');
+}
+
+function renderCatalog() {
+  const keywords = normalize(search.value).trim().split(/\s+/);
+  let matches = 0;
+  for (const {row, entry} of catalogRows) {
+    const fields = [entry.name, entry.symbol, entry.category, entry.inverse, ...(entry.aliases ?? [])];
+    const text = normalize(fields.join(' '));
+    const inCategory = !category.value || entry.category === category.value;
+    row.hidden = !(inCategory && keywords.every(keyword => text.includes(keyword)));
+    if (!row.hidden) matches++;
+  }
+  byId('catalog-count').textContent = matches === catalog.length
+    ? catalog.length + ' functions'
+    : matches + ' of ' + catalog.length + ' functions';
+  byId('no-functions').hidden = matches !== 0;
+}
+
+function updateTitle() {
+  title.textContent = active.name + (swapped ? ' inverse' : '');
+  byId('selected-description').textContent = swapped
+    ? 'The current input is the Dirichlet inverse of ' + active.symbol + '.'
+    : active.description;
+  swap.setAttribute('aria-pressed', String(swapped));
+}
+
+function selectEntry(entry) {
+  active = entry;
+  swapped = false;
+  revealed = false;
+  parameterField.hidden = !entry.parameter;
+  if (entry.parameter) {
+    const {label, min, max, default: initial} = entry.parameter;
+    byId('parameter-label').textContent = label;
+    parameter.min = min;
+    parameter.max = max;
+    parameter.value = initial;
+  }
+  for (const {button, entry: rowEntry} of catalogRows) {
+    button.setAttribute('aria-pressed', String(rowEntry === entry));
+  }
+  updateTitle();
+  evaluate();
+}
+
+function polynomial(coefficients) {
+  const terms = [];
+  for (const [degree, coefficient] of coefficients.entries()) {
+    if (coefficient === 0n) continue;
+    const magnitude = coefficient < 0n ? -coefficient : coefficient;
+    const variable = degree === 0 ? '' : 't' + (degree === 1 ? '' : superscript(degree));
+    const term = (variable && magnitude === 1n ? '' : displayInteger(magnitude)) + variable;
+    terms.push((terms.length ? (coefficient < 0n ? ' − ' : ' + ') : (coefficient < 0n ? '−' : '')) + term);
+  }
+  return terms.join('') || '0';
+}
+
+function rationalSeries(numerator, denominator) {
+  if (denominator.every((coefficient, degree) => coefficient === (degree === 0 ? 1n : 0n))) return polynomial(numerator);
+  const group = coefficients => coefficients.filter(coefficient => coefficient !== 0n).length > 1
+    ? '(' + polynomial(coefficients) + ')'
+    : polynomial(coefficients);
+  return group(numerator) + ' / ' + group(denominator);
+}
+
+function renderSeries() {
+  if (!calculation) return;
+  const p = BigInt(prime.value);
+  const series = active.series(p, calculation.k);
+  const {numerator, denominator} = series;
+  const original = rationalSeries(numerator, denominator);
+  const reciprocal = rationalSeries(denominator, numerator);
+  byId('source-formula').textContent = 'Fₚ(t) = ' + (swapped ? reciprocal : original);
+  byId('inverse-formula').textContent = '1 / Fₚ(t) = ' + (swapped ? original : reciprocal);
+  byId('reciprocal').hidden = !revealed;
+  invert.setAttribute('aria-expanded', String(revealed));
+  invert.textContent = revealed ? 'Hide reciprocal' : 'Invert series';
+
+  const headings = element('tr');
+  for (const heading of ['Power of p', '0', '1', '2', '3', '4', '5']) {
+    const th = element('th', heading);
+    th.scope = 'col';
+    headings.append(th);
+  }
+  const thead = element('thead');
+  thead.append(headings);
+  const tbody = element('tbody');
+  const addCoefficients = (label, isSwapped) => {
+    const row = element('tr');
+    const header = element('th', label);
+    header.scope = 'row';
+    row.append(header);
+    for (const coefficient of primePowerCoefficients(series, 5, isSwapped)) {
+      row.append(element('td', displayInteger(coefficient)));
+    }
+    tbody.append(row);
+  };
+  addCoefficients('f(pᵃ)', swapped);
+  if (revealed) addCoefficients('f⁻¹(pᵃ)', !swapped);
+  byId('coefficients').replaceChildren(thead, tbody);
+}
+
+function renderVerification() {
+  if (!calculation || !verification.open) return;
+  const {n, terms, sum} = calculation;
+  byId('verification-result').textContent = 'Σ f(d)f⁻¹(n/d) = ' + displayInteger(sum)
+    + ' = ε(' + displayInteger(n) + '). The sum runs over all positive divisors d of n.';
+  const fragment = document.createDocumentFragment();
+  for (const {divisor, quotient, value, inverseValue, product} of terms) {
+    const row = element('tr');
+    for (const item of [divisor, quotient, value, inverseValue, product]) row.append(element('td', displayInteger(item)));
+    fragment.append(row);
+  }
+  byId('convolution-terms').replaceChildren(fragment);
+}
+
+function updatePrimes(factors) {
+  const selected = prime.value;
+  const choices = [...new Set([...samplePrimes, ...factors.map(factor => factor.prime)])].sort(compareBigInts);
+  prime.replaceChildren(...choices.map(item => {
+    const option = element('option', displayInteger(item));
+    option.value = String(item);
+    return option;
+  }));
+  prime.value = choices.some(item => String(item) === selected) ? selected : String(factors[0]?.prime ?? 2n);
+}
+
+function evaluate() {
+  const raw = integer.value.trim();
+  const n = /^\d{1,10}$/.test(raw) ? BigInt(raw) : 0n;
+  const invalidInteger = n < 1n || n > maxInteger;
+  const settings = active.parameter;
+  const k = settings ? Number(parameter.value) : undefined;
+  const invalidParameter = Boolean(settings &&
+    (parameter.value === '' || !Number.isInteger(k) || k < settings.min || k > settings.max));
+  integer.setAttribute('aria-invalid', String(invalidInteger));
+  parameter.setAttribute('aria-invalid', String(invalidParameter));
+  const message = byId('input-message');
+  const invalid = invalidInteger || invalidParameter;
+  message.hidden = !invalid;
+  byId('result').hidden = invalid;
+  seriesPanel.hidden = invalid;
+  verification.hidden = invalid;
+  if (invalid) {
+    message.textContent = invalidInteger
+      ? 'Enter a whole number from 1 to ' + displayInteger(maxInteger) + '.'
+      : 'Enter an integer parameter from ' + settings.min + ' to ' + settings.max + '.';
+    calculation = undefined;
+    return;
+  }
+  calculation = {n, k, ...evaluateConvolution(active, n, k, swapped)};
+  const {factors, value, inverseValue} = calculation;
+  byId('value-label').textContent = 'f(' + displayInteger(n) + ')';
+  byId('inverse-label').textContent = 'f⁻¹(' + displayInteger(n) + ')';
+  byId('value').textContent = displayInteger(value);
+  byId('inverse-value').textContent = displayInteger(inverseValue);
+  const powers = factors.map(({prime: p, exponent}) => displayInteger(p) + (exponent === 1 ? '' : superscript(exponent)));
+  byId('factorization').textContent = powers.length ? displayInteger(n) + ' = ' + powers.join(' × ') : 'At n = 1 both values are 1.';
+  const local = factors.map(({inverseValues, exponent}) => inverseValues[exponent]);
+  const localProduct = local.map(value => value < 0n ? '(' + displayInteger(value) + ')' : displayInteger(value)).join(' × ');
+  byId('inverse-factors').textContent = powers.length > 1
+    ? 'f⁻¹(' + displayInteger(n) + ') = ' + powers.map(power => 'f⁻¹(' + power + ')').join(' × ')
+      + ' = ' + localProduct + ' = ' + displayInteger(inverseValue)
+    : '';
+  updatePrimes(factors);
+  renderSeries();
+  renderVerification();
+}
+
+for (const group of [...new Set(catalog.map(entry => entry.category))]) {
+  const option = element('option', group);
+  option.value = group;
+  category.append(option);
+}
+search.addEventListener('input', renderCatalog);
+category.addEventListener('change', renderCatalog);
+rows.addEventListener('click', event => {
+  const button = event.target.closest('button[data-function]');
+  if (!button) return;
+  selectEntry(entriesById.get(button.dataset.function));
+  if (window.matchMedia('(max-width: 830px)').matches) title.focus();
+});
+byId('integer-form').addEventListener('submit', event => {
+  event.preventDefault();
+  evaluate();
+});
+parameter.addEventListener('change', evaluate);
+prime.addEventListener('change', renderSeries);
+invert.addEventListener('click', () => {
+  revealed = !revealed;
+  renderSeries();
+});
+swap.addEventListener('click', () => {
+  swapped = !swapped;
+  revealed = true;
+  updateTitle();
+  evaluate();
+});
+verification.addEventListener('toggle', renderVerification);
+renderCatalog();
+selectEntry(active);
+search.disabled = false;
+category.disabled = false;
+for (const {button} of catalogRows) button.disabled = false;
+byId('startup-note').hidden = true;
+byId('calculator').hidden = false;
+
+})();
+</script>
+</body>
+</html>

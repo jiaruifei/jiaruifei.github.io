@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "topic": "Laurent Phenomenon Algebras",
+  "checkedAt": "2026-11-17T04:07:46.564Z",
+  "range": {
+    "from": "2026-10-17",
+    "through": "2026-11-17",
+    "basis": "published-or-updated",
+    "window": "calendar-month"
+  },
+  "scope": "Title and abstract matches for “Laurent phenomenon algebra(s)” or “LP algebra(s)”, including hyphenated forms. New submissions and revisions in the past calendar month.",
+  "sources": [
+    {
+      "id": "arxiv",
+      "name": "arXiv",
+      "searchUrl": "https://arxiv.org/search/?query=%22Laurent+phenomenon+algebra%22+OR+%22LP+algebra%22&searchtype=all&abstracts=show&order=-announced_date_first&size=50",
+      "status": "complete",
+      "checkedAt": "2026-11-17T04:07:46.564Z",
+      "lastSuccessAt": "2026-11-17T04:07:46.564Z",
+      "matchedCount": 0
+    },
+    {
+      "id": "hexagon",
+      "name": "Hexagon",
+      "searchUrl": "https://hexagonmath.org/search?q=Laurent&per_page=100",
+      "status": "complete",
+      "checkedAt": "2026-11-17T04:07:46.564Z",
+      "lastSuccessAt": "2026-11-17T04:07:46.564Z",
+      "matchedCount": 3
+    }
+  ],
+  "papers": [
+    {
+      "id": "hexagon:2611.00328",
+      "title": "Laurent Phenomenon Algebras on Minuscule Grassmannians and their Mirrors",
+      "authors": [
+        "Jiarui Fei"
+      ],
+      "abstract": "We construct Laurent phenomenon algebra structures on the homogeneous coordinate rings of the half-spin Grassmannians and the Freudenthal variety. Their frozen variables are the linear coordinates in a Coxeter orbit, and the resulting boundary divisors are anticanonical. Together with the construction of Daisey--Ducat for the Cayley plane, these examples admit explicit mirrors described by Newton polytopes. We identify the upper Laurent phenomenon algebras of the mirror seeds with the intrinsic mirror algebras of Keel--Yu at the specialization $q^\\beta=1$, including the theta functions associated with the individual boundary components. The half-spin construction is uniform in the rank. In the exceptional cases, contact calculations and Laurent divisibility determine the local expansions; the Freudenthal comparison also uses exact calculations of divisorial valuations. We obtain integral comparisons and valuative independence of the intrinsic theta basis in every reachable seed.",
+      "published": "2026-11-12",
+      "updated": "2026-11-12",
+      "activityDate": "2026-11-12",
+      "sources": [
+        {
+          "source": "hexagon",
+          "id": "2611.00328",
+          "versionId": "2611.00328v1",
+          "url": "https://hexagonmath.org/2611.00328v1",
+          "published": "2026-11-12",
+          "updated": "2026-11-12",
+          "labels": [
+            "A mix of human-written and AI-generated text",
+            "Human understanding: some parts"
+          ]
+        }
+      ],
+      "labels": [
+        "A mix of human-written and AI-generated text",
+        "Human understanding: some parts"
+      ]
+    },
+    {
+      "id": "hexagon:2611.00284",
+      "title": "Positive bases and polytopes for Laurent phenomenon algebras",
+      "authors": [
+        "Qiyue Tang"
+      ],
+      "abstract": "We prove that the cluster monomials of every graph Laurent phenomenon algebra form an atomic positive basis. For every finite normalized Laurent phenomenon algebra over a unique factorization domain, we construct a simple lattice polytope with unimodular normal fan whose polar realizes the cluster complex. We also prove that cluster monomials form a basis of the upper algebra in the finite case. In particular, every linear Laurent phenomenon algebra admits such a polyhedral realization.",
+      "published": "2026-11-11",
+      "updated": "2026-11-11",
+      "activityDate": "2026-11-11",
+      "sources": [
+        {
+          "source": "hexagon",
+          "id": "2611.00284",
+          "versionId": "2611.00284v1",
+          "url": "https://hexagonmath.org/2611.00284v1",
+          "published": "2026-11-11",
+          "updated": "2026-11-11",
+          "labels": [
+            "Primarily AI-generated text",
+            "Human understanding: some parts"
+          ]
+        }
+      ],
+      "labels": [
+        "Primarily AI-generated text",
+        "Human understanding: some parts"
+      ]
+    },
+    {
+      "id": "hexagon:2611.00289",
+      "title": "Positivity for Weighted Linear Laurent Phenomenon Algebras",
+      "authors": [
+        "Qiyue Tang"
+      ],
+      "abstract": "We prove Laurent positivity for ordinary Laurent phenomenon algebras whose initial exchange polynomials are nonconstant affine linear polynomials with positive constant terms and nonnegative numerical coefficients.",
+      "published": "2026-11-11",
+      "updated": "2026-11-11",
+      "activityDate": "2026-11-11",
+      "sources": [
+        {
+          "source": "hexagon",
+          "id": "2611.00289",
+          "versionId": "2611.00289v1",
+          "url": "https://hexagonmath.org/2611.00289v1",
+          "published": "2026-11-11",
+          "updated": "2026-11-11",
+          "labels": [
+            "Primarily AI-generated text",
+            "Human understanding: some parts"
+          ]
+        }
+      ],
+      "labels": [
+        "Primarily AI-generated text",
+        "Human understanding: some parts"
+      ]
+    }
+  ]
+}
