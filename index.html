@@ -1,4 +1,22 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>JiaRui · Homepage preview</title><style>:root{color-scheme:light dark}body{margin:0;background:light-dark(#f5f2ea,#222420)}.viz-carousel>section[hidden]{display:none}#jr-directions,#jr-research-route,#jr-research-page,#jr-teaching-route,#jr-teaching-page{max-width:1100px;margin-left:auto;margin-right:auto}</style></head><body><script>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>JiaRui · Homepage preview</title><style>:root{color-scheme:light dark}body{margin:0;background:light-dark(#f5f2ea,#222420)}.viz-carousel>section[hidden]{display:none}#jr-directions,#jr-research-route,#jr-research-page,#jr-teaching-route,#jr-teaching-page{max-width:1100px;margin-left:auto;margin-right:auto}</style><script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfilePage","mainEntity":{"@type":"Person","name":"Jiarui Fei","alternateName":"费佳睿"}}</script><style id="jr-homepage-background">
+html body {
+  background-image: url('assets/homepage-hex-tiling.png');
+  background-size: 54px 31px;
+  background-position: center top;
+}
+
+/* Keep the paper behind the content. On narrow screens, only the outer edges show the pattern. */
+body #jr-directions .jr-page {
+  background-image: linear-gradient(to right, transparent, var(--paper) 18px,
+    var(--paper) calc(100% - 18px), transparent);
+  background-color: transparent;
+}
+
+@media print, (forced-colors: active) {
+  html body { background-image: none; }
+}
+</style>
+</head><body><script>
 (() => {
   if(window.openai?.setWidgetState)return;
   const key='jiarui-homepage-state-v1';
