@@ -461,6 +461,7 @@ window.addEventListener('openai:set_globals',event=>restore(event.detail?.global
 
 
 
+
 <!-- JR_TEACHING_ROUTE_START -->
 <div id="jr-teaching-route" hidden>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=DM+Sans:wght@400;500&display=swap">
@@ -1026,8 +1027,8 @@ window.addEventListener('pagehide',pause);
   #jr-directions .jr-page .jr-qe-modes { reading-flow: flex-visual; }
   #jr-directions .jr-page .jr-qe-modes [data-qe-mode="freeze"] { order: 1; }
 }
-@media (max-width: 410px) {
-  #jr-directions .jr-home-top .jr-bgm { column-gap: 8px; }
+@media (max-width: 480px) {
+  #jr-directions .jr-home-top .jr-bgm { column-gap: 6px; }
 }
 @media (max-width: 375px) {
   #jr-directions .jr-nav.jr-home-top { column-gap: 2px; margin-inline: -10px; }
