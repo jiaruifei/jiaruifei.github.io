@@ -36,9 +36,9 @@
 #jr-research-page .jr-r-nav { display:flex; flex-wrap:wrap; align-items:center; gap:26px; padding:0 0 24px 0; border-bottom:1px solid var(--jr-r-rule); }
 #jr-research-page .jr-background-mount { min-width:0; max-width:270px; margin-left:auto; }
 #jr-research-page .jr-r-home { background:none; border:0; padding:6px 0; font-size:12px; text-decoration:underline; text-underline-offset:5px; }
-#jr-research-page .jr-r-teaching { font-size:12px; padding:6px 0; }
+#jr-research-page .jr-r-nav :is(.jr-r-page-label,.jr-r-teaching) { font-size:12px; padding:6px 0; text-decoration-line:underline; text-decoration-thickness:1px; text-underline-offset:4px; }
 #jr-research-page .jr-r-wordmark { font-family:'Cormorant Garamond',Georgia,serif; font-size:25px; letter-spacing:.02em; }
-#jr-research-page .jr-r-page-label { margin-left:auto; color:var(--jr-r-soft); font-size:11px; letter-spacing:.13em; text-transform:uppercase; }
+#jr-research-page .jr-r-page-label { margin-left:auto; }
 #jr-research-page .jr-r-hero { display:grid; grid-template-columns:1fr 1.2fr; align-items:end; gap:44px; padding:43px 0 40px; }
 #jr-research-page .jr-r-eyebrow { color:var(--jr-r-soft); font-size:11px; letter-spacing:.13em; text-transform:uppercase; }
 #jr-research-page .jr-r-hero h1 { font-family:'Cormorant Garamond',Georgia,serif; font-size:74px; line-height:1.05; letter-spacing:-.04em; margin-top:12px; }
@@ -103,7 +103,6 @@
   #jr-research-page { padding:24px 19px; }
   #jr-research-page .jr-r-nav { gap:20px; padding-right:0; }
   #jr-research-page .jr-r-wordmark { font-size:23px; }
-  #jr-research-page .jr-r-page-label { font-size:11px; letter-spacing:.08em; }
   #jr-research-page .jr-r-hero { grid-template-columns:1fr; gap:23px; padding:31px 0 28px; }
   #jr-research-page .jr-r-hero h1 { font-size:64px; }
   #jr-research-page .jr-r-intro { font-size:27px; max-width:390px; }
@@ -128,7 +127,7 @@
   <header class="jr-r-nav">
     <button class="jr-r-home cursor-interaction" type="button" data-research-home>← Home</button>
     <span class="jr-r-wordmark" data-research-name>JiaRui</span>
-    <span class="jr-r-page-label">Research</span>
+    <span class="jr-r-page-label" aria-current="page">Research</span>
     <a class="jr-r-teaching" href="teaching.html" data-teaching-link>Teaching</a>
     <div class="jr-background-mount" data-background-music></div>
   </header>
