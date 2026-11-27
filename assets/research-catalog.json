@@ -1,0 +1,452 @@
+{
+  "name": "Jiarui Fei",
+  "asOf": "2026-11-16",
+  "profileUrl": "https://sites.google.com/umich.edu/jiarui/",
+  "papers": [
+    {
+      "id": "hexagon-2611.00328",
+      "title": "Laurent Phenomenon Algebras on Minuscule Grassmannians and their Mirrors",
+      "authors": [
+        "Jiarui Fei"
+      ],
+      "year": 2026,
+      "submitted": "2026-11-11",
+      "updated": "2026-11-11",
+      "posted": "2026-11-12",
+      "url": "https://hexagonmath.org/2611.00328v1",
+      "repository": "hexagon",
+      "summary": "Constructs Laurent phenomenon algebra structures on half-spin Grassmannians and the Freudenthal variety, and compares their explicit mirror algebras and theta bases with intrinsic mirrors.",
+      "tags": [
+        "clusters",
+        "representations",
+        "other"
+      ],
+      "journal": null,
+      "journalUrl": null
+    },
+    {
+      "id": "2611.07549",
+      "title": "Arithmetic Kac Theory for Ramified Species",
+      "authors": [
+        "Jiarui Fei"
+      ],
+      "year": 2026,
+      "submitted": "2026-11-05",
+      "updated": "2026-11-05",
+      "url": "https://arxiv.org/abs/2611.07549",
+      "summary": "Extends Kac-style classification and counting of indecomposable representations to ramified species, connecting arithmetic splitting with root systems.",
+      "tags": [
+        "representations"
+      ],
+      "journal": null,
+      "journalUrl": null
+    },
+    {
+      "id": "2610.29051",
+      "title": "Ramified convolution and monodromy bases for symmetrizable Kac–Moody algebras",
+      "authors": [
+        "Jiarui Fei"
+      ],
+      "year": 2026,
+      "submitted": "2026-10-21",
+      "updated": "2026-10-21",
+      "url": "https://arxiv.org/abs/2610.29051",
+      "summary": "Uses ramified representations and monodromy to construct integral bases for symmetrizable Kac–Moody algebras, recovering the semicanonical basis in the symmetric case.",
+      "tags": [
+        "representations"
+      ],
+      "journal": null,
+      "journalUrl": null
+    },
+    {
+      "id": "2610.09868",
+      "title": "Ramified Quivers with Potentials, Monodromy Characters, and Cluster Bases I",
+      "authors": [
+        "Jiarui Fei"
+      ],
+      "year": 2026,
+      "submitted": "2026-10-07",
+      "updated": "2026-10-10",
+      "url": "https://arxiv.org/abs/2610.09868",
+      "summary": "Develops ramified representation models and monodromy cluster characters that produce bases for skew-symmetrizable cluster algebras under explicit hypotheses.",
+      "tags": [
+        "representations",
+        "clusters"
+      ],
+      "journal": null,
+      "journalUrl": null
+    },
+    {
+      "id": "2609.32425",
+      "title": "Symmetric Branching via Laurent Phenomenon Algebras",
+      "authors": [
+        "Jiarui Fei"
+      ],
+      "year": 2026,
+      "submitted": "2026-09-26",
+      "updated": "2026-09-26",
+      "url": "https://arxiv.org/abs/2609.32425",
+      "summary": "Realizes several reductive branching algebras as Laurent phenomenon algebras and gives polyhedral formulas for branching multiplicities in specified cases.",
+      "tags": [
+        "representations",
+        "clusters",
+        "invariants"
+      ],
+      "journal": null,
+      "journalUrl": null
+    },
+    {
+      "id": "2609.10090",
+      "title": "Syzygy Transformations of Cluster Characters and Geometric Twists",
+      "authors": ["Jiarui Fei"],
+      "year": 2026,
+      "submitted": "2026-09-09",
+      "updated": "2026-09-09",
+      "url": "https://arxiv.org/abs/2609.10090",
+      "summary": "Shows how syzygy and suspension act on cluster characters in 2-Calabi–Yau settings. Relates these actions to geometric twists on Grassmannians, positroid varieties, and unipotent cells without requiring mutation reachability.",
+      "tags": ["representations", "clusters"],
+      "journal": null,
+      "journalUrl": null
+    },
+    {
+      "id": "2608.29125",
+      "title": "Cluster Geometry of Universal Schubert Polynomials I: Geometric Bases and Cluster Monomials",
+      "authors": [
+        "Jiarui Fei"
+      ],
+      "year": 2026,
+      "submitted": "2026-08-29",
+      "updated": "2026-11-11",
+      "url": "https://arxiv.org/abs/2608.29125",
+      "summary": "Connects universal Schubert polynomials with geometric bases and characterizes when they become cluster monomials through a combinatorial condition.",
+      "tags": [
+        "clusters",
+        "representations"
+      ],
+      "journal": null,
+      "journalUrl": null
+    },
+    {
+      "id": "2608.00963",
+      "title": "Cluster Algebras for Bosonic Plethysm",
+      "authors": [
+        "Yelin Fan",
+        "Jiarui Fei"
+      ],
+      "year": 2026,
+      "submitted": "2026-08-02",
+      "updated": "2026-09-06",
+      "url": "https://arxiv.org/abs/2608.00963",
+      "summary": "Builds cluster structures on invariant rings associated with symmetric squares and expresses plethysm coefficients through alternating sums of lattice-point counts.",
+      "tags": [
+        "clusters",
+        "invariants",
+        "representations"
+      ],
+      "journal": null,
+      "journalUrl": null
+    },
+    {
+      "id": "2607.25201",
+      "title": "A Polyhedral Formula for n×2×2 Kronecker Coefficients via Cluster Algebras",
+      "authors": [
+        "Jiarui Fei",
+        "Chenxin Xue"
+      ],
+      "year": 2026,
+      "submitted": "2026-07-28",
+      "updated": "2026-08-07",
+      "url": "https://arxiv.org/abs/2607.25201",
+      "summary": "Constructs a cluster model whose lattice-point counts give a nonnegative polyhedral formula for n×2×2 Kronecker coefficients.",
+      "tags": [
+        "clusters",
+        "invariants",
+        "representations"
+      ],
+      "journal": null,
+      "journalUrl": null
+    },
+    {
+      "id": "2607.12458",
+      "title": "Flag Varieties of General Quiver Representations: Characteristic Classes and Semi-Invariants",
+      "authors": ["Jiarui Fei"],
+      "year": 2026,
+      "submitted": "2026-07-14",
+      "updated": "2026-11-03",
+      "url": "https://arxiv.org/abs/2607.12458",
+      "summary": "Computes dimensions, characteristic classes, and Euler characteristics of flag schemes of general quiver representations. Expresses parabolic Schubert coefficients using semi-invariants of auxiliary quivers and gives localization formulas.",
+      "tags": ["representations", "invariants", "other"],
+      "journal": "International Mathematics Research Notices, to appear",
+      "journalUrl": null
+    },
+    {
+      "id": "2510.01615",
+      "title": "On the Orthogonal Projections",
+      "authors": ["Jiarui Fei"],
+      "year": 2025,
+      "submitted": "2025-10-02",
+      "updated": "2026-11-03",
+      "url": "https://arxiv.org/abs/2510.01615",
+      "summary": "Constructs projections onto perpendicular representation categories that preserve generic invariants and canonical decompositions, and develops mutation formulas and reduction procedures for quivers with potentials.",
+      "tags": ["representations", "clusters"],
+      "journal": null,
+      "journalUrl": null
+    },
+    {
+      "id": "2503.12700",
+      "title": "Hessian Defect, Compatibility Degree, and Canonical Decomposition",
+      "authors": ["Jiarui Fei"],
+      "year": 2025,
+      "submitted": "2025-03-16",
+      "updated": "2026-09-17",
+      "url": "https://arxiv.org/abs/2503.12700",
+      "summary": "Uses Hessian differentials to explain discrepancies between dimension and denominator vectors, distinguish cluster variables with identical denominators, and compute canonical multiplicities through compatibility pairings.",
+      "tags": ["representations", "clusters"],
+      "journal": null,
+      "journalUrl": null
+    },
+    {
+      "id": "2309.08326",
+      "title": "Crystal Structure of Upper Cluster Algebras",
+      "authors": [
+        "Jiarui Fei"
+      ],
+      "year": 2023,
+      "submitted": "2023-09-15",
+      "updated": "2026-11-11",
+      "url": "https://arxiv.org/abs/2309.08326",
+      "summary": "Constructs crystal structures on tropical points of upper cluster algebras and relates their operators to representations, derivations, and compatible bases.",
+      "tags": [
+        "clusters",
+        "representations"
+      ],
+      "journal": null,
+      "journalUrl": null
+    },
+    {
+      "id": "2303.10591",
+      "title": "On the General Ranks of QP Representations",
+      "authors": ["Jiarui Fei"],
+      "year": 2023,
+      "submitted": "2023-03-19",
+      "updated": "2024-12-03",
+      "published": "2025-01-04",
+      "url": "https://arxiv.org/abs/2303.10591",
+      "summary": "Proposes a mutation formula for generic ranks between principal components of quiver-with-potential representations, proves it under reachability hypotheses, and identifies related mutation invariants.",
+      "tags": ["representations", "clusters"],
+      "journal": "Algebras and Representation Theory 28 (2025), 47–79",
+      "journalUrl": "https://doi.org/10.1007/s10468-024-10306-5"
+    },
+    {
+      "id": "2009.09701",
+      "title": "Mahler Measure of 3D Landau–Ginzburg Potentials",
+      "authors": [
+        "Jiarui Fei"
+      ],
+      "year": 2020,
+      "submitted": "2020-09-21",
+      "updated": "2020-10-08",
+      "published": "2021-07-28",
+      "url": "https://arxiv.org/abs/2009.09701",
+      "pdfUrl": "https://arxiv.org/pdf/2009.09701",
+      "repository": "arxiv",
+      "summary": "Computes Mahler measures for 23 families of Laurent polynomials arising from Fano threefolds, connects special values with modular L-functions, and finds ten relations among these measures.",
+      "tags": [
+        "other"
+      ],
+      "journal": "Forum Mathematicum 33 (2021), no. 5, 1369–1401",
+      "journalUrl": "https://doi.org/10.1515/forum-2020-0339"
+    },
+    {
+      "id": "1911.10513",
+      "title": "Tropical F-polynomials and General Presentations",
+      "authors": [
+        "Jiarui Fei"
+      ],
+      "year": 2019,
+      "submitted": "2019-11-24",
+      "updated": "2023-05-28",
+      "url": "https://arxiv.org/abs/1911.10513",
+      "summary": "Uses general presentations to describe tropical F-polynomials and Newton polytopes of quiver representations, with applications to cluster duality.",
+      "tags": [
+        "representations",
+        "clusters"
+      ],
+      "journal": "Journal of the London Mathematical Society 107 (2023), no. 6, 2079–2120",
+      "journalUrl": "https://doi.org/10.1112/jlms.12734"
+    },
+    {
+      "id": "1909.10151",
+      "title": "Combinatorics of F-polynomials",
+      "authors": ["Jiarui Fei"],
+      "year": 2019,
+      "submitted": "2019-09-23",
+      "updated": "2021-08-03",
+      "url": "https://arxiv.org/abs/1909.10151",
+      "summary": "Describes the Newton polytopes of F-polynomials and their restrictions to faces using stabilization functors. Determines facets for general representations of acyclic quivers and proves saturated support for rigid representations.",
+      "tags": ["representations", "clusters"],
+      "journal": "International Mathematics Research Notices 2023, no. 9, 7578–7615",
+      "journalUrl": "https://doi.org/10.1093/imrn/rnab365"
+    },
+    {
+      "id": "1711.00163",
+      "title": "Cluster Algebras, Invariant Theory, and Kronecker Coefficients II",
+      "authors": [
+        "Jiarui Fei"
+      ],
+      "year": 2017,
+      "submitted": "2017-11-01",
+      "updated": "2017-11-01",
+      "url": "https://arxiv.org/abs/1711.00163",
+      "summary": "Builds cluster models of flagged Kronecker semi-invariant rings and reduces the computation of Kronecker coefficients to lattice-point counts.",
+      "tags": [
+        "clusters",
+        "invariants",
+        "representations"
+      ],
+      "journal": "Advances in Mathematics 341 (2019), 536–582",
+      "journalUrl": "https://www.sciencedirect.com/science/article/pii/S0001870818304365"
+    },
+    {
+      "id": "1707.04661",
+      "title": "Extending Upper Cluster Algebras",
+      "authors": ["Jiarui Fei", "Jerzy Weyman"],
+      "year": 2017,
+      "submitted": "2017-07-14",
+      "updated": "2026-10-28",
+      "url": "https://arxiv.org/abs/1707.04661",
+      "summary": "Studies when extending a quiver preserves an upper cluster algebra and its cluster model, with applications to semi-invariant rings of complete flag configurations and their polyhedral bases.",
+      "tags": ["clusters", "representations", "invariants"],
+      "journal": null,
+      "journalUrl": null
+    },
+    {
+      "id": "1603.02521",
+      "title": "Tensor Product Multiplicities via Upper Cluster Algebras",
+      "authors": [
+        "Jiarui Fei"
+      ],
+      "year": 2016,
+      "submitted": "2016-03-08",
+      "updated": "2019-09-07",
+      "url": "https://arxiv.org/abs/1603.02521",
+      "summary": "Realizes tensor-product multiplicities for simply-laced groups as graded dimensions of explicitly constructed upper cluster algebras.",
+      "tags": [
+        "representations",
+        "clusters"
+      ],
+      "journal": "Annales scientifiques de l’École normale supérieure 54 (2021), no. 6, 1415–1464",
+      "journalUrl": "https://doi.org/10.24033/asens.2486"
+    },
+    {
+      "id": "1508.05563",
+      "title": "Cluster Algebras and Semi-invariant Rings II. Projections",
+      "authors": ["Jiarui Fei"],
+      "year": 2015,
+      "submitted": "2015-08-23",
+      "updated": "2015-08-30",
+      "published": "2016-09-02",
+      "url": "https://arxiv.org/abs/1508.05563",
+      "summary": "Shows how projection through an exceptional representation transfers upper cluster algebra structures between quiver semi-invariant rings by explicit operations on ice quivers. Quivers with potentials also describe the relationship between their bases.",
+      "tags": ["clusters", "invariants", "representations"],
+      "journal": "Mathematische Zeitschrift 285 (2017), no. 3–4, 939–966",
+      "journalUrl": "https://doi.org/10.1007/s00209-016-1733-7"
+    },
+    {
+      "id": "1504.02970",
+      "title": "Cluster Algebras, Invariant Theory, and Kronecker Coefficients I",
+      "authors": ["Jiarui Fei"],
+      "year": 2015,
+      "submitted": "2015-04-12",
+      "updated": "2015-08-25",
+      "published": "2017-04-13",
+      "url": "https://arxiv.org/abs/1504.02970",
+      "summary": "Connects truncated Kronecker products to semi-invariant rings of quiver representations and constructs cluster structures in the two-part case. Explicit g-vector cones express the relevant Kronecker coefficients as differences of lattice-point counts in rational polytopes.",
+      "tags": ["clusters", "invariants", "representations"],
+      "journal": "Advances in Mathematics 310 (2017), 1064–1112",
+      "journalUrl": "https://doi.org/10.1016/j.aim.2017.02.016"
+    },
+    {
+      "id": "1411.4693",
+      "title": "Cluster Algebras and Semi-invariant Rings I. Triple Flags",
+      "authors": ["Jiarui Fei"],
+      "year": 2014,
+      "submitted": "2014-11-17",
+      "updated": "2015-03-03",
+      "url": "https://arxiv.org/abs/1411.4693",
+      "summary": "Realizes semi-invariant rings of complete triple flags as upper cluster algebras of ice hive quivers. Constructs bases from lattice points in a rational polyhedral cone and determines minimal generators in small cases.",
+      "tags": ["representations", "clusters", "invariants"],
+      "journal": "Proceedings of the London Mathematical Society 115 (2017), no. 1, 1–32",
+      "journalUrl": "https://doi.org/10.1112/plms.12033"
+    },
+    {
+      "id": "1307.2667",
+      "title": "Counting using Hall Algebras III. Quivers with Potentials",
+      "authors": ["Jiarui Fei"],
+      "year": 2013,
+      "submitted": "2013-07-10",
+      "updated": "2018-09-15",
+      "url": "https://arxiv.org/abs/1307.2667",
+      "summary": "Studies vanishing cycles for quivers with potentials through truncated Jacobian algebras. Wall-crossing yields a categorification of quantum cluster algebras under suitable assumptions, together with counting formulas for representation Grassmannians under sink-source reflections.",
+      "tags": ["representations", "clusters"],
+      "journal": "Pacific Journal of Mathematics 300 (2019), no. 2, 347–373",
+      "journalUrl": "https://doi.org/10.2140/pjm.2019.300.347"
+    },
+    {
+      "id": "1111.6452",
+      "title": "Counting Using Hall Algebras I. Quivers",
+      "authors": ["Jiarui Fei"],
+      "year": 2011,
+      "submitted": "2011-11-28",
+      "updated": "2012-09-24",
+      "url": "https://arxiv.org/abs/1111.6452",
+      "summary": "Uses the Hopf algebra structure of a quiver's Hall algebra to count points over finite fields in representation moduli spaces, quiver Grassmannians, and flag varieties, with applications to cluster algebras.",
+      "tags": ["representations", "clusters"],
+      "journal": "Journal of Algebra 372 (2012), 542–559",
+      "journalUrl": "https://doi.org/10.1016/j.jalgebra.2012.08.018"
+    },
+    {
+      "id": "1011.6106",
+      "title": "Moduli of Representations I. Projections from Quivers",
+      "authors": [
+        "Jiarui Fei"
+      ],
+      "year": 2010,
+      "submitted": "2010-11-28",
+      "updated": "2013-04-11",
+      "url": "https://arxiv.org/abs/1011.6106",
+      "summary": "Uses orthogonal projection functors to relate moduli spaces of quiver representations to those for quivers with one fewer vertex, identifying blow-ups under suitable conditions and comparing stability and ample divisors.",
+      "tags": [
+        "representations",
+        "invariants"
+      ],
+      "journal": null,
+      "journalUrl": null
+    },
+    {
+      "id": "0911.4913",
+      "title": "General Presentations of Algebras",
+      "authors": [
+        "Harm Derksen",
+        "Jiarui Fei"
+      ],
+      "year": 2009,
+      "submitted": "2009-11-25",
+      "updated": "2015-04-08",
+      "url": "https://arxiv.org/abs/0911.4913",
+      "summary": "Develops canonical decompositions of general presentations of finite-dimensional algebras and a simplicial complex organizing rigid presentations.",
+      "tags": [
+        "representations"
+      ],
+      "journal": "Advances in Mathematics 278 (2015), 210–237",
+      "journalUrl": "https://doi.org/10.1016/j.aim.2015.03.012"
+    }
+  ],
+  "identitySources": [
+    "https://sites.google.com/umich.edu/jiarui/",
+    "https://postd.sjtu.edu.cn/info/1068/1189_1.htm",
+    "https://nice-math.sjtu.edu.cn/Data/List/RESEARCHGROUPS",
+    "https://icra21.sjtu.edu.cn/ICRAProgFinal2.pdf"
+  ],
+  "hexagonProfileUrl": "https://hexagonmath.org/users/user_8367f1ec-cdf6-4867-9128-8b2bc4b24373"
+}

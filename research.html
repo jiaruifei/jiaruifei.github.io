@@ -244,11 +244,13 @@ window.jrResearchReady = (async () => {
     return Number.isFinite(date.getTime()) ? new Intl.DateTimeFormat('en',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}).format(date) : null;
   };
   let catalog = {name:'JiaRui',papers:[]};
+  let compressedCatalog = false;
   try {
     const raw = document.getElementById('jr-research-data')?.textContent || '';
     if (raw.trim()) {
       let parsed = JSON.parse(raw);
-      if(parsed.encoding==='gzip-base64'){
+      compressedCatalog = parsed.encoding === 'gzip-base64';
+      if (compressedCatalog) {
         const bytes=Uint8Array.from(atob(parsed.payload),character=>character.charCodeAt(0));
         const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
         parsed=JSON.parse(await new Response(stream).text());
@@ -256,6 +258,33 @@ window.jrResearchReady = (async () => {
       if (isObject(parsed) && Array.isArray(parsed.papers)) catalog = parsed;
     }
   } catch {}
+  if (!compressedCatalog && ['http:', 'https:'].includes(location.protocol)) {
+    try {
+      const response = await fetch('assets/research-publications.json', {
+        cache:'no-cache', signal:AbortSignal.timeout(2500)
+      });
+      if (!response.ok) throw Error('The publication update could not be loaded');
+      const update = await response.json();
+      if (update.schemaVersion !== 1 || !isObject(update.revisions) || !Array.isArray(update.additions)) {
+        throw Error('Invalid publication update');
+      }
+      const ids = new Set(catalog.papers.map(paper => paper.id));
+      const knownTitles = new Set(catalog.papers.map(paper => paper.title));
+      catalog = {...catalog,
+        asOf: typeof update.checkedOn === 'string' && update.checkedOn > catalog.asOf ? update.checkedOn : catalog.asOf,
+        papers: [
+          ...catalog.papers.map(paper => {
+            const revision = update.revisions[paper.id];
+            return typeof revision?.updated === 'string' && revision.updated >= paper.updated
+              ? {...paper, updated:revision.updated, url:revision.url || paper.url} : paper;
+          }),
+          ...update.additions.filter(paper => isObject(paper) && !ids.has(paper.id) && !knownTitles.has(paper.title))
+        ]
+      };
+    } catch {
+      // Keep the embedded publication list when the refreshed list is unavailable.
+    }
+  }
   const usedIds = new Set();
   const papers = catalog.papers.filter(isObject).filter(paper => typeof paper.title === 'string' && paper.title.trim()).map((paper,index) => {
     const id = typeof paper.id === 'string' && paper.id ? paper.id : 'paper-' + index;

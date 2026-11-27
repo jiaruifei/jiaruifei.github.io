@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "checkedOn": "2026-11-26",
+  "sources": [
+    {
+      "id": "arxiv",
+      "status": "complete",
+      "checkedOn": "2026-11-26",
+      "lastSuccess": "2026-11-26",
+      "matches": 33
+    },
+    {
+      "id": "hexagon",
+      "status": "complete",
+      "checkedOn": "2026-11-26",
+      "lastSuccess": "2026-11-26",
+      "matches": 4
+    }
+  ],
+  "revisions": {
+    "hexagon-2611.00328": {
+      "updated": "2026-11-25",
+      "url": "https://hexagonmath.org/2611.00328v2"
+    }
+  },
+  "additions": [
+    {
+      "id": "2611.32571",
+      "title": "Theta Functions and Intrinsic Mirrors of Laurent Phenomenon Algebras",
+      "authors": [
+        "Jiarui Fei"
+      ],
+      "year": 2026,
+      "submitted": "2026-11-24",
+      "updated": "2026-11-24",
+      "url": "https://arxiv.org/abs/2611.32571",
+      "repository": "arxiv",
+      "summary": "We construct bases of upper Laurent phenomenon algebras over a field by minimizing Newton polytopes in a single seed. For any translation-invariant total order on the exponents, each least exponent $a$ that occurs determines a smallest Newton polytope $Q_a$. Choose one element with Newton polytope $Q_a$ and least term $x^a$ for each such $a$. These elements form a basis. In every reachable seed chart, every Gauss valuation takes a nonzero basis expansion to the minimum of its values on the nonzero summands. Suppose the algebra has Laurent coefficients and smooth spectrum over an algebraically closed field of characteristic zero. After…",
+      "tags": [
+        "clusters"
+      ],
+      "journal": null,
+      "journalUrl": null
+    },
+    {
+      "id": "hexagon-2611.00816",
+      "title": "Cluster-Crystal Realization of KR Cartan Algebras",
+      "authors": [
+        "Jiarui Fei"
+      ],
+      "year": 2026,
+      "submitted": "2026-11-21",
+      "updated": "2026-11-21",
+      "url": "https://hexagonmath.org/2611.00816v1",
+      "repository": "hexagon",
+      "summary": "We realize the Cartan algebras of restricted Kirillov--Reshetikhin modules as Cox rings of affine Schubert varieties, with Cartan degree given by the primitive divisor class. This yields upper cluster structures with non-inverted frozen variables for untwisted and diagram-twisted current algebras. In untwisted type, translation of the loop parameter gives a second cluster structure whose frozen variables are indexed by the affine Dynkin nodes. We construct charts adapted to the finite Chevalley operators and both shifted affine simple-root operators. For every untwisted finite simple type, every fundamental node, and every Cartan degree, the…",
+      "tags": [
+        "representations",
+        "clusters"
+      ],
+      "journal": null,
+      "journalUrl": null
+    },
+    {
+      "id": "hexagon-2611.00790",
+      "title": "Crystal Structures on Theta Bases",
+      "authors": [
+        "Jiarui Fei"
+      ],
+      "year": 2026,
+      "submitted": "2026-11-21",
+      "updated": "2026-11-25",
+      "url": "https://hexagonmath.org/2611.00790v2",
+      "repository": "hexagon",
+      "summary": "Suppose the mutable part of a skew-symmetrizable seed admits a reddening sequence. We prove that the regular theta basis of the middle algebra is normalized perfect for the derivations attached to frozen sinks and sources reachable by mutation. Its $g$-vectors are the lattice points of a rational polyhedral cone in every seed. When $i$ is a sink, the theta function with index $g$ can be raised exactly $g_i$ times, and its highest nonzero divided derivative is again a theta function. Local nilpotence and the Serre relations for each family of derivations hold on the upper cluster algebra with polynomial frozen variables even without…",
+      "tags": [
+        "representations",
+        "clusters"
+      ],
+      "journal": null,
+      "journalUrl": null
+    },
+    {
+      "id": "hexagon-2611.00668",
+      "title": "Schubert Cox Rings and Root Operators",
+      "authors": [
+        "Jiarui Fei"
+      ],
+      "year": 2026,
+      "submitted": "2026-11-19",
+      "updated": "2026-11-19",
+      "url": "https://hexagonmath.org/2611.00668v1",
+      "repository": "hexagon",
+      "summary": "We identify the Cox ring of every Schubert variety in a symmetrizable Kac--Moody partial flag variety with an upper cluster algebra whose frozen variables are not inverted. The construction also applies to Bott--Samelson varieties for arbitrary words and to their normal projective birational contractions that preserve the standard affine chart. A line-bundle recursion determines the boundary coefficients of the exchange relations. In this mutation class, each nonzero positive simple-root operator and each nonzero stabilizing negative simple-root operator acts in a suitable seed as a monomial times a partial derivative in one frozen variable.…",
+      "tags": [
+        "representations",
+        "clusters"
+      ],
+      "journal": null,
+      "journalUrl": null
+    }
+  ]
+}

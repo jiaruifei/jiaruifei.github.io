@@ -1,4 +1,4 @@
-name: Refresh recent Laurent phenomenon papers
+name: Refresh research publication feeds
 
 on:
   workflow_dispatch:
@@ -26,27 +26,47 @@ jobs:
           sparse-checkout: |
             /components/lpa-sources.mjs
             /components/update-lpa-papers.mjs
+            /components/research-publication-sources.mjs
+            /components/update-research-publications.mjs
             /assets/lpa-papers.json
+            /assets/research-catalog.json
+            /assets/research-publications.json
           sparse-checkout-cone-mode: false
       - uses: actions/setup-node@v7
+        id: setup_node
         with:
           node-version: '24'
           package-manager-cache: false
       - name: Refresh the recent-paper snapshot
+        id: refresh_recent_papers
         run: node components/update-lpa-papers.mjs
+      - name: Refresh the personal publication snapshot
+        id: refresh_publications
+        if: ${{ !cancelled() && steps.setup_node.outcome == 'success' }}
+        run: node components/update-research-publications.mjs
       - name: Save only the updated paper data
+        id: save_paper_data
+        if: ${{ !cancelled() && (steps.refresh_recent_papers.outcome == 'success' || steps.refresh_publications.outcome == 'success') }}
         env:
           DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          RECENT_PAPERS_OUTCOME: ${{ steps.refresh_recent_papers.outcome }}
+          PUBLICATIONS_OUTCOME: ${{ steps.refresh_publications.outcome }}
         run: |
-          git add -- assets/lpa-papers.json
-          if git diff --cached --quiet -- assets/lpa-papers.json; then
+          if [ "$RECENT_PAPERS_OUTCOME" = success ]; then
+            git add -- assets/lpa-papers.json
+          fi
+          if [ "$PUBLICATIONS_OUTCOME" = success ]; then
+            git add -- assets/research-publications.json
+          fi
+          if git diff --cached --quiet -- assets/lpa-papers.json assets/research-publications.json; then
             exit 0
           fi
-          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Refresh recent Laurent phenomenon papers' -- assets/lpa-papers.json
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Refresh research publication feeds'
           git pull --rebase origin "$DEFAULT_BRANCH"
           git push origin "HEAD:$DEFAULT_BRANCH"
       # A GITHUB_TOKEN push does not trigger branch-based Pages on its own.
-      - name: Publish the updated search
+      - name: Publish the updated paper data
+        if: ${{ !cancelled() && steps.save_paper_data.outcome == 'success' }}
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh api --method POST "repos/$GITHUB_REPOSITORY/pages/builds" --jq '{status,url}'
