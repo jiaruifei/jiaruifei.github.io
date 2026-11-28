@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "topic": "Laurent Phenomenon Algebras",
-  "checkedAt": "2026-11-27T16:42:14.521Z",
+  "checkedAt": "2026-11-28T15:34:18.358Z",
   "range": {
-    "from": "2026-10-27",
-    "through": "2026-11-27",
+    "from": "2026-10-28",
+    "through": "2026-11-28",
     "basis": "published-or-updated",
     "window": "calendar-month"
   },
@@ -15,8 +15,8 @@
       "name": "arXiv",
       "searchUrl": "https://arxiv.org/search/?query=%22Laurent+phenomenon+algebra%22+OR+%22LP+algebra%22&searchtype=all&abstracts=show&order=-announced_date_first&size=50",
       "status": "complete",
-      "checkedAt": "2026-11-27T16:42:14.521Z",
-      "lastSuccessAt": "2026-11-27T16:42:14.521Z",
+      "checkedAt": "2026-11-28T15:34:18.358Z",
+      "lastSuccessAt": "2026-11-28T15:34:18.358Z",
       "matchedCount": 2
     },
     {
@@ -24,8 +24,8 @@
       "name": "Hexagon",
       "searchUrl": "https://hexagonmath.org/search?q=Laurent&per_page=100",
       "status": "complete",
-      "checkedAt": "2026-11-27T16:42:14.521Z",
-      "lastSuccessAt": "2026-11-27T16:42:14.521Z",
+      "checkedAt": "2026-11-28T15:34:18.358Z",
+      "lastSuccessAt": "2026-11-28T15:34:18.358Z",
       "matchedCount": 3
     }
   ],

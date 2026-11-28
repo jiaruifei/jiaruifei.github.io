@@ -1,19 +1,19 @@
 {
   "schemaVersion": 1,
-  "checkedOn": "2026-11-27",
+  "checkedOn": "2026-11-28",
   "sources": [
     {
       "id": "arxiv",
       "status": "complete",
-      "checkedOn": "2026-11-27",
-      "lastSuccess": "2026-11-27",
+      "checkedOn": "2026-11-28",
+      "lastSuccess": "2026-11-28",
       "matches": 33
     },
     {
       "id": "hexagon",
       "status": "complete",
-      "checkedOn": "2026-11-27",
-      "lastSuccess": "2026-11-27",
+      "checkedOn": "2026-11-28",
+      "lastSuccess": "2026-11-28",
       "matches": 4
     }
   ],
